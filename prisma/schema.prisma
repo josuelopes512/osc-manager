@@ -22,6 +22,58 @@ model User {
   @@map("users")
 }
 
+model SocialPlatform {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  oscSocials OSCSocial[]
+
+  @@map("social_platforms")
+}
+
+model OSCSocial {
+  id               Int    @id @default(autoincrement())
+  oscId            Int
+  socialPlatformId Int
+  link             String
+
+  osc            OSC            @relation(fields: [oscId], references: [id])
+  socialPlatform SocialPlatform @relation(fields: [socialPlatformId], references: [id])
+
+  @@map("osc_socials")
+}
+
+model OSC {
+  id         Int         @id @default(autoincrement())
+  name       String
+  location   String
+  oscSocials OSCSocial[] // Relation to OSCSocial model
+  students   Student[]
+
+  @@map("oscs")
+}
+
+model Student {
+  id       Int    @id @default(autoincrement())
+  name     String
+  courseId Int
+  semester String // Format like "2017.1", "2017.2", etc.
+  oscId    Int
+
+  course Course @relation(fields: [courseId], references: [id])
+  osc    OSC    @relation(fields: [oscId], references: [id])
+
+  @@map("students")
+}
+
+model Course {
+  id       Int       @id @default(autoincrement())
+  name     String
+  students Student[]
+
+  @@map("courses")
+}
+
 model Account {
   id                Int     @id @default(autoincrement())
   userId            Int     @map("user_id")
