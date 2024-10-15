@@ -1,5 +1,5 @@
 import { accountService } from "@/app/api/account/service";
-import type { User } from "@prisma/client";
+import type { Account as AccountPrisma, User } from "@prisma/client";
 import type { Account } from "next-auth";
 import { NextResponse } from "next/server";
 import { userService } from "../../user/service";
@@ -15,6 +15,7 @@ export async function POST(req: Request) {
 		}
 
 		let user: User | null = null;
+		let acc: AccountPrisma | null = null;
 
 		const account = await accountService.findOne({
 			where: {
@@ -26,7 +27,7 @@ export async function POST(req: Request) {
 		});
 
 		if (!account) {
-			const acc = await accountService.create({
+			acc = await accountService.create({
 				data: {
 					type: accountBody.type,
 					provider: accountBody.provider,
@@ -82,15 +83,8 @@ export async function POST(req: Request) {
 
 		console.log("user", account);
 
-		if (!account) {
-			return NextResponse.json(
-				{ error: "User not found" },
-				{ status: 404 }, // 404 Not Found
-			);
-		}
-
 		user = await userService.findOne({
-			where: { id: account?.userId },
+			where: { id: (account ?? acc)?.userId },
 		});
 
 		if (user?.blocked) {
