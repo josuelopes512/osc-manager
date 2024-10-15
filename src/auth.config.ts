@@ -5,18 +5,6 @@ import type { AuthOptions } from "next-auth";
 import type { Adapter } from "next-auth/adapters";
 import GoogleProvider from "next-auth/providers/google";
 
-async function getUser(email: string, password: string): Promise<any> {
-	// sleep(1000)
-
-	await new Promise((resolve) => setTimeout(resolve, 1000));
-	return {
-		id: 1,
-		name: "test user",
-		email: email,
-		password: password,
-	};
-}
-
 export const authOptions: AuthOptions = {
 	providers: [
 		GoogleProvider({
