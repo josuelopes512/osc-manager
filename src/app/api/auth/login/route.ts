@@ -6,7 +6,7 @@ import { userService } from "../../user/service";
 
 export async function POST(req: Request) {
 	try {
-		const accountBody = (await req.json()) as Account & { ref: string };
+		const accountBody = (await req.json()) as Account;
 
 		const { ref } = accountBody;
 
@@ -78,6 +78,15 @@ export async function POST(req: Request) {
 					},
 				},
 			});
+		}
+
+		console.log("user", account);
+
+		if (!account) {
+			return NextResponse.json(
+				{ error: "User not found" },
+				{ status: 404 }, // 404 Not Found
+			);
 		}
 
 		user = await userService.findOne({

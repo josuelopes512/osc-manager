@@ -1,35 +1,61 @@
 import { parse } from "cookie";
 import { withAuth } from "next-auth/middleware";
 import { type NextRequest, NextResponse } from "next/server";
-import { PUBLIC_ROUTES, PUBLIC_ROUTES_BACK } from "./lib/routes";
+import { PUBLIC_API_ROUTES, PUBLIC_ROUTES } from "./lib/routes";
+
+function matchRoute(pathname: string, routes: string[]) {
+	for (const route of routes) {
+		if (
+			new RegExp(`^${route}$`).test(pathname) ||
+			pathname.startsWith(`${route}/`)
+		) {
+			return true;
+		}
+	}
+	return false;
+}
 
 async function middleware(req: NextRequest) {
 	const cookies = parse(req.headers.get("Cookie") || "");
-	// console.log('Cookies:', cookies)
 	const signed =
 		cookies["next-auth.session-token"] ||
 		cookies["__Secure-next-auth.session-token"];
 
 	const absoluteURL = new URL("/", req.nextUrl.origin);
 
+	// Handle maintenance mode
 	if (process.env.MAINTENANCE === "true") {
 		const maintenanceURL = new URL("/maintenance", req.nextUrl.origin);
 		return NextResponse.redirect(maintenanceURL.toString());
 	}
 
-	// console.log('Pathname:', req.nextUrl.pathname)
-	// console.log('isPublicRoute:', !isProtectedRoute)
-	// console.log('isProtectedRoute:', isProtectedRoute)
-	// console.log('signed:', signed)
-
+	// Check if the request is an API route
 	if (req.nextUrl.pathname.startsWith("/api")) {
+		const isPublicApiRoute = matchRoute(
+			req.nextUrl.pathname,
+			PUBLIC_API_ROUTES,
+		);
+
+		// If the API route is not public and there's no valid session token, redirect to login
+		if (!isPublicApiRoute && !signed) {
+			const loginURL = new URL("/login", req.nextUrl.origin);
+			loginURL.searchParams.append(
+				"redirect",
+				encodeURIComponent(req.nextUrl.pathname + req.nextUrl.search),
+			);
+			return NextResponse.redirect(loginURL.toString());
+		}
+
+		// If it's a public API route or the user is authenticated, proceed
 		return NextResponse.next();
 	}
 
-	const isPublicRoute = PUBLIC_ROUTES.includes(req.nextUrl.pathname);
+	// Check if the request is for a public page
+	const isPublicRoute = matchRoute(req.nextUrl.pathname, PUBLIC_ROUTES);
 
+	// Redirect to login if the route is protected and the user is not authenticated
 	if (!isPublicRoute && !signed) {
-		const loginURL = new URL("/auth/login", req.nextUrl.origin);
+		const loginURL = new URL("/login", req.nextUrl.origin);
 		loginURL.searchParams.append(
 			"redirect",
 			encodeURIComponent(req.nextUrl.pathname + req.nextUrl.search),
@@ -37,10 +63,11 @@ async function middleware(req: NextRequest) {
 		return NextResponse.redirect(loginURL.toString());
 	}
 
+	// If the user is signed in and tries to access a public route, redirect them to the appropriate page
 	if (isPublicRoute && signed) {
 		const redirect = req.nextUrl.searchParams.get("redirect");
-		// console.log('Redirect:', redirect)
 		if (redirect) absoluteURL.pathname = decodeURIComponent(redirect);
+		if (req.nextUrl.pathname === "/") return NextResponse.next();
 
 		return NextResponse.redirect(absoluteURL.toString());
 	}
@@ -53,33 +80,23 @@ export default withAuth(middleware, {
 		authorized: async ({ req, token }) => {
 			// console.log('Authorized:', req.nextUrl.pathname)
 			const path = req.nextUrl.pathname;
-			const isPublicRoute = PUBLIC_ROUTES_BACK.includes(req.nextUrl.pathname);
-
-			return !(!token && !isPublicRoute);
+			const isPublicApiRoute = matchRoute(path, PUBLIC_API_ROUTES);
+			return !(!token && !isPublicApiRoute);
 		},
 	},
 	pages: {
-		signIn: "/",
+		signIn: "/login",
 		error: "/auth/error",
 	},
 });
-
 export const config = {
 	matcher: [
-		"/",
-		"/chests",
-		"/chests/:path*",
-		"/referral",
-		"/net",
-		"/net/:path*",
-		"/ranking",
-		"/ranking/:path*",
-		"/wallet",
-		"/wallet/:path*",
-		"/task",
-		"/task/:path*",
-		"/auth/login",
-		"/api/ad/:path*",
-		"/api/wallet/",
+		/*
+		 * Match all request paths except for the ones starting with:
+		 * - _next/static (static files)
+		 * - _next/image (image optimization files)
+		 * - favicon.ico (favicon file)
+		 */
+		"/((?!_next/static|_next/image|favicon.ico).*)",
 	],
 };

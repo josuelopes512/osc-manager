@@ -8,16 +8,17 @@ generator client {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  name      String?
-  email     String    @unique
-  image     String?
-  blocked   Boolean   @default(false)
-  accounts  Account[]
-  sessions  Session[]
-  createdAt DateTime  @default(now())
-  updateAt  DateTime  @updatedAt()
-  deletedAt DateTime?
+  id            Int       @id @default(autoincrement())
+  name          String?
+  email         String    @unique
+  image         String?
+  emailVerified Boolean?  @default(false)
+  blocked       Boolean   @default(false)
+  accounts      Account[]
+  sessions      Session[]
+  createdAt     DateTime  @default(now())
+  updateAt      DateTime  @updatedAt()
+  deletedAt     DateTime?
 
   @@map("users")
 }
