@@ -32,10 +32,9 @@ export const deleteData = async <TReturn>(val: DeleteData) => {
 };
 
 export const toastErrorsApi = (error: any, message?: string) => {
-	console.log("ERROR", error?.response);
 	if (error?.response) {
 		if (message) return toast.error(message);
-		if (error.response?.data?.error)
-			return toast.error(error.response?.data?.error);
+		if (error.response?.data?.msg)
+			return toast.error(error.response?.data?.msg);
 	} else toast.error("Erro ao se comunicar com o servidor (erro desconhecido)");
 };

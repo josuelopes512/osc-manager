@@ -1,19 +1,22 @@
+import { getQuery } from "@/lib/query";
 import type { DeleteDefaultDTO } from "@/types/api";
 import { PrismaClient } from "@prisma/client";
-import { NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import type { POSTStudentDTO } from "./dto/post";
 import type { PUTStudentDTO } from "./dto/put";
 import { studentService } from "./service";
 
 const prisma = new PrismaClient();
 
-export async function GET() {
+export async function GET(req: NextRequest) {
 	try {
-		const students = await studentService.find({});
+		const query = getQuery(req);
+
+		const students = await studentService.find(query);
 		return NextResponse.json(students);
 	} catch (error) {
 		return NextResponse.json(
-			{ error: "Falha ao buscar cursos" },
+			{ msg: "Falha ao buscar alunos", error },
 			{ status: 500 },
 		);
 	}
@@ -33,9 +36,8 @@ export async function POST(request: Request) {
 		});
 		return NextResponse.json(student);
 	} catch (error) {
-		console.log(error);
 		return NextResponse.json(
-			{ error: "Falha ao criar curso" },
+			{ msg: "Falha ao criar aluno", error },
 			{ status: 500 },
 		);
 	}
@@ -52,7 +54,7 @@ export async function PUT(request: Request) {
 		return NextResponse.json(student);
 	} catch (error) {
 		return NextResponse.json(
-			{ error: "Falha ao atualizar curso" },
+			{ msg: "Falha ao atualizar aluno", error },
 			{ status: 500 },
 		);
 	}
@@ -65,7 +67,7 @@ export async function DELETE(request: Request) {
 		return NextResponse.json({ message: "Curso deletado com sucesso" });
 	} catch (error) {
 		return NextResponse.json(
-			{ error: "Falha ao deletar curso" },
+			{ msg: "Falha ao deletar aluno", error },
 			{ status: 500 },
 		);
 	}

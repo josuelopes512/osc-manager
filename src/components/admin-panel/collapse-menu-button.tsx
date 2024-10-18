@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown, Dot, type LucideIcon } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -27,16 +27,17 @@ import {
 import { cn } from "@/lib/utils";
 import { DropdownMenuArrow } from "@radix-ui/react-dropdown-menu";
 import { usePathname } from "next/navigation";
+import type { IconType } from "react-icons/lib";
 
 export type Submenu = {
 	href: string;
 	label: string;
-	Icon: LucideIcon;
+	Icon: IconType;
 	active?: boolean;
 };
 
 interface CollapseMenuButtonProps {
-	icon: LucideIcon;
+	icon: IconType;
 	label: string;
 	active: boolean;
 	submenus: Submenu[];

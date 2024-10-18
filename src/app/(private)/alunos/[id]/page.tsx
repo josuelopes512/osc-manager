@@ -66,7 +66,7 @@ const StudentEdit = () => {
 					reset();
 				})
 				.catch((error: any) => {
-					toastErrorsApi(error, "rrir");
+					toastErrorsApi(error);
 				});
 		else
 			mutatePut({

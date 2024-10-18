@@ -1,20 +1,15 @@
 import type { Submenu } from "@/components/admin-panel/collapse-menu-button";
-import {
-	Bookmark,
-	LayoutGrid,
-	type LucideIcon,
-	Plus,
-	Settings,
-	SquarePen,
-	Tag,
-	Users,
-} from "lucide-react";
+import { Bookmark, LayoutGrid, Plus, SquarePen, Users } from "lucide-react";
+import { BsFillHouseAddFill, BsFillHousesFill } from "react-icons/bs";
+import { FaSquare, FaUserPlus, FaUsers } from "react-icons/fa6";
+import type { IconType } from "react-icons/lib";
+import { MdSpaceDashboard } from "react-icons/md";
 
 type Menu = {
 	href: string;
 	label: string;
 	active?: boolean;
-	icon: LucideIcon;
+	icon: IconType;
 	submenus?: Submenu[];
 };
 
@@ -31,7 +26,7 @@ export function getMenuList(pathname: string): Group[] {
 				{
 					href: "/dashboard",
 					label: "Dashboard",
-					icon: LayoutGrid,
+					icon: MdSpaceDashboard,
 					submenus: [],
 				},
 			],
@@ -42,34 +37,34 @@ export function getMenuList(pathname: string): Group[] {
 				{
 					href: "",
 					label: "OSCS",
-					icon: SquarePen,
+					icon: BsFillHousesFill,
 					submenus: [
 						{
 							href: "/chests",
 							label: "Todas OSCs",
-							Icon: Bookmark,
+							Icon: BsFillHousesFill,
 						},
 						{
 							href: "/oscs/new",
 							label: "Adicionar OSC",
-							Icon: Plus,
+							Icon: BsFillHouseAddFill,
 						},
 					],
 				},
 				{
 					href: "/alunos",
 					label: "Alunos",
-					icon: Users,
+					icon: FaUsers,
 					submenus: [
 						{
 							href: "/alunos",
 							label: "Todos Alunos",
-							Icon: Bookmark,
+							Icon: FaUsers,
 						},
 						{
 							href: "/alunos/new",
 							label: "Adicionar Aluno",
-							Icon: Plus,
+							Icon: FaUserPlus,
 						},
 					],
 				},
