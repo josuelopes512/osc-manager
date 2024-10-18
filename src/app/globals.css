@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body,
-:root {
-	@apply bg-foreground-50;
-}
 html {
 	scroll-behavior: smooth;
 }
@@ -91,7 +87,9 @@ html {
 	* {
 		@apply border-border;
 	}
-	body {
+	body,
+	:root {
 		@apply bg-background text-foreground;
+		@apply bg-foreground-50;
 	}
 }

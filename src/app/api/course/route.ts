@@ -1,16 +1,15 @@
 import type { DeleteDefaultDTO } from "@/types/api";
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
-import type { POSTStudentDTO } from "./dto/post";
-import type { PUTStudentDTO } from "./dto/put";
-import { studentService } from "./service";
+import type { POSTCourseDTO, PUTCourseDTO } from "./dto/post";
+import { courseService } from "./service";
 
 const prisma = new PrismaClient();
 
 export async function GET() {
 	try {
-		const students = await studentService.find({});
-		return NextResponse.json(students);
+		const courses = await courseService.find({});
+		return NextResponse.json(courses);
 	} catch (error) {
 		return NextResponse.json(
 			{ error: "Falha ao buscar cursos" },
@@ -21,17 +20,9 @@ export async function GET() {
 
 export async function POST(request: Request) {
 	try {
-		const data = (await request.json()) as POSTStudentDTO;
-		const student = await studentService.create({
-			data: {
-				...data,
-				course: {
-					connect: { id: data.courseId },
-				},
-				courseId: undefined,
-			},
-		});
-		return NextResponse.json(student);
+		const data = (await request.json()) as POSTCourseDTO;
+		const course = await courseService.create({ data });
+		return NextResponse.json(course);
 	} catch (error) {
 		console.log(error);
 		return NextResponse.json(
@@ -43,13 +34,13 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
 	try {
-		const data = (await request.json()) as PUTStudentDTO;
+		const data = (await request.json()) as PUTCourseDTO;
 		const { id, ...updateData } = data;
-		const student = await studentService.update({
+		const course = await courseService.update({
 			data: updateData,
 			where: { id },
 		});
-		return NextResponse.json(student);
+		return NextResponse.json(course);
 	} catch (error) {
 		return NextResponse.json(
 			{ error: "Falha ao atualizar curso" },
@@ -61,7 +52,7 @@ export async function PUT(request: Request) {
 export async function DELETE(request: Request) {
 	try {
 		const { id } = (await request.json()) as DeleteDefaultDTO;
-		await studentService.deleteOne(id);
+		await courseService.deleteOne(id);
 		return NextResponse.json({ message: "Curso deletado com sucesso" });
 	} catch (error) {
 		return NextResponse.json(

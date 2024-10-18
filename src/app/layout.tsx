@@ -32,10 +32,7 @@ export default async function RootLayout({
 	return (
 		<html lang="pt">
 			<body className={font.className}>
-				<Providers>
-					{/* <main className="bg-background text-foreground">{children}</main> */}
-					{children}
-				</Providers>
+				<Providers>{children}</Providers>
 			</body>
 		</html>
 	);

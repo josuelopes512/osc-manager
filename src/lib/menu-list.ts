@@ -60,6 +60,18 @@ export function getMenuList(pathname: string): Group[] {
 					href: "/alunos",
 					label: "Alunos",
 					icon: Users,
+					submenus: [
+						{
+							href: "/alunos",
+							label: "Todos Alunos",
+							Icon: Bookmark,
+						},
+						{
+							href: "/alunos/new",
+							label: "Adicionar Aluno",
+							Icon: Plus,
+						},
+					],
 				},
 			],
 		},

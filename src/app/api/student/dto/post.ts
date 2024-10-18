@@ -1,5 +1,6 @@
 export interface POSTStudentDTO {
 	name: string;
-	semester: number;
+	semester: string;
+	matriculation: string;
 	courseId: number;
 }

@@ -55,14 +55,15 @@ model OSC {
 }
 
 model Student {
-  id       Int    @id @default(autoincrement())
-  name     String
-  courseId Int
-  semester String // Format like "2017.1", "2017.2", etc.
-  oscId    Int
+  id            Int    @id @default(autoincrement())
+  name          String
+  courseId      Int
+  semester      String // Format like "2017.1", "2017.2", etc.
+  matriculation String @unique
+  oscId         Int?
 
   course Course @relation(fields: [courseId], references: [id])
-  osc    OSC    @relation(fields: [oscId], references: [id])
+  osc    OSC?   @relation(fields: [oscId], references: [id])
 
   @@map("students")
 }
