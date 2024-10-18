@@ -148,7 +148,7 @@ const Table = <T extends Record<string, any>>({
 
 				<div className="flex items-center justify-between">
 					<span className="text-small dark:text-default-400">
-						{filteredItems.length} records
+						{filteredItems.length} registros
 					</span>
 					<Dropdown>
 						<DropdownTrigger>
