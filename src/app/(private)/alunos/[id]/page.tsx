@@ -9,20 +9,16 @@ import type { PostData, PutData } from "@/types/api";
 import { Button, Input, Skeleton } from "@nextui-org/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import type { StudentFormProps } from "./types";
 
 import { Combobox } from "@/components/ui/combobox";
-import { useSidebar } from "@/hooks/use-sidebar";
-// import { Combobox } from "@/components/ui/combobox";
 import type { Course, Student } from "@prisma/client";
 
 const StudentEdit = () => {
 	const { id } = useParams<{ id: string | "new" }>();
-	const { isOpen } = useSidebar();
-
 	const { data: dataGetStudent, isLoading: loadingGet } = useQuery({
 		queryFn: ({ signal }) =>
 			getData<Student>({

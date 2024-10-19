@@ -14,20 +14,20 @@ import {
 	Tooltip,
 	useDisclosure,
 } from "@nextui-org/react";
-import type { Course, Student } from "@prisma/client";
+import type { Course } from "@prisma/client";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaPencilAlt, FaTrash } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { columnsStudents } from "./constants";
+import { columnsCourses } from "./constants";
 
-export default function StudentList() {
+export default function CourseList() {
 	const { data, isLoading, refetch } = useQuery({
-		queryKey: ["student-get"],
+		queryKey: ["course-get"],
 		queryFn: ({ signal }) =>
-			getData<(Student & { course: Course })[]>({
-				url: "/student",
+			getData<Course[]>({
+				url: "/course",
 				signal,
 				query: "include.course=true&&include.osc=true",
 			}),
@@ -35,7 +35,7 @@ export default function StudentList() {
 
 	const { mutateAsync: mutateDelete, isPending: loadingDelete } = useMutation({
 		mutationFn: async (val: DeleteData) => deleteData(val),
-		mutationKey: ["student-delete"],
+		mutationKey: ["course-delete"],
 	});
 
 	const router = useRouter();
@@ -46,11 +46,11 @@ export default function StudentList() {
 
 	const deleteItem = (id: number) => {
 		mutateDelete({
-			url: "/student",
+			url: "/course",
 			id: id,
 		})
 			.then(() => {
-				toast.success("Aluno deletado com sucesso");
+				toast.success("Curso deletado com sucesso");
 				void refetch();
 			})
 			.catch((err) => {
@@ -58,8 +58,8 @@ export default function StudentList() {
 			});
 	};
 
-	const finalColumns: ColumnProps<Student & { course: Course }>[] = [
-		...columnsStudents,
+	const finalColumns: ColumnProps<Course>[] = [
+		...columnsCourses,
 		{
 			uid: "actions",
 			label: "Ações",
@@ -70,7 +70,7 @@ export default function StudentList() {
 							isIconOnly
 							color="primary"
 							className="rounded-full"
-							onClick={() => router.push(`alunos/${item.id}`)}
+							onClick={() => router.push(`cursos/${item.id}`)}
 						>
 							<FaPencilAlt size={20} />
 						</Button>
@@ -110,11 +110,11 @@ export default function StudentList() {
 					{(onClose) => (
 						<>
 							<ModalHeader className="mt-4 flex flex-col gap-1">
-								Tem certeza que deseja deletar o aluno?
+								Tem certeza que deseja deletar o curso?
 							</ModalHeader>
 							<ModalBody>
 								<div className={"flex flex-col gap-2 text-default-600"}>
-									Você está prestes a deletar o aluno, deseja continuar?
+									Você está prestes a deletar o curso, deseja continuar?
 								</div>
 							</ModalBody>
 							<ModalFooter>

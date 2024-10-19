@@ -1,8 +1,8 @@
 import { getQuery } from "@/lib/query";
 import type { DeleteDefaultDTO } from "@/types/api";
 import { type NextRequest, NextResponse } from "next/server";
-import type { PUTStudentDTO } from "../dto/put";
-import { studentService } from "../service";
+import type { PUTCourseDTO } from "../dto/put";
+import { courseService } from "../service";
 
 type Params = {
 	id: string;
@@ -21,18 +21,18 @@ export async function GET(
 
 		if (Number.isNaN(id))
 			return NextResponse.json(
-				{ msg: "Falha ao buscar dados do aluno" },
+				{ msg: "Falha ao buscar dados do curso" },
 				{ status: 404 },
 			);
 
-		const students = await studentService.findOne({
+		const courses = await courseService.findOne({
 			...query,
 			where: { id },
 		});
-		return NextResponse.json(students);
+		return NextResponse.json(courses);
 	} catch (error) {
 		return NextResponse.json(
-			{ msg: "Falha ao buscar alunos", error },
+			{ msg: "Falha ao buscar cursos", error },
 			{ status: 500 },
 		);
 	}
@@ -49,19 +49,19 @@ export async function PUT(
 
 		if (Number.isNaN(id))
 			return NextResponse.json(
-				{ msg: "Falha ao atualizar dados do aluno" },
+				{ msg: "Falha ao atualizar dados do curso" },
 				{ status: 404 },
 			);
 
-		const data = (await request.json()) as PUTStudentDTO;
-		const student = await studentService.update({
+		const data = (await request.json()) as PUTCourseDTO;
+		const course = await courseService.update({
 			data,
 			where: { id },
 		});
-		return NextResponse.json(student);
+		return NextResponse.json(course);
 	} catch (error) {
 		return NextResponse.json(
-			{ msg: "Falha ao atualizar aluno", error },
+			{ msg: "Falha ao atualizar curso", error },
 			{ status: 500 },
 		);
 	}
@@ -76,11 +76,11 @@ export async function DELETE(
 	try {
 		const id = Number(context.params.id);
 
-		await studentService.deleteOne(id);
-		return NextResponse.json({ message: "Aluno deletado com sucesso" });
+		await courseService.deleteOne(id);
+		return NextResponse.json({ message: "Curso deletado com sucesso" });
 	} catch (error) {
 		return NextResponse.json(
-			{ msg: "Falha ao deletar aluno", error },
+			{ msg: "Falha ao deletar curso", error },
 			{ status: 500 },
 		);
 	}

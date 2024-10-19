@@ -1,13 +1,20 @@
+import GraduationCapPlus from "@/assets/icons/GraduationCapPlus";
+import { Image } from "@nextui-org/react";
 import { Bookmark, LayoutGrid, Plus, SquarePen, Users } from "lucide-react";
 import { BsFillHouseAddFill, BsFillHousesFill } from "react-icons/bs";
-import { FaSquare, FaUserPlus, FaUsers } from "react-icons/fa6";
+import {
+	FaGraduationCap,
+	FaSquare,
+	FaUserPlus,
+	FaUsers,
+} from "react-icons/fa6";
 import type { IconType } from "react-icons/lib";
 import { MdSpaceDashboard } from "react-icons/md";
 
 export type Submenu = {
 	href: string;
 	label: string;
-	Icon: IconType;
+	Icon: React.ReactNode | IconType;
 	active?: boolean;
 };
 
@@ -15,7 +22,7 @@ type Menu = {
 	href: string;
 	label: string;
 	active?: boolean;
-	icon: IconType;
+	icon: React.ReactNode | IconType;
 	submenus?: Submenu[];
 };
 
@@ -71,6 +78,23 @@ export function getMenuList(pathname: string): Group[] {
 							href: "/alunos/new",
 							label: "Adicionar Aluno",
 							Icon: FaUserPlus,
+						},
+					],
+				},
+				{
+					href: "/cursos",
+					label: "Cursos",
+					icon: FaGraduationCap,
+					submenus: [
+						{
+							href: "/cursos",
+							label: "Todos Cursos",
+							Icon: FaGraduationCap,
+						},
+						{
+							href: "/cursos/new",
+							label: "Adicionar Curso",
+							Icon: () => <GraduationCapPlus />,
 						},
 					],
 				},
