@@ -1,9 +1,15 @@
-import type { Submenu } from "@/components/admin-panel/collapse-menu-button";
 import { Bookmark, LayoutGrid, Plus, SquarePen, Users } from "lucide-react";
 import { BsFillHouseAddFill, BsFillHousesFill } from "react-icons/bs";
 import { FaSquare, FaUserPlus, FaUsers } from "react-icons/fa6";
 import type { IconType } from "react-icons/lib";
 import { MdSpaceDashboard } from "react-icons/md";
+
+export type Submenu = {
+	href: string;
+	label: string;
+	Icon: IconType;
+	active?: boolean;
+};
 
 type Menu = {
 	href: string;

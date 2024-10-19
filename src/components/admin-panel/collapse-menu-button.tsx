@@ -24,17 +24,11 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
+import type { Submenu } from "@/lib/menu-list";
 import { cn } from "@/lib/utils";
 import { DropdownMenuArrow } from "@radix-ui/react-dropdown-menu";
 import { usePathname } from "next/navigation";
 import type { IconType } from "react-icons/lib";
-
-export type Submenu = {
-	href: string;
-	label: string;
-	Icon: IconType;
-	active?: boolean;
-};
 
 interface CollapseMenuButtonProps {
 	icon: IconType;

@@ -81,8 +81,6 @@ export async function POST(req: Request) {
 			});
 		}
 
-		console.log("user", account);
-
 		user = await userService.findOne({
 			where: { id: (account ?? acc)?.userId },
 		});

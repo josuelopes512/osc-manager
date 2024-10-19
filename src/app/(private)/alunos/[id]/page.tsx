@@ -26,24 +26,24 @@ const StudentEdit = () => {
 	const { data: dataGetStudent, isLoading: loadingGet } = useQuery({
 		queryFn: ({ signal }) =>
 			getData<Student>({
-				url: "client",
+				url: "student",
 				id: Number.parseInt(id, 10),
 				signal,
-				query: "include.client=true",
+				query: "include.course=true",
 			}),
-		queryKey: ["client-get", id],
+		queryKey: ["student-get-by-id", id],
 		enabled: id !== "new",
 	});
 
 	const { mutateAsync: mutatePost, isPending: loadingPost } = useMutation({
 		mutationFn: async (val: PostData<Student>) =>
 			postData<Student, Student>(val),
-		mutationKey: ["client-post"],
+		mutationKey: ["student-post"],
 	});
 
 	const { mutateAsync: mutatePut, isPending: loadingPut } = useMutation({
 		mutationFn: (val: PutData<Student>) => putData<Student, Student>(val),
-		mutationKey: ["client-put"],
+		mutationKey: ["student-put"],
 	});
 
 	const { handleSubmit, setValue, control, reset, getValues } = useForm<
@@ -84,12 +84,10 @@ const StudentEdit = () => {
 
 	const loading = loadingGet || loadingPost || loadingPut;
 
-	// const [clientSearchTerm, setClientSearchTerm] = useState('')
-
 	useEffect(() => {
 		if (dataGetStudent && id !== "new") {
 			setValue("name", dataGetStudent.name);
-			setValue("semester", String(dataGetStudent.semester));
+			setValue("semester", dataGetStudent.semester);
 			setValue("matriculation", dataGetStudent.matriculation);
 			setValue("courseId", String(dataGetStudent.courseId));
 		}
@@ -105,21 +103,6 @@ const StudentEdit = () => {
 		refetchOnMount: false,
 		refetchOnReconnect: false,
 	});
-
-	// const filteredData = useMemo(() => {
-	//   if (clientSearchTerm === '') {
-	//     return dataGetCourse
-	//   } else {
-	//     return dataGetCourse?.filter((item) =>
-	//       item.fantasyName.toLowerCase().includes('lav'.toLowerCase()),
-	//     )
-	//   }
-	// }, [dataGetCourse, clientSearchTerm])
-
-	// useEffect(() => {
-	//   console.log(filteredData)
-	//   console.log(clientSearchTerm)
-	// }, [clientSearchTerm, filteredData])
 
 	return (
 		<form

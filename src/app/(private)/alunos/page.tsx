@@ -70,7 +70,7 @@ export default function Product() {
 							isIconOnly
 							color="primary"
 							className="rounded-full"
-							onClick={() => router.push(`student/${item.id}`)}
+							onClick={() => router.push(`alunos/${item.id}`)}
 						>
 							<FaPencilAlt size={20} />
 						</Button>
@@ -110,11 +110,11 @@ export default function Product() {
 					{(onClose) => (
 						<>
 							<ModalHeader className="mt-4 flex flex-col gap-1">
-								Tem certeza que deseja deletar o produto?
+								Tem certeza que deseja deletar o aluno?
 							</ModalHeader>
 							<ModalBody>
 								<div className={"flex flex-col gap-2 text-default-600"}>
-									Você está prestes a deletar o produto, deseja continuar?
+									Você está prestes a deletar o aluno, deseja continuar?
 								</div>
 							</ModalBody>
 							<ModalFooter>

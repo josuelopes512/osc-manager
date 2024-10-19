@@ -1,10 +1,7 @@
 import type { DeleteDefaultDTO } from "@/types/api";
-import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 import type { POSTCourseDTO, PUTCourseDTO } from "./dto/post";
 import { courseService } from "./service";
-
-const prisma = new PrismaClient();
 
 export async function GET() {
 	try {
