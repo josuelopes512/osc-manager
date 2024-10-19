@@ -3,7 +3,10 @@
 import type { ColumnProps } from "@/app/components/table/types";
 import { useTableSearch } from "@/hooks/use-table-search";
 import { Button, Input, Tooltip } from "@nextui-org/react";
+import { useDebounce } from "use-debounce";
+
 import { usePathname, useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 import { FaArrowLeft, FaFileExcel, FaPlus, FaSearch } from "react-icons/fa";
 
 interface HeaderTableProps<TData extends Record<string, any>> {
@@ -27,6 +30,10 @@ const HeaderTable = <TData extends Record<string, any>>({
 	const pathNew = pathname.includes("/new");
 	const hadDigit = pathname.split("/").slice(-1)[0].match(/\d+/);
 	const router = useRouter();
+
+	const [inputValue, setInputValue] = useState("");
+	const [debouncedValue] = useDebounce(inputValue, 300);
+
 	const { setSearch, data } = useTableSearch();
 
 	const searchPlaceholder = `Procurar por ${
@@ -37,6 +44,14 @@ const HeaderTable = <TData extends Record<string, any>>({
 					.join(", ")} ou `
 			: ""
 	}${filterColumns.slice(-1)[0].label.toLowerCase()}`;
+
+	useEffect(() => {
+		setSearch(debouncedValue);
+	}, [debouncedValue, setSearch]);
+
+	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setInputValue(e.target.value);
+	};
 
 	return (
 		<div className="flex justify-between gap-5">
@@ -53,9 +68,8 @@ const HeaderTable = <TData extends Record<string, any>>({
 							placeholder={searchPlaceholder}
 							title={searchPlaceholder}
 							aria-label={searchPlaceholder}
-							onChange={(e) => {
-								setSearch(e.target.value);
-							}}
+							onChange={handleInputChange}
+							value={inputValue}
 							startContent={
 								<FaSearch className="mr-2 hidden md:flex" size={20} />
 							}

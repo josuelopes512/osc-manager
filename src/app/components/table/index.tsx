@@ -76,6 +76,7 @@ const Table = <T extends Record<string, any>>({
 					return String(value).toLowerCase().includes(search.toLowerCase());
 				});
 			});
+			setPage(1);
 		}
 
 		return filteredData.sort((a, b) => {
