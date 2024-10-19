@@ -1,8 +1,7 @@
 "use client";
 
+import { useTableSearch } from "@/hooks/use-table-search";
 import {
-	Accordion,
-	AccordionItem,
 	Button,
 	Dropdown,
 	DropdownItem,
@@ -41,7 +40,9 @@ const Table = <T extends Record<string, any>>({
 
 	const [page, setPage] = useState(1);
 
-	const [tableExpanded, setTableExpanded] = useState(false);
+	const { search, setData } = useTableSearch();
+
+	const hasSearchFilter = Boolean(search);
 
 	const filterColumns = useMemo(() => {
 		return columns.filter((column) => column.filterable);
@@ -54,10 +55,28 @@ const Table = <T extends Record<string, any>>({
 			Array.from(visibleColumns).includes(column.uid),
 		);
 	}, [columns, visibleColumns]);
-
 	const filteredItems = useMemo(() => {
 		if (!data?.length) return [];
-		const filteredData = [...data];
+		let filteredData = [...data];
+
+		if (hasSearchFilter) {
+			const filteredColumns = filterColumns.map((column) => column.uid);
+			filteredData = filteredData.filter((item) => {
+				return filteredColumns.some((column) => {
+					// se column não for string, retorna false
+					// noinspection SuspiciousTypeOfGuard
+					if (typeof column !== "string") return false;
+					// Divide a chave da coluna em partes
+					const keys = column.split(".");
+
+					// Usa reduce para navegar até a propriedade aninhada
+					const value = keys.reduce((obj, key) => obj?.[key], item);
+
+					// Converte o valor para string e faz a comparação
+					return String(value).toLowerCase().includes(search.toLowerCase());
+				});
+			});
+		}
 
 		return filteredData.sort((a, b) => {
 			const first = a[sortDescriptor.column];
@@ -66,7 +85,7 @@ const Table = <T extends Record<string, any>>({
 
 			return sortDescriptor.direction === "descending" ? -cmp : cmp;
 		});
-	}, [data, sortDescriptor]);
+	}, [data, filterColumns, search, hasSearchFilter, sortDescriptor]);
 
 	const pages = Math.ceil(filteredItems.length / rowsPerPageTable);
 
