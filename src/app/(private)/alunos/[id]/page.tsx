@@ -156,14 +156,42 @@ const StudentEdit = () => {
 				name="semester"
 				control={control}
 				defaultValue=""
-				rules={{ required: "Campo obrigatório" }}
+				rules={{
+					required: "Campo obrigatório",
+					validate: (val) => {
+						const regex = /^(?:\d{1,4})(?:\.(?:[1-2])?)?$/;
+						if (!regex.test(val)) {
+							return "Formato inválido. Use até 4 dígitos, opcionalmente seguidos por um ponto e 1 ou 2.";
+						}
+						const [year, semester] = val.split(".");
+						if (
+							Number(year) < 1900 ||
+							Number(year) > new Date().getFullYear()
+						) {
+							return "Ano inválido";
+						}
+						if (semester && (Number(semester) < 1 || Number(semester) > 2)) {
+							return "Semestre deve ser 1 ou 2";
+						}
+						return true;
+					},
+				}}
 				render={({ field, fieldState: { error } }) => (
 					<Skeleton className="rounded-md" isLoaded={!loading}>
 						<Input
 							label="Semestre"
 							id={field.name}
 							type="text"
-							onChange={field.onChange}
+							onChange={(e) => {
+								let value = e.target.value.replace(/\D/g, "");
+								if (value.length > 4) {
+									value = `${value.slice(0, 4)}.${value.slice(4, 5)}`;
+								}
+								const regex = /^(?:\d{0,4})(?:\.(?:[1-2])?)?$/;
+								if (regex.test(value)) {
+									field.onChange(value);
+								}
+							}}
 							name={field.name}
 							value={field.value}
 							variant="bordered"
