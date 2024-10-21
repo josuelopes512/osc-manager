@@ -19,7 +19,13 @@ import {
 	Tooltip,
 	useDisclosure,
 } from "@nextui-org/react";
-import React, { useCallback, useMemo, useState } from "react";
+import React, {
+	useCallback,
+	useEffect,
+	useMemo,
+	useState,
+	useRef,
+} from "react";
 import { FaTimes } from "react-icons/fa";
 import { FaListCheck } from "react-icons/fa6";
 
@@ -244,16 +250,35 @@ export function Combobox<T extends object>({
 		onChange(filteredData.map((a) => String(a[idKey])));
 	};
 
+	useEffect(() => {
+		const getModal = async () => {
+			const modalElement = document.querySelector(
+				'div div[data-slot="wrapper"].z-50',
+			);
+
+			if (isOpen && modalElement) {
+				if (modalElement instanceof HTMLElement) {
+					const delay = (ms: number) => {
+						return new Promise((resolve) => setTimeout(resolve, ms));
+					};
+					await delay(1200);
+					modalElement.style.willChange = "auto";
+				}
+			}
+		};
+		getModal();
+	}, [isOpen]);
+
 	return (
 		<>
 			{!isMultiple ? <SingleComboBox /> : <MultipleComboBox />}
 			<Modal
-				classNames={{
-					wrapper: "h-[calc(100dvh - 2.5rem)] top-10 rounded-md",
-				}}
-				size="full"
 				isOpen={isOpen}
 				onClose={onClose}
+				classNames={{
+					wrapper: "h-[calc(100dvh - 2.5rem)] top-10 rounded-md scale-100",
+				}}
+				size="full"
 				// biome-ignore lint/complexity/noUselessFragments: <explanation>
 				closeButton={<></>}
 			>
