@@ -162,7 +162,7 @@ const Table = <T extends Record<string, any>>({
 							setPage(page);
 						}}
 						variant="light"
-						classNames={{ cursor: "font-bold" }}
+						classNames={{ OSCr: "font-bold" }}
 					/>
 				</div>
 
