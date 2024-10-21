@@ -1,7 +1,7 @@
 "use client";
 
-import Table from "@/app/components/table";
-import type { ColumnProps } from "@/app/components/table/types";
+import Table from "@/components/table";
+import type { ColumnProps } from "@/components/table/types";
 import { deleteData, getData, toastErrorsApi } from "@/lib/functions.api";
 import type { DeleteData } from "@/types/api";
 import {

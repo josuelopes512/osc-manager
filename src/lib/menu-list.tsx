@@ -53,7 +53,7 @@ export function getMenuList(pathname: string): Group[] {
 					icon: BsFillHousesFill,
 					submenus: [
 						{
-							href: "/chests",
+							href: "/oscs",
 							label: "Todas OSCs",
 							Icon: BsFillHousesFill,
 						},

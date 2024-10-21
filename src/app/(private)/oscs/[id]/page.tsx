@@ -12,64 +12,61 @@ import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import type { StudentFormProps } from "./types";
+
+import type { OSCFormProps } from "./types";
 
 import { Combobox } from "@/components/ui/combobox";
-import type { Course, Student } from "@prisma/client";
+import type { OSC, SocialPlatform } from "@prisma/client";
 
-const StudentEdit = () => {
+const OSCEdit = () => {
 	const { id } = useParams<{ id: string | "new" }>();
-	const { data: dataGetStudent, isLoading: loadingGet } = useQuery({
+
+	const { data: dataGetOSC, isLoading: loadingGet } = useQuery({
 		queryFn: ({ signal }) =>
-			getData<Student>({
-				url: "student",
+			getData<OSC>({
+				url: "osc",
 				id: Number.parseInt(id, 10),
 				signal,
-				query: "include.course=true",
 			}),
-		queryKey: ["student-get-by-id", id],
+		queryKey: ["osc-get-by-id", id],
 		enabled: id !== "new",
 	});
 
 	const { mutateAsync: mutatePost, isPending: loadingPost } = useMutation({
-		mutationFn: async (val: PostData<Student>) =>
-			postData<Student, Student>(val),
-		mutationKey: ["student-post"],
+		mutationFn: async (val: PostData<OSC>) => postData<OSC, OSC>(val),
+		mutationKey: ["osc-post"],
 	});
 
 	const { mutateAsync: mutatePut, isPending: loadingPut } = useMutation({
-		mutationFn: (val: PutData<Student>) => putData<Student, Student>(val),
-		mutationKey: ["student-put"],
+		mutationFn: (val: PutData<OSC>) => putData<OSC, OSC>(val),
+		mutationKey: ["osc-put"],
 	});
 
-	const { data: dataGetCourse, isLoading: loadingGetCourse } = useQuery({
-		queryFn: ({ signal }) =>
-			getData<Course[]>({
-				url: "course",
-				signal,
-			}),
-		queryKey: ["course-get"],
-		refetchOnMount: false,
-		refetchOnReconnect: false,
-	});
+	const { data: dataGetSocialPlatform, isLoading: loadingGetSocialPlatform } =
+		useQuery({
+			queryFn: ({ signal }) =>
+				getData<SocialPlatform[]>({
+					url: "socialPlatform",
+					signal,
+				}),
+			queryKey: ["socials-platforms-get"],
+			refetchOnMount: false,
+			refetchOnReconnect: false,
+		});
 
 	const { handleSubmit, setValue, control, reset, getValues } = useForm<
-		StudentFormProps,
-		"students"
+		OSCFormProps,
+		"oscs"
 	>();
 
-	const onSubmit = (data: StudentFormProps) => {
-		const parseData = {
-			...data,
-			courseId: Number(data.courseId),
-		};
+	const onSubmit = (data: OSCFormProps) => {
 		if (id === "new")
 			mutatePost({
-				url: "/student",
-				data: parseData,
+				url: "/osc",
+				data,
 			})
 				.then(() => {
-					toast.success("Aluno cadastrado com sucesso");
+					toast.success("OSC cadastrada com sucesso");
 					reset();
 				})
 				.catch((error: any) => {
@@ -77,12 +74,12 @@ const StudentEdit = () => {
 				});
 		else
 			mutatePut({
-				url: "/student",
-				data: parseData,
+				url: "/osc",
+				data,
 				id: Number.parseInt(id, 10),
 			})
 				.then(() => {
-					toast.success("Aluno atualizado com sucesso");
+					toast.success("OSC atualizada com sucesso");
 				})
 				.catch((err) => {
 					toastErrorsApi(err);
@@ -92,13 +89,10 @@ const StudentEdit = () => {
 	const loading = loadingGet || loadingPost || loadingPut;
 
 	useEffect(() => {
-		if (dataGetStudent && id !== "new") {
-			setValue("name", dataGetStudent.name);
-			setValue("semester", dataGetStudent.semester);
-			setValue("matriculation", dataGetStudent.matriculation);
-			setValue("courseId", String(dataGetStudent.courseId));
+		if (dataGetOSC && id !== "new") {
+			setValue("name", dataGetOSC.name);
 		}
-	}, [dataGetStudent, id, setValue]);
+	}, [dataGetOSC, id, setValue]);
 
 	return (
 		<form
@@ -130,45 +124,20 @@ const StudentEdit = () => {
 				)}
 			/>
 			<Controller
-				name="matriculation"
+				name="location"
 				control={control}
 				defaultValue=""
-				rules={{ required: "Campo obrigatório" }}
 				render={({ field, fieldState: { error } }) => (
 					<Skeleton className="rounded-md" isLoaded={!loading}>
 						<Input
-							label="Matrícula"
+							label="Endereço/Localização"
 							id={field.name}
 							type="text"
 							onChange={field.onChange}
 							name={field.name}
-							value={field.value}
+							value={field.value ?? ""}
 							variant="bordered"
 							color="primary"
-							isRequired
-							isInvalid={!!error}
-							errorMessage={error?.message}
-						/>
-					</Skeleton>
-				)}
-			/>
-			<Controller
-				name="semester"
-				control={control}
-				defaultValue=""
-				rules={{ required: "Campo obrigatório" }}
-				render={({ field, fieldState: { error } }) => (
-					<Skeleton className="rounded-md" isLoaded={!loading}>
-						<Input
-							label="Semestre"
-							id={field.name}
-							type="text"
-							onChange={field.onChange}
-							name={field.name}
-							value={field.value}
-							variant="bordered"
-							color="primary"
-							isRequired
 							isInvalid={!!error}
 							errorMessage={error?.message}
 						/>
@@ -178,21 +147,21 @@ const StudentEdit = () => {
 			<Controller
 				name="courseId"
 				control={control}
-				rules={{ required: "Campo obrigatório" }}
+				// rules={{ required: "Campo obrigatório" }}
 				render={({ field, fieldState: { error } }) => (
 					<Skeleton
 						className="h-14 rounded-md [&>div]:h-14"
-						isLoaded={!loadingGetCourse}
+						isLoaded={!loadingGetSocialPlatform}
 					>
 						<Combobox
 							id={field.name}
-							data={dataGetCourse ?? []}
+							data={dataGetSocialPlatform ?? []}
 							value={field.value}
 							onChange={field.onChange}
-							label="Curso"
+							label="Plataforma social"
 							filterKey={["name"]}
 							textValueKey="name"
-							isRequired
+							// isRequired
 							itemRenderer={(item) => (
 								<span className="font-bold">{item.name}</span>
 							)}
@@ -213,4 +182,4 @@ const StudentEdit = () => {
 	);
 };
 
-export default StudentEdit;
+export default OSCEdit;
