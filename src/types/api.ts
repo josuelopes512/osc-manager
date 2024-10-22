@@ -34,9 +34,3 @@ export interface DefaultAPI {
 	createdAt: string;
 	updateAt: string;
 }
-export interface PUTDefaultDTO {
-	id: number;
-}
-export interface DeleteDefaultDTO {
-	id: number;
-}

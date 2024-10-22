@@ -8,4 +8,10 @@ export const columnsOSCs: ColumnProps<OSC>[] = [
 		sortable: true,
 		filterable: true,
 	},
+	{
+		uid: "location",
+		label: "Localização",
+		sortable: true,
+		filterable: true,
+	},
 ];

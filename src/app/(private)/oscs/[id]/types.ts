@@ -1,5 +1,7 @@
-import type { OSC } from "@prisma/client";
+import type { OSC, OSCSocial } from "@prisma/client";
 
-export type OSCFormProps = Omit<OSC, "courseId"> & {
-	courseId: string;
+export type OSCFormProps = OSC & {
+	oscSocials: (Omit<Partial<OSCSocial>, "socialPlatformId"> & {
+		socialPlatformId?: string;
+	})[];
 };

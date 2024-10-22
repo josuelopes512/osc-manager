@@ -20,11 +20,11 @@ export async function POST(request: Request) {
 		const osc = await oscService.create({
 			data: {
 				...data,
-				// oscSocials: {
-				// 	createMany: {
-				// 		data: data.oscSocials,
-				// 	},
-				// },
+				oscSocials: {
+					createMany: {
+						data: data.oscSocials?.create,
+					},
+				},
 			},
 		});
 		return NextResponse.json(osc);

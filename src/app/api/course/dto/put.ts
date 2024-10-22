@@ -1,5 +1,3 @@
-import type { PUTDefaultDTO } from "@/types/api";
+import type { POSTCourseDTO } from "./post";
 
-export interface PUTCourseDTO extends PUTDefaultDTO {
-	name: string;
-}
+export interface PUTCourseDTO extends POSTCourseDTO {}

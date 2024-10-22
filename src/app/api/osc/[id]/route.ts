@@ -39,28 +39,38 @@ export async function GET(
 
 export async function PUT(
 	request: Request,
-	context: {
-		params: Params;
-	},
+	{ params }: { params: { id: string } },
 ) {
 	try {
-		const id = Number(context.params.id);
-
-		if (Number.isNaN(id))
-			return NextResponse.json(
-				{ msg: "Falha ao atualizar dados do OSC" },
-				{ status: 404 },
-			);
-
+		const id = Number(params.id);
 		const data = (await request.json()) as PUTOSCDTO;
+
 		const osc = await oscService.update({
-			data,
 			where: { id },
+			data: {
+				name: data.name,
+				location: data.location,
+				oscSocials: {
+					create: data.oscSocials?.create,
+					update: data.oscSocials?.update?.map((social) => ({
+						where: { id: social.id },
+						data: {
+							link: social.link,
+							socialPlatformId: social.socialPlatformId,
+						},
+					})),
+					deleteMany: data.oscSocials?.delete
+						? { id: { in: data.oscSocials.delete } }
+						: undefined,
+				},
+			},
 		});
+
 		return NextResponse.json(osc);
 	} catch (error) {
+		console.error(error);
 		return NextResponse.json(
-			{ msg: "Falha ao atualizar OSC", error },
+			{ error, msg: "Falha ao atualizar OSC" },
 			{ status: 500 },
 		);
 	}
@@ -78,6 +88,8 @@ export async function DELETE(
 		await oscService.deleteOne(id);
 		return NextResponse.json({ message: "OSC deletado com sucesso" });
 	} catch (error) {
+		console.log(error);
+
 		return NextResponse.json(
 			{ msg: "Falha ao deletar OSC", error },
 			{ status: 500 },
