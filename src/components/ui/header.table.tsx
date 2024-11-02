@@ -1,6 +1,6 @@
 "use client";
 
-import type { ColumnProps } from "@/app/components/table/types";
+import type { ColumnProps } from "@/components/table/types";
 import { useTableSearch } from "@/hooks/use-table-search";
 import { Button, Input, Tooltip } from "@nextui-org/react";
 import { useDebounce } from "use-debounce";

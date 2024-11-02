@@ -1,4 +1,4 @@
-import type { ColumnProps } from "@/app/components/table/types";
+import type { ColumnProps } from "@/components/table/types";
 import type { Course, Student } from "@prisma/client";
 
 export const columnsStudents: ColumnProps<Student & { course: Course }>[] = [

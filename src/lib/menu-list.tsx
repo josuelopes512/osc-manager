@@ -2,6 +2,7 @@ import GraduationCapPlus from "@/assets/icons/GraduationCapPlus";
 import { Image } from "@nextui-org/react";
 import { Bookmark, LayoutGrid, Plus, SquarePen, Users } from "lucide-react";
 import { BsFillHouseAddFill, BsFillHousesFill } from "react-icons/bs";
+import { FaUserCog } from "react-icons/fa";
 import {
 	FaGraduationCap,
 	FaSquare,
@@ -37,7 +38,7 @@ export function getMenuList(pathname: string): Group[] {
 			groupLabel: "",
 			menus: [
 				{
-					href: "/dashboard",
+					href: "/",
 					label: "Dashboard",
 					icon: MdSpaceDashboard,
 					submenus: [],
@@ -97,6 +98,16 @@ export function getMenuList(pathname: string): Group[] {
 							Icon: () => <GraduationCapPlus />,
 						},
 					],
+				},
+			],
+		},
+		{
+			groupLabel: "Usuários",
+			menus: [
+				{
+					href: "/aprovacaoUsuarios",
+					label: "Aprovar usuário",
+					icon: FaUserCog,
 				},
 			],
 		},

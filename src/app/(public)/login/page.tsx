@@ -1,14 +1,13 @@
 "use client";
-import { Button, Input } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import { useMutation } from "@tanstack/react-query";
 import React from "react";
 
 import type { FormLoginProps } from "@/app/(public)/login/types";
-import Loading from "@/app/components/loading";
-import { authOptions } from "@/auth.config";
+import Loading from "@/components/loading";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { FaGoogle } from "react-icons/fa";
 
 const Login = () => {

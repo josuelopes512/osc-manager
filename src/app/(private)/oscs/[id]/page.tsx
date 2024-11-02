@@ -1,10 +1,5 @@
 "use client";
-import {
-	getData,
-	postData,
-	putData,
-	toastErrorsApi,
-} from "@/lib/functions.api";
+import { postData, putData, toastErrorsApi } from "@/lib/functions.api";
 import type { PostData, PutData } from "@/types/api";
 import {
 	Button,
@@ -14,33 +9,26 @@ import {
 	Skeleton,
 	Tooltip,
 } from "@nextui-org/react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 import type { OSCFormProps } from "./types";
 
 import type { POSTOSCDTO } from "@/app/api/osc/dto/post";
-import { Combobox } from "@/components/ui/combobox";
-import type { OSC, OSCSocial, SocialPlatform } from "@prisma/client";
+import type { OSC } from "@prisma/client";
 import { FaTrash } from "react-icons/fa6";
+import { useOSCData } from "./hooks/useOSCData";
+import { useSocialPlatforms } from "./hooks/useSocialPlatforms";
 
 const OSCEdit = () => {
 	const { id } = useParams<{ id: string | "new" }>();
 
-	const { data: dataGetOSC, isLoading: loadingGet } = useQuery({
-		queryFn: ({ signal }) =>
-			getData<OSC & { oscSocials: OSCSocial[] }>({
-				url: "osc",
-				id: Number.parseInt(id, 10),
-				signal,
-				query: "include.oscSocials=true",
-			}),
-		queryKey: ["osc-get-by-id", id],
-		enabled: id !== "new",
-	});
+	const { dataGetOSC, loadingGet } = useOSCData(id);
+	const { dataGetSocialPlatform, loadingGetSocialPlatform } =
+		useSocialPlatforms();
 
 	const { mutateAsync: mutatePost, isPending: loadingPost } = useMutation({
 		mutationFn: async (val: PostData<POSTOSCDTO>) =>
@@ -52,18 +40,6 @@ const OSCEdit = () => {
 		mutationFn: (val: PutData<POSTOSCDTO>) => putData<OSC, POSTOSCDTO>(val),
 		mutationKey: ["osc-put"],
 	});
-
-	const { data: dataGetSocialPlatform, isLoading: loadingGetSocialPlatform } =
-		useQuery({
-			queryFn: ({ signal }) =>
-				getData<SocialPlatform[]>({
-					url: "socialPlatform",
-					signal,
-				}),
-			queryKey: ["socials-platforms-get"],
-			refetchOnMount: false,
-			refetchOnReconnect: false,
-		});
 
 	const { handleSubmit, setValue, control, reset, getValues } = useForm<
 		OSCFormProps,
@@ -79,71 +55,69 @@ const OSCEdit = () => {
 		name: "oscSocials",
 	});
 
-	const onSubmit = useCallback(
-		(data: OSCFormProps) => {
-			console.log(data);
+	const onSubmit = (data: OSCFormProps) => {
+		console.log(data);
 
-			const existingOscSocials = dataGetOSC?.oscSocials || [];
-			const newOscSocials = data.oscSocials.filter(
-				(a) => !a.id && a.socialPlatformId !== "",
-			);
-			const updatedOscSocials = data.oscSocials.filter((a) => a.id);
-			const deletedOscSocialIds = existingOscSocials
-				.filter(
-					(existing) =>
-						!data.oscSocials.some((current) => current.id === existing.id),
-				)
-				.map((deleted) => deleted.id);
+		const existingOscSocials = dataGetOSC?.oscSocials || [];
+		const newOscSocials = data.oscSocials.filter(
+			(a) => !a.id && a.socialPlatformId !== "",
+		);
+		const updatedOscSocials = data.oscSocials.filter((a) => a.id);
+		const deletedOscSocialIds = existingOscSocials
+			.filter(
+				(existing) =>
+					!data.oscSocials.some((current) => current.id === existing.id),
+			)
+			.map((deleted) => deleted.id);
 
-			const parseData = {
-				name: data.name,
-				location: data.location,
-				oscSocials: {
-					create: newOscSocials.map((a) => ({
-						socialPlatformId: Number(a.socialPlatformId),
-						link: a.link,
-					})),
-					update: updatedOscSocials.map((a) => ({
-						id: a.id,
-						socialPlatformId: Number(a.socialPlatformId),
-						link: a.link,
-					})),
-					delete: deletedOscSocialIds,
-				},
-			} as POSTOSCDTO & {
-				oscSocials: { create: any[]; update: any[]; delete: number[] };
-			};
+		const parseData = {
+			name: data.name,
+			location: data.location,
+			oscSocials: {
+				create: newOscSocials.map((a) => ({
+					socialPlatformId: Number(a.socialPlatformId),
+					link: a.link,
+				})),
+				update: updatedOscSocials.map((a) => ({
+					id: a.id,
+					socialPlatformId: Number(a.socialPlatformId),
+					link: a.link,
+				})),
+				delete: deletedOscSocialIds,
+			},
+		} as POSTOSCDTO & {
+			oscSocials: { create: any[]; update: any[]; delete: number[] };
+		};
 
-			if (id === "new") {
-				mutatePost({
-					url: "/osc",
-					data: parseData,
+		if (id === "new") {
+			mutatePost({
+				url: "/osc",
+				data: parseData,
+			})
+				.then(() => {
+					toast.success("OSC cadastrada com sucesso");
+					reset();
 				})
-					.then(() => {
-						toast.success("OSC cadastrada com sucesso");
-						reset();
-					})
-					.catch((error: any) => {
-						toastErrorsApi(error);
-					});
-			} else {
-				mutatePut({
-					url: "/osc",
-					data: parseData,
-					id: Number.parseInt(id, 10),
+				.catch((error: any) => {
+					toastErrorsApi(error);
+				});
+		} else {
+			mutatePut({
+				url: "/osc",
+				data: parseData,
+				id: Number.parseInt(id, 10),
+			})
+				.then(() => {
+					toast.success("OSC atualizada com sucesso");
 				})
-					.then(() => {
-						toast.success("OSC atualizada com sucesso");
-					})
-					.catch((err) => {
-						toastErrorsApi(err);
-					});
-			}
-		},
-		[dataGetOSC, id, mutatePost, mutatePut, reset],
-	);
+				.catch((err) => {
+					toastErrorsApi(err);
+				});
+		}
+	};
 
-	const loading = loadingGet || loadingPost || loadingPut;
+	const loading =
+		loadingGet || loadingPost || loadingPut || loadingGetSocialPlatform;
 
 	useEffect(() => {
 		if (dataGetOSC && id !== "new") {

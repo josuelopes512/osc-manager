@@ -1,4 +1,4 @@
-import type { ColumnProps } from "@/app/components/table/types";
+import type { ColumnProps } from "@/components/table/types";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 

@@ -1,4 +1,4 @@
-import Loading from "@/app/components/loading";
+import Loading from "@/components/loading";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 

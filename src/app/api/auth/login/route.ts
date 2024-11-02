@@ -3,6 +3,7 @@ import type { Account as AccountPrisma, User } from "@prisma/client";
 import type { Account } from "next-auth";
 import { NextResponse } from "next/server";
 import { userService } from "../../user/service";
+import { userApprovalService } from "../../userApproval/service";
 
 export async function POST(req: Request) {
 	try {
@@ -16,6 +17,19 @@ export async function POST(req: Request) {
 
 		let user: User | null = null;
 		let acc: AccountPrisma | null = null;
+
+		const alreadyHasAccount = await accountService.find({});
+		const alreadyHasUser = await userService.find({});
+
+		if (alreadyHasAccount.length > 0 || alreadyHasUser.length > 0) {
+			const userApproval = await userApprovalService.create({
+				data: {
+					email: accountBody.userData.email,
+					name: accountBody.userData.name ?? "",
+				},
+			});
+			return NextResponse.json(userApproval, { status: 200 });
+		}
 
 		const account = await accountService.findOne({
 			where: {
