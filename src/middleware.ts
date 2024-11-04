@@ -80,8 +80,8 @@ export default withAuth(middleware, {
 		authorized: async ({ req, token }) => {
 			// console.log('Authorized:', req.nextUrl.pathname)
 			const path = req.nextUrl.pathname;
-			const isPublicApiRoute = matchRoute(path, PUBLIC_API_ROUTES);
-			return !(!token && !isPublicApiRoute);
+			const isPublicRoute = matchRoute(path, PUBLIC_ROUTES);
+			return !(!token && !isPublicRoute);
 		},
 	},
 	pages: {

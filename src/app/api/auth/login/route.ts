@@ -9,8 +9,6 @@ export async function POST(req: Request) {
 	try {
 		const accountBody = (await req.json()) as Account;
 
-		const { ref } = accountBody;
-
 		if (!accountBody.userData?.email) {
 			return NextResponse.json({ msg: "Email is required" }, { status: 401 });
 		}
@@ -20,16 +18,6 @@ export async function POST(req: Request) {
 
 		const alreadyHasAccount = await accountService.find({});
 		const alreadyHasUser = await userService.find({});
-
-		if (alreadyHasAccount.length > 0 || alreadyHasUser.length > 0) {
-			const userApproval = await userApprovalService.create({
-				data: {
-					email: accountBody.userData.email,
-					name: accountBody.userData.name ?? "",
-				},
-			});
-			return NextResponse.json(userApproval, { status: 200 });
-		}
 
 		const account = await accountService.findOne({
 			where: {
@@ -41,6 +29,22 @@ export async function POST(req: Request) {
 		});
 
 		if (!account) {
+			if (alreadyHasAccount.length > 0 || alreadyHasUser.length > 0) {
+				const userApproval = await userApprovalService.upsert({
+					where: {
+						email: accountBody.userData.email,
+					},
+					create: {
+						email: accountBody.userData.email,
+						name: accountBody.userData.name,
+					},
+					update: {
+						email: accountBody.userData.email,
+						name: accountBody.userData.name,
+					},
+				});
+				return NextResponse.json(userApproval, { status: 403 });
+			}
 			acc = await accountService.create({
 				data: {
 					type: accountBody.type,

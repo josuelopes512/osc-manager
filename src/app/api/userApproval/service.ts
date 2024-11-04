@@ -32,6 +32,14 @@ async function updateMany(
 	return prisma.userApproval.updateMany(args);
 }
 
+async function upsert({
+	where,
+	create,
+	update,
+}: Prisma.UserApprovalUpsertArgs): Promise<UserApproval> {
+	return prisma.userApproval.upsert({ where, create, update });
+}
+
 export const deleteOne = async (id: number) => {
 	return prisma.userApproval.delete({ where: { id } });
 };
@@ -42,5 +50,6 @@ export const userApprovalService = {
 	find,
 	update,
 	updateMany,
+	upsert,
 	deleteOne,
 };

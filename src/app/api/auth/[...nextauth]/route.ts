@@ -18,7 +18,7 @@ async function handler(req: any, res: NextApiResponse) {
 				} catch (error: any) {
 					console.error("signIn", error);
 					if (error?.response.status === 403) {
-						return "/account-blocked";
+						return "/aguardandoAprovacao";
 					}
 					return false;
 				}
