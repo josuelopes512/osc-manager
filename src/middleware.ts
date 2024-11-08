@@ -21,8 +21,7 @@ async function middleware(req: NextRequest) {
 		cookies["next-auth.session-token"] ||
 		cookies["__Secure-next-auth.session-token"];
 
-	const absoluteURL = new URL("/", req.nextUrl.origin);
-
+	const absoluteURL = new URL("/dashboard", req.nextUrl.origin);
 	// Handle maintenance mode
 	if (process.env.MAINTENANCE === "true") {
 		const maintenanceURL = new URL("/maintenance", req.nextUrl.origin);

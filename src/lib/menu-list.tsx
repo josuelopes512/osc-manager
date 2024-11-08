@@ -35,17 +35,6 @@ type Group = {
 export function getMenuList(pathname: string): Group[] {
 	return [
 		{
-			groupLabel: "",
-			menus: [
-				{
-					href: "/",
-					label: "Dashboard",
-					icon: MdSpaceDashboard,
-					submenus: [],
-				},
-			],
-		},
-		{
 			groupLabel: "Gerenciamento",
 			menus: [
 				{

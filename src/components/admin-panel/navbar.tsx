@@ -1,6 +1,6 @@
+import { ModeToggle } from "@/components/admin-panel/mode-toggle";
 import { SheetMenu } from "@/components/admin-panel/sheet-menu";
 import { UserNav } from "@/components/admin-panel/user-nav";
-import { ModeToggle } from "@/components/mode-toggle";
 
 export function Navbar() {
 	return (
