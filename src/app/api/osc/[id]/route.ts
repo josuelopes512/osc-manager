@@ -68,7 +68,6 @@ export async function PUT(
 
 		return NextResponse.json(osc);
 	} catch (error) {
-		console.error(error);
 		return NextResponse.json(
 			{ error, msg: "Falha ao atualizar OSC" },
 			{ status: 500 },
@@ -88,8 +87,6 @@ export async function DELETE(
 		await oscService.deleteOne(id);
 		return NextResponse.json({ message: "OSC deletado com sucesso" });
 	} catch (error) {
-		console.log(error);
-
 		return NextResponse.json(
 			{ msg: "Falha ao deletar OSC", error },
 			{ status: 500 },

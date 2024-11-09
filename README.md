@@ -1,36 +1,143 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Gerenciador de OSC
 
-## Getting Started
+Este é um projeto [Next.js](https://nextjs.org) para gerenciamento de projetos de OSCs, visualização de dashboards e muito mais.
 
-First, run the development server:
+## Funcionalidades
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Dashboards Interativos
+- Colaboração em Tempo Real
+- Análises Avançadas
+- Relatórios Personalizados
+- Desempenho Rápido
+- Segurança de Nível Empresarial
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tecnologias Utilizadas
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- [Next.js](https://nextjs.org)
+- [React](https://reactjs.org)
+- [Tailwind CSS](https://tailwindcss.com)
+- [Prisma](https://www.prisma.io)
+- [NextUI](https://nextui.org)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Começando
 
-## Learn More
+### Pré-requisitos
 
-To learn more about Next.js, take a look at the following resources:
+Certifique-se de ter o Node.js instalado em sua máquina. Você pode baixá-lo [aqui](https://nodejs.org/).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Instalação
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Clone o repositório:
 
-## Deploy on Vercel
+  ```bash
+  git clone https://github.com/levigleik/osc-manager.git
+  cd osc-manager
+  ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. Instale as dependências
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+#### Usando npm
+  ```bash
+  npm install
+  ```
+
+#### Usando yarn
+  ```bash
+  yarn install
+  ```
+
+#### Usando bun
+  ```bash
+  bun install
+  ```
+
+### Configure as variáveis de ambiente
+
+Crie um arquivo `.env` na raiz do projeto e adicione suas variáveis de ambiente. Você pode usar o arquivo `.env.example` como referência.
+
+  ```bash
+  cp .env.example .env
+  ```
+
+## Executando o Projeto
+
+Para executar o projeto em um ambiente de desenvolvimento, use um dos comandos abaixo:
+
+#### Usando npm
+  ```bash
+  npm run dev
+  ```
+
+#### Usando yarn
+  ```bash
+  yarn dev
+  ```
+
+#### Usando bun
+  ```bash
+  bun dev
+  ```
+
+Abra [http://localhost:3005](http://localhost:3005) no seu navegador para ver o resultado.
+
+## Executando em Produção
+
+Para executar o projeto em um ambiente de produção, use os comandos abaixo:
+
+### Build do projeto
+
+#### Usando npm
+  ```bash
+  npm run build
+  ```
+
+#### Usando yarn
+  ```bash
+  yarn build
+  ```
+
+#### Usando bun
+  ```bash
+  bun build
+  ```
+
+### Iniciar o servidor
+
+#### Usando npm
+  ```bash
+  npm start
+  ```
+
+#### Usando yarn
+  ```bash
+  yarn start
+  ```
+
+#### Usando bun
+  ```bash
+  bun start
+  ```
+
+Abra [http://localhost:3000](http://localhost:3000) no seu navegador para ver o resultado.
+
+## Prisma
+
+Para executar o Prisma Studio, use os comandos abaixo:
+
+### Ambiente de desenvolvimento
+  ```bash
+  npm run prisma_studio:dev
+  ```
+
+### Ambiente de produção
+  ```bash
+  npm run prisma_studio:prod
+  ```
+
+## Contribuindo
+
+Contribuições são bem-vindas! Sinta-se à vontade para abrir uma issue ou enviar um pull request.
+
+## Licença
+
+Este projeto está licenciado sob a Licença MIT. Veja o arquivo `LICENSE` para mais detalhes.

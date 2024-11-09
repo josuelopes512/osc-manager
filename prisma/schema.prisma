@@ -117,9 +117,10 @@ model VerificationToken {
 }
 
 model UserApproval {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  name     String?
+  approved Boolean @default(false)
 
   @@map("user_approvals")
 }

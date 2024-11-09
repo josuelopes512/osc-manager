@@ -56,8 +56,6 @@ const OSCEdit = () => {
 	});
 
 	const onSubmit = (data: OSCFormProps) => {
-		console.log(data);
-
 		const existingOscSocials = dataGetOSC?.oscSocials || [];
 		const newOscSocials = data.oscSocials.filter(
 			(a) => !a.id && a.socialPlatformId !== "",

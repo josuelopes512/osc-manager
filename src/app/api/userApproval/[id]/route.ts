@@ -52,9 +52,11 @@ export async function PUT(
 				{ status: 404 },
 			);
 
-		const data = (await request.json()) as PUTUserApprovalDTO;
+		// const data = (await request.json()) as PUTUserApprovalDTO;
 		const userApproval = await userApprovalService.update({
-			data,
+			data: {
+				approved: true,
+			},
 			where: { id },
 		});
 		return NextResponse.json(userApproval);

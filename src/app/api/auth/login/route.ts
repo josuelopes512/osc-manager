@@ -13,11 +13,31 @@ export async function POST(req: Request) {
 			return NextResponse.json({ msg: "Email is required" }, { status: 401 });
 		}
 
-		let user: User | null = null;
-		let acc: AccountPrisma | null = null;
+		const existingUsers = await userService.find({});
+		const isFirstUser = existingUsers.length === 0;
 
-		const alreadyHasAccount = await accountService.find({});
-		const alreadyHasUser = await userService.find({});
+		if (!isFirstUser) {
+			const userApproval = await userApprovalService.findOne({
+				where: { email: accountBody.userData.email },
+			});
+
+			if (!userApproval) {
+				await userApprovalService.create({
+					data: {
+						email: accountBody.userData.email,
+						name: accountBody.userData.name,
+					},
+				});
+				return NextResponse.json(
+					{ msg: "User approval required" },
+					{ status: 403 },
+				);
+			}
+
+			if (userApproval.approved === false) {
+				return NextResponse.json({ msg: "User not approved" }, { status: 403 });
+			}
+		}
 
 		const account = await accountService.findOne({
 			where: {
@@ -28,23 +48,10 @@ export async function POST(req: Request) {
 			},
 		});
 
+		let user: User | null = null;
+		let acc: AccountPrisma | null = null;
+
 		if (!account) {
-			if (alreadyHasAccount.length > 0 || alreadyHasUser.length > 0) {
-				const userApproval = await userApprovalService.upsert({
-					where: {
-						email: accountBody.userData.email,
-					},
-					create: {
-						email: accountBody.userData.email,
-						name: accountBody.userData.name,
-					},
-					update: {
-						email: accountBody.userData.email,
-						name: accountBody.userData.name,
-					},
-				});
-				return NextResponse.json(userApproval, { status: 403 });
-			}
 			acc = await accountService.create({
 				data: {
 					type: accountBody.type,
@@ -69,9 +76,9 @@ export async function POST(req: Request) {
 				},
 			});
 
-			user = (await userService.findOne({
+			user = await userService.findOne({
 				where: { id: acc.userId },
-			})) as User;
+			});
 		} else {
 			await accountService.update({
 				where: { id: account.id },
@@ -106,7 +113,7 @@ export async function POST(req: Request) {
 		if (user?.blocked) {
 			return NextResponse.json(
 				{ error: "User is blocked, contact support" },
-				{ status: 403 }, // 403 Forbidden
+				{ status: 403 },
 			);
 		}
 

@@ -29,7 +29,6 @@ export async function POST(request: Request) {
 		});
 		return NextResponse.json(osc);
 	} catch (error) {
-		console.log(error);
 		return NextResponse.json(
 			{ error, msg: "Falha ao criar OSC" },
 			{ status: 500 },

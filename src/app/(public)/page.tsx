@@ -13,7 +13,6 @@ import {
 export default function LandingPage() {
 	return (
 		<div className="flex flex-col min-h-screen">
-			{/* Seção Hero */}
 			<header className="bg-gradient-to-r from-purple-700 to-indigo-800 text-white">
 				<div className="container mx-auto px-6 py-16 text-center">
 					<h1 className="text-4xl md:text-6xl font-bold mb-4">
@@ -26,6 +25,8 @@ export default function LandingPage() {
 						<Button
 							size="lg"
 							className="bg-white text-purple-700 hover:bg-gray-100"
+							as={Link}
+							href="/dashboard"
 						>
 							Acessar sistema
 						</Button>

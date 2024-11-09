@@ -1,3 +1,3 @@
 export interface PUTUserApprovalDTO {
-	email: string;
+	approved: boolean;
 }

@@ -1,9 +1,15 @@
 "use client";
 
+import type { PUTUserApprovalDTO } from "@/app/api/userApproval/dto/put";
 import Table from "@/components/table";
 import type { ColumnProps } from "@/components/table/types";
-import { deleteData, getData, toastErrorsApi } from "@/lib/functions.api";
-import type { DeleteData } from "@/types/api";
+import {
+	deleteData,
+	getData,
+	putData,
+	toastErrorsApi,
+} from "@/lib/functions.api";
+import type { PutData } from "@/types/api";
 import {
 	Button,
 	Modal,
@@ -14,11 +20,10 @@ import {
 	Tooltip,
 	useDisclosure,
 } from "@nextui-org/react";
-import type { Course, UserApproval } from "@prisma/client";
+import type { UserApproval } from "@prisma/client";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { FaPencilAlt, FaTrash } from "react-icons/fa";
+import { FaCheck } from "react-icons/fa6";
 import { toast } from "react-toastify";
 import { columnsUserApprovals } from "./constants";
 
@@ -29,27 +34,29 @@ export default function UserApprovalList() {
 			getData<UserApproval[]>({
 				url: "/userApproval",
 				signal,
+				query: "where.approved=false",
 			}),
 	});
 
-	const { mutateAsync: mutateDelete, isPending: loadingDelete } = useMutation({
-		mutationFn: async (val: DeleteData) => deleteData(val),
-		mutationKey: ["user-approval-delete"],
+	const { mutateAsync: mutatePut, isPending: loadingPut } = useMutation({
+		mutationFn: async (val: PutData<PUTUserApprovalDTO>) => putData(val),
+		mutationKey: ["user-approval-put"],
 	});
 
-	const router = useRouter();
-
-	const [itemDelete, setItemDelete] = useState<number>();
+	const [idUserApproval, setIdUserApproval] = useState<number>();
 
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-	const deleteItem = (id: number) => {
-		mutateDelete({
+	const aproveUser = (id: number) => {
+		mutatePut({
 			url: "/userApproval",
-			id: id,
+			id,
+			data: {
+				approved: true,
+			},
 		})
 			.then(() => {
-				toast.success("Aluno deletado com sucesso");
+				toast.success("Usuário aprovado com sucesso");
 				void refetch();
 			})
 			.catch((err) => {
@@ -64,27 +71,17 @@ export default function UserApprovalList() {
 			label: "Ações",
 			renderCell: (item) => (
 				<div className="relative flex cursor-pointer items-center justify-end gap-5">
-					<Tooltip content="Editar" placement="bottom-end" color="secondary">
+					<Tooltip content="Aprovar" placement="bottom-end" color="success">
 						<Button
 							isIconOnly
-							color="primary"
-							className="rounded-full"
-							onClick={() => router.push(`aprovacaoUsuarios/${item.id}`)}
-						>
-							<FaPencilAlt size={20} />
-						</Button>
-					</Tooltip>
-					<Tooltip content="Deletar" placement="bottom-end" color="danger">
-						<Button
-							isIconOnly
-							color="danger"
+							color="success"
 							className="rounded-full"
 							onClick={() => {
-								setItemDelete(item.id);
+								setIdUserApproval(item.id);
 								onOpen();
 							}}
 						>
-							<FaTrash size={20} />
+							<FaCheck size={20} />
 						</Button>
 					</Tooltip>
 				</div>
@@ -92,7 +89,7 @@ export default function UserApprovalList() {
 		},
 	];
 
-	const loading = isLoading || loadingDelete;
+	const loading = isLoading || loadingPut;
 
 	return (
 		<>
@@ -109,11 +106,11 @@ export default function UserApprovalList() {
 					{(onClose) => (
 						<>
 							<ModalHeader className="mt-4 flex flex-col gap-1">
-								Tem certeza que deseja deletar o usuário?
+								Tem certeza que deseja aprovar o usuário?
 							</ModalHeader>
 							<ModalBody>
 								<div className={"flex flex-col gap-2 text-default-600"}>
-									Você está prestes a deletar o usuário, deseja continuar?
+									Você está prestes a aprovar o usuário, deseja continuar?
 								</div>
 							</ModalBody>
 							<ModalFooter>
@@ -123,8 +120,8 @@ export default function UserApprovalList() {
 								<Button
 									color="primary"
 									onPress={() => {
-										if (!itemDelete) return;
-										deleteItem(itemDelete);
+										if (!idUserApproval) return;
+										aproveUser(idUserApproval);
 										onClose();
 									}}
 								>

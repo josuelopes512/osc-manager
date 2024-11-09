@@ -16,7 +16,6 @@ async function handler(req: any, res: NextApiResponse) {
 					}
 					return true;
 				} catch (error: any) {
-					console.error("signIn", error);
 					if (error?.response.status === 403) {
 						return "/aguardandoAprovacao";
 					}
