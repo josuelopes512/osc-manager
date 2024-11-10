@@ -1,5 +1,4 @@
 import { getQuery } from "@/lib/query";
-import type { DeleteDefaultDTO } from "@/types/api";
 import { type NextRequest, NextResponse } from "next/server";
 import type { PUTSocialPlatformDTO } from "../dto/put";
 import { socialPlatformService } from "../service";
