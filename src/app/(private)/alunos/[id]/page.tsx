@@ -94,7 +94,6 @@ const StudentEdit = () => {
 	useEffect(() => {
 		if (dataGetStudent && id !== "new") {
 			setValue("name", dataGetStudent.name);
-			setValue("semester", dataGetStudent.semester);
 			setValue("matriculation", dataGetStudent.matriculation);
 			setValue("courseId", String(dataGetStudent.courseId));
 		}
@@ -133,7 +132,6 @@ const StudentEdit = () => {
 				name="matriculation"
 				control={control}
 				defaultValue=""
-				rules={{ required: "Campo obrigatório" }}
 				render={({ field, fieldState: { error } }) => (
 					<Skeleton className="rounded-md" isLoaded={!loading}>
 						<Input
@@ -142,17 +140,16 @@ const StudentEdit = () => {
 							type="text"
 							onChange={field.onChange}
 							name={field.name}
-							value={field.value}
+							value={field.value ?? ""}
 							variant="bordered"
 							color="primary"
-							isRequired
 							isInvalid={!!error}
 							errorMessage={error?.message}
 						/>
 					</Skeleton>
 				)}
 			/>
-			<Controller
+			{/* <Controller
 				name="semester"
 				control={control}
 				defaultValue=""
@@ -202,7 +199,7 @@ const StudentEdit = () => {
 						/>
 					</Skeleton>
 				)}
-			/>
+			/> */}
 			<Controller
 				name="courseId"
 				control={control}
@@ -230,8 +227,7 @@ const StudentEdit = () => {
 			/>
 			<Button
 				type="submit"
-				variant="flat"
-				color="primary"
+				variant="ghost"
 				className="w-fit"
 				isDisabled={loading}
 			>

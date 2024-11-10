@@ -2,7 +2,7 @@ import GraduationCapPlus from "@/assets/icons/GraduationCapPlus";
 import { Image } from "@nextui-org/react";
 import { Bookmark, LayoutGrid, Plus, SquarePen, Users } from "lucide-react";
 import { BsFillHouseAddFill, BsFillHousesFill } from "react-icons/bs";
-import { FaUserCog } from "react-icons/fa";
+import { FaTasks, FaUserCog } from "react-icons/fa";
 import {
 	FaGraduationCap,
 	FaSquare,
@@ -10,7 +10,7 @@ import {
 	FaUsers,
 } from "react-icons/fa6";
 import type { IconType } from "react-icons/lib";
-import { MdSpaceDashboard } from "react-icons/md";
+import { MdOutlineAddTask, MdSpaceDashboard, MdTaskAlt } from "react-icons/md";
 
 export type Submenu = {
 	href: string;
@@ -35,8 +35,36 @@ type Group = {
 export function getMenuList(pathname: string): Group[] {
 	return [
 		{
+			groupLabel: "",
+			menus: [
+				{
+					href: "/dashboard",
+					label: "Dashboard",
+					icon: MdSpaceDashboard,
+					submenus: [],
+				},
+			],
+		},
+		{
 			groupLabel: "Gerenciamento",
 			menus: [
+				{
+					href: "",
+					label: "Projetos",
+					icon: MdTaskAlt,
+					submenus: [
+						{
+							href: "/projetos",
+							label: "Todos prjetos",
+							Icon: MdTaskAlt,
+						},
+						{
+							href: "/projetos/new",
+							label: "Adicionar prjeto",
+							Icon: MdOutlineAddTask,
+						},
+					],
+				},
 				{
 					href: "",
 					label: "OSCS",

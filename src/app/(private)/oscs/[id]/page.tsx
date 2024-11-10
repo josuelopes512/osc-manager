@@ -286,8 +286,7 @@ const OSCEdit = () => {
 			</Button>
 			<Button
 				type="submit"
-				variant="flat"
-				color="primary"
+				variant="ghost"
 				className="w-fit"
 				isDisabled={loading}
 			>

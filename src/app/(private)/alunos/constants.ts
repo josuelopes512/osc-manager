@@ -9,10 +9,10 @@ export const columnsStudents: ColumnProps<Student & { course: Course }>[] = [
 		filterable: true,
 	},
 	{
-		uid: "semester",
-		label: "Semestre",
+		uid: "matriculation",
+		label: "Matrícula",
 		filterable: true,
-		renderCell: (row) => row.semester ?? "-",
+		renderCell: (row) => row.matriculation ?? "-",
 	},
 	{
 		uid: "course.name" as any,

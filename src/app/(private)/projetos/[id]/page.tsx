@@ -13,14 +13,14 @@ import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
-import type { Course } from "@prisma/client";
+import type { Project } from "@prisma/client";
 
-const CourseEdit = () => {
+const ProjectEdit = () => {
 	const { id } = useParams<{ id: string | "new" }>();
 
-	const { data: dataGetCourse, isLoading: loadingGet } = useQuery({
+	const { data: dataGetProject, isLoading: loadingGet } = useQuery({
 		queryFn: ({ signal }) =>
-			getData<Course>({
+			getData<Project>({
 				url: "course",
 				id: Number.parseInt(id, 10),
 				signal,
@@ -30,21 +30,22 @@ const CourseEdit = () => {
 	});
 
 	const { mutateAsync: mutatePost, isPending: loadingPost } = useMutation({
-		mutationFn: async (val: PostData<Course>) => postData<Course, Course>(val),
+		mutationFn: async (val: PostData<Project>) =>
+			postData<Project, Project>(val),
 		mutationKey: ["course-post"],
 	});
 
 	const { mutateAsync: mutatePut, isPending: loadingPut } = useMutation({
-		mutationFn: (val: PutData<Course>) => putData<Course, Course>(val),
+		mutationFn: (val: PutData<Project>) => putData<Project, Project>(val),
 		mutationKey: ["course-put"],
 	});
 
 	const { handleSubmit, setValue, control, reset, getValues } = useForm<
-		Course,
+		Project,
 		"courses"
 	>();
 
-	const onSubmit = (data: Course) => {
+	const onSubmit = (data: Project) => {
 		if (id === "new")
 			mutatePost({
 				url: "/course",
@@ -74,10 +75,10 @@ const CourseEdit = () => {
 	const loading = loadingGet || loadingPost || loadingPut;
 
 	useEffect(() => {
-		if (dataGetCourse && id !== "new") {
-			setValue("name", dataGetCourse.name);
+		if (dataGetProject && id !== "new") {
+			setValue("name", dataGetProject.name);
 		}
-	}, [dataGetCourse, id, setValue]);
+	}, [dataGetProject, id, setValue]);
 
 	return (
 		<form
@@ -120,4 +121,4 @@ const CourseEdit = () => {
 	);
 };
 
-export default CourseEdit;
+export default ProjectEdit;
