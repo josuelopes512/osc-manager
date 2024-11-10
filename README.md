@@ -132,6 +132,7 @@ Para executar o Prisma Studio, use os comandos abaixo:
 ### Ambiente de produção
   ```bash
   npm run prisma_studio:prod
+  npm i; npx prisma migrate dev; npx prisma generate; npm run seed
   ```
 
 ## Contribuindo
