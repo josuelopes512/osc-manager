@@ -15,7 +15,7 @@ import { MdOutlineAddTask, MdSpaceDashboard, MdTaskAlt } from "react-icons/md";
 export type Submenu = {
 	href: string;
 	label: string;
-	Icon: React.ReactNode | IconType;
+	Icon: any;
 	active?: boolean;
 };
 
@@ -23,7 +23,7 @@ type Menu = {
 	href: string;
 	label: string;
 	active?: boolean;
-	icon: React.ReactNode | IconType;
+	icon: any;
 	submenus?: Submenu[];
 };
 
