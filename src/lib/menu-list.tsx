@@ -55,12 +55,12 @@ export function getMenuList(pathname: string): Group[] {
 					submenus: [
 						{
 							href: "/projetos",
-							label: "Todos prjetos",
+							label: "Todos projetos",
 							Icon: MdTaskAlt,
 						},
 						{
 							href: "/projetos/new",
-							label: "Adicionar prjeto",
+							label: "Adicionar projeto",
 							Icon: MdOutlineAddTask,
 						},
 					],
