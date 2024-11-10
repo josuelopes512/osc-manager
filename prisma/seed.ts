@@ -75,11 +75,29 @@ async function seedCourses() {
 	console.log("Courses seeded.");
 }
 
+async function seedUsers() {
+	console.log("Seeding users...");
+	await prisma.user.createMany({
+		data: [
+			{
+				name: "Levi Gleik",
+				email: "leviacedo1@gmail.com",
+			},
+			{
+				name: "Josué Lopes",
+				email: "cmastercode77@gmail.com",
+			},
+		],
+	});
+	console.log("Users seeded.");
+}
+
 async function seed() {
 	try {
 		console.log("Starting the seeding process...");
 		await seedSocials(); // Call the new function to seed social media platforms
 		await seedCourses();
+		await seedUsers();
 	} catch (e) {
 		console.error(e);
 		process.exit(1);

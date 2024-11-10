@@ -13,31 +13,26 @@ export async function POST(req: Request) {
 			return NextResponse.json({ msg: "Email is required" }, { status: 401 });
 		}
 
-		const existingUsers = await userService.find({});
-		const isFirstUser = existingUsers.length === 0;
+		// const userApproval = await userApprovalService.findOne({
+		// 	where: { email: accountBody.userData.email },
+		// });
 
-		if (!isFirstUser) {
-			const userApproval = await userApprovalService.findOne({
-				where: { email: accountBody.userData.email },
-			});
+		// if (!userApproval) {
+		// 	await userApprovalService.create({
+		// 		data: {
+		// 			email: accountBody.userData.email,
+		// 			name: accountBody.userData.name,
+		// 		},
+		// 	});
+		// 	return NextResponse.json(
+		// 		{ msg: "User approval required" },
+		// 		{ status: 403 },
+		// 	);
+		// }
 
-			if (!userApproval) {
-				await userApprovalService.create({
-					data: {
-						email: accountBody.userData.email,
-						name: accountBody.userData.name,
-					},
-				});
-				return NextResponse.json(
-					{ msg: "User approval required" },
-					{ status: 403 },
-				);
-			}
-
-			if (userApproval.approved === false) {
-				return NextResponse.json({ msg: "User not approved" }, { status: 403 });
-			}
-		}
+		// if (userApproval.approved === false) {
+		// 	return NextResponse.json({ msg: "User not approved" }, { status: 403 });
+		// }
 
 		const account = await accountService.findOne({
 			where: {
