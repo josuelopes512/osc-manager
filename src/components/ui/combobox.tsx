@@ -42,6 +42,8 @@ interface ComboboxProps<T extends object> {
 	labelChipRenderer?: (item: T) => React.ReactNode;
 	isRequired?: boolean;
 	isMultiple?: boolean;
+	isInvalid?: boolean;
+	errorMessage?: string;
 }
 
 export function Combobox<T extends object>({
@@ -56,6 +58,8 @@ export function Combobox<T extends object>({
 	labelChipRenderer: LabelChipRenderer,
 	isRequired = false,
 	isMultiple = false,
+	isInvalid = false,
+	errorMessage,
 	id,
 }: ComboboxProps<T>) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
@@ -96,6 +100,12 @@ export function Combobox<T extends object>({
 
 	const [selectedKeys, setSelectedKeys] = React.useState<Set<string>>();
 
+	useEffect(() => {
+		if (isMultiple && !value) {
+			setSelectedKeys(new Set());
+		}
+	}, [value, isMultiple]);
+
 	const Items = () => (
 		<Listbox
 			items={items ?? []}
@@ -121,6 +131,9 @@ export function Combobox<T extends object>({
 				<ListboxItem
 					key={String(item[idKey])}
 					textValue={String(item[textValueKey])}
+					classNames={{
+						base: 'data-[selected="true"]:bg-default',
+					}}
 				>
 					{ItemRenderer(item)}
 				</ListboxItem>
@@ -153,6 +166,8 @@ export function Combobox<T extends object>({
 			name={id}
 			label={label}
 			isRequired={isRequired}
+			isInvalid={isInvalid}
+			errorMessage={errorMessage}
 			isReadOnly
 			onInput={() => onOpen()}
 			onFocus={() => onOpen()}
@@ -199,6 +214,8 @@ export function Combobox<T extends object>({
 				id={id}
 				name={id}
 				isRequired={isRequired}
+				isInvalid={isInvalid}
+				errorMessage={errorMessage}
 				renderValue={(items) => {
 					return (
 						<div className="flex flex-wrap gap-2">
@@ -246,8 +263,14 @@ export function Combobox<T extends object>({
 	);
 
 	const selectAllItems = () => {
-		setSelectedKeys(new Set(filteredData.map((a) => String(a[idKey]))));
-		onChange(filteredData.map((a) => String(a[idKey])));
+		const allSelected = filteredData.length === selectedKeys?.size;
+		if (allSelected) {
+			setSelectedKeys(new Set());
+			onChange([]);
+		} else {
+			setSelectedKeys(new Set(filteredData.map((a) => String(a[idKey]))));
+			onChange(filteredData.map((a) => String(a[idKey])));
+		}
 	};
 
 	useEffect(() => {
@@ -303,7 +326,6 @@ export function Combobox<T extends object>({
 									<Tooltip
 										content="Selecionar todos"
 										placement="bottom-end"
-										className="text-white"
 										color="primary"
 									>
 										<Button
