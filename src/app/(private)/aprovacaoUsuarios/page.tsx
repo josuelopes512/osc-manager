@@ -1,6 +1,6 @@
 "use client";
 
-import type { PUTUserApprovalDTO } from "@/app/api/(private)/user/approval/dto/put";
+import type { PUTUserApprovalDTO } from "@/app/api/user/approval/dto/put";
 import Table from "@/components/table";
 import type { ColumnProps } from "@/components/table/types";
 import {
