@@ -22,18 +22,24 @@ async function middleware(req: NextRequest) {
 		cookies["__Secure-next-auth.session-token"];
 
 	const absoluteURL = new URL("/dashboard", req.nextUrl.origin);
+
+	// check if user is approved
+
 	// Handle maintenance mode
 	if (process.env.MAINTENANCE === "true") {
 		const maintenanceURL = new URL("/maintenance", req.nextUrl.origin);
 		return NextResponse.redirect(maintenanceURL.toString());
 	}
 
-	// Check if the request is an API route
 	if (req.nextUrl.pathname.startsWith("/api")) {
 		const isPublicApiRoute = matchRoute(
 			req.nextUrl.pathname,
 			PUBLIC_API_ROUTES,
 		);
+
+		console.log("route", req.nextUrl.pathname);
+
+		console.log("isPublicApiRoute", isPublicApiRoute);
 
 		// If the API route is not public and there's no valid session token, redirect to login
 		if (!isPublicApiRoute && !signed) {
@@ -77,10 +83,14 @@ async function middleware(req: NextRequest) {
 export default withAuth(middleware, {
 	callbacks: {
 		authorized: async ({ req, token }) => {
-			// console.log('Authorized:', req.nextUrl.pathname)
 			const path = req.nextUrl.pathname;
-			const isPublicRoute = matchRoute(path, PUBLIC_ROUTES);
-			return !(!token && !isPublicRoute);
+			if (!path.startsWith("/api")) {
+				console.log("Authorized:", req.nextUrl.pathname);
+				const isPublicRoute = matchRoute(path, PUBLIC_ROUTES);
+				console.log("isPublicRoute", isPublicRoute);
+				return !(!token && !isPublicRoute);
+			}
+			return true;
 		},
 	},
 	pages: {
