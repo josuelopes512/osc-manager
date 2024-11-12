@@ -14,6 +14,16 @@ const generateFakeProject = async (count: number) => {
 					name: faker.company.name(),
 				},
 			},
+			osc: {
+				create: {
+					name: faker.company.name(),
+				},
+			},
+			semester: {
+				create: {
+					name: faker.date.month(),
+				},
+			},
 		};
 		await prisma.project.create({
 			data: fakeData,
