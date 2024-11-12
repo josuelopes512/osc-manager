@@ -12,7 +12,7 @@
 		"prisma_studio:prod": "dotenv -e .env.production -- prisma studio",
 		"run-fakers": "npx tsx scripts/run-fakers.ts",
 		"prepare": "husky",
-		"prepush": "npm run build"
+		"prepush": "git diff HEAD --quiet && npm run build"
 	},
 	"dependencies": {
 		"@auth/prisma-adapter": "^2.7.0",
