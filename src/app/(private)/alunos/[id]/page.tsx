@@ -16,6 +16,7 @@ import type { StudentFormProps } from "./types";
 
 import { Combobox } from "@/components/ui/combobox";
 import type { Course, Student } from "@prisma/client";
+import { withMask } from "use-mask-input";
 
 const StudentEdit = () => {
 	const { id } = useParams<{ id: string | "new" }>();
@@ -95,6 +96,8 @@ const StudentEdit = () => {
 		if (dataGetStudent && id !== "new") {
 			setValue("name", dataGetStudent.name);
 			setValue("matriculation", dataGetStudent.matriculation);
+			setValue("email", dataGetStudent.email);
+			setValue("whatsapp", dataGetStudent.whatsapp);
 			setValue("courseId", String(dataGetStudent.courseId));
 		}
 	}, [dataGetStudent, id, setValue]);
@@ -129,6 +132,33 @@ const StudentEdit = () => {
 				)}
 			/>
 			<Controller
+				name="courseId"
+				control={control}
+				rules={{ required: "Campo obrigatório" }}
+				render={({ field, fieldState: { error } }) => (
+					<Skeleton
+						className="min-h-14 rounded-md [&>div]:min-h-14"
+						isLoaded={!loadingGetCourse}
+					>
+						<Combobox
+							id={field.name}
+							data={dataGetCourse ?? []}
+							value={field.value}
+							onChange={field.onChange}
+							label="Curso"
+							filterKey={["name"]}
+							textValueKey="name"
+							isRequired
+							isInvalid={!!error}
+							errorMessage={error?.message}
+							itemRenderer={(item) => (
+								<span className="font-bold">{item.name}</span>
+							)}
+						/>
+					</Skeleton>
+				)}
+			/>
+			<Controller
 				name="matriculation"
 				control={control}
 				defaultValue=""
@@ -136,6 +166,58 @@ const StudentEdit = () => {
 					<Skeleton className="rounded-md" isLoaded={!loading}>
 						<Input
 							label="Matrícula"
+							id={field.name}
+							type="text"
+							onChange={field.onChange}
+							name={field.name}
+							value={field.value ?? ""}
+							maxLength={7}
+							variant="bordered"
+							color="primary"
+							isInvalid={!!error}
+							errorMessage={error?.message}
+						/>
+					</Skeleton>
+				)}
+			/>
+			<Controller
+				name="whatsapp"
+				control={control}
+				defaultValue=""
+				render={({ field, fieldState: { error } }) => (
+					<Skeleton className="rounded-md" isLoaded={!loading}>
+						<Input
+							label="Whatsapp"
+							id={field.name}
+							type="text"
+							ref={withMask("(99) 99999-9999")}
+							onChange={field.onChange}
+							name={field.name}
+							value={field.value ?? ""}
+							variant="bordered"
+							color="primary"
+							isInvalid={!!error}
+							errorMessage={error?.message}
+						/>
+					</Skeleton>
+				)}
+			/>
+
+			<Controller
+				name="email"
+				control={control}
+				defaultValue=""
+				rules={{
+					required: "Campo obrigatório",
+					pattern: {
+						value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+						message: "Email inválido",
+					},
+				}}
+				render={({ field, fieldState: { error, invalid } }) => (
+					<Skeleton className="rounded-md" isLoaded={!loading}>
+						<Input
+							label="Email"
 							id={field.name}
 							type="text"
 							onChange={field.onChange}
@@ -149,6 +231,7 @@ const StudentEdit = () => {
 					</Skeleton>
 				)}
 			/>
+
 			{/* <Controller
 				name="semester"
 				control={control}
@@ -200,31 +283,6 @@ const StudentEdit = () => {
 					</Skeleton>
 				)}
 			/> */}
-			<Controller
-				name="courseId"
-				control={control}
-				rules={{ required: "Campo obrigatório" }}
-				render={({ field, fieldState: { error } }) => (
-					<Skeleton
-						className="h-14 rounded-md [&>div]:h-14"
-						isLoaded={!loadingGetCourse}
-					>
-						<Combobox
-							id={field.name}
-							data={dataGetCourse ?? []}
-							value={field.value}
-							onChange={field.onChange}
-							label="Curso"
-							filterKey={["name"]}
-							textValueKey="name"
-							isRequired
-							itemRenderer={(item) => (
-								<span className="font-bold">{item.name}</span>
-							)}
-						/>
-					</Skeleton>
-				)}
-			/>
 			<Button
 				type="submit"
 				variant="ghost"

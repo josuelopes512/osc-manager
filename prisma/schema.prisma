@@ -69,8 +69,10 @@ model OSC {
 model Student {
   id            Int     @id @default(autoincrement())
   name          String
-  courseId      Int
   matriculation String? @unique
+  email         String? @unique
+  whatsapp      String?
+  courseId      Int
   oscId         Int?
   projectId     Int?
 
@@ -86,7 +88,7 @@ model Student {
 
 model Semester {
   id   Int    @id @default(autoincrement())
-  name String
+  name String @unique
 
   projects Project[]
 
@@ -109,15 +111,16 @@ model Course {
 }
 
 model Project {
-  id          Int    @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   name        String
-  description String
-  link        String
+  description String?
+  link        String?
   oscId       Int
+  semesterId  Int
 
-  students  Student[]
-  osc       OSC        @relation(fields: [oscId], references: [id])
-  semesters Semester[]
+  osc      OSC       @relation(fields: [oscId], references: [id])
+  semester Semester  @relation(fields: [semesterId], references: [id])
+  students Student[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()

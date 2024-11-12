@@ -55,6 +55,7 @@ const Table = <T extends Record<string, any>>({
 			Array.from(visibleColumns).includes(column.uid),
 		);
 	}, [columns, visibleColumns]);
+
 	const filteredItems = useMemo(() => {
 		if (!data?.length) return [];
 		let filteredData = [...data];
@@ -79,14 +80,23 @@ const Table = <T extends Record<string, any>>({
 			setPage(1);
 		}
 
-		return filteredData.sort((a, b) => {
-			const first = a[sortDescriptor.column];
-			const second = b[sortDescriptor.column];
-			const cmp = first < second ? -1 : first > second ? 1 : 0;
+		if (sortDescriptor.column) {
+			const column = columns.find(
+				(column) => column.uid === sortDescriptor.column,
+			);
+			if (column) {
+				filteredData = filteredData.sort((a, b) => {
+					const first = a[sortDescriptor.column];
+					const second = b[sortDescriptor.column];
+					const cmp = first < second ? -1 : first > second ? 1 : 0;
 
-			return sortDescriptor.direction === "descending" ? -cmp : cmp;
-		});
-	}, [data, filterColumns, search, hasSearchFilter, sortDescriptor]);
+					return sortDescriptor.direction === "descending" ? -cmp : cmp;
+				});
+			}
+		}
+
+		return filteredData;
+	}, [data, filterColumns, search, hasSearchFilter, sortDescriptor, columns]);
 
 	const pages = Math.ceil(filteredItems.length / rowsPerPageTable);
 

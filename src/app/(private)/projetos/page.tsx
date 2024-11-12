@@ -3,6 +3,7 @@
 import Table from "@/components/table";
 import type { ColumnProps } from "@/components/table/types";
 import { deleteData, getData, toastErrorsApi } from "@/lib/functions.api";
+import { capitalize } from "@/lib/utils";
 import type { DeleteData } from "@/types/api";
 import {
 	Button,
@@ -14,7 +15,7 @@ import {
 	Tooltip,
 	useDisclosure,
 } from "@nextui-org/react";
-import type { Project } from "@prisma/client";
+import type { OSC, Project, Semester } from "@prisma/client";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -24,18 +25,23 @@ import { columnsProjects } from "./constants";
 
 export default function ProjectList() {
 	const { data, isLoading, refetch } = useQuery({
-		queryKey: ["course-get"],
+		queryKey: ["project-get"],
 		queryFn: ({ signal }) =>
-			getData<Project[]>({
-				url: "/course",
+			getData<(Project & { semester: Semester; osc: OSC })[]>({
+				url: "/project",
 				signal,
-				query: "include.course=true&&include.osc=true",
+				query: "include.semester=true&&include.osc=true&orderBy.name=asc",
 			}),
+		select: (data) =>
+			data.map((item) => ({
+				...item,
+				name: capitalize(item.name),
+			})),
 	});
 
 	const { mutateAsync: mutateDelete, isPending: loadingDelete } = useMutation({
 		mutationFn: async (val: DeleteData) => deleteData(val),
-		mutationKey: ["course-delete"],
+		mutationKey: ["project-delete"],
 	});
 
 	const router = useRouter();
@@ -46,11 +52,11 @@ export default function ProjectList() {
 
 	const deleteItem = (id: number) => {
 		mutateDelete({
-			url: "/course",
+			url: "/project",
 			id: id,
 		})
 			.then(() => {
-				toast.success("Curso deletado com sucesso");
+				toast.success("Projeto deletado com sucesso");
 				void refetch();
 			})
 			.catch((err) => {
@@ -58,7 +64,9 @@ export default function ProjectList() {
 			});
 	};
 
-	const finalColumns: ColumnProps<Project>[] = [
+	const finalColumns: ColumnProps<
+		Project & { semester: Semester; osc: OSC }
+	>[] = [
 		...columnsProjects,
 		{
 			uid: "actions",

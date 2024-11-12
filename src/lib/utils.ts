@@ -12,3 +12,7 @@ export const columnsFilterable = <T extends Record<string, any>>(
 		.filter((column) => column.filterable)
 		.map((column) => ({ uid: column.uid, label: column.label }));
 };
+
+export const capitalize = (str: string) => {
+	return str.charAt(0).toUpperCase() + str.slice(1);
+};
