@@ -78,6 +78,7 @@ export default function StudentList() {
 					<Tooltip content="Deletar" placement="bottom-end" color="danger">
 						<Button
 							isIconOnly
+							title="Deletar"
 							color="danger"
 							className="rounded-full"
 							onClick={() => {

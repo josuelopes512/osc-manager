@@ -6,7 +6,7 @@ import {
 	toastErrorsApi,
 } from "@/lib/functions.api";
 import type { PostData, PutData } from "@/types/api";
-import { Button, Input, Skeleton } from "@nextui-org/react";
+import { Button, Input, Select, SelectItem, Skeleton } from "@nextui-org/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
@@ -16,7 +16,6 @@ import type { StudentFormProps } from "./types";
 
 import { Combobox } from "@/components/ui/combobox";
 import type { Course, Student } from "@prisma/client";
-import { withMask } from "use-mask-input";
 
 const StudentEdit = () => {
 	const { id } = useParams<{ id: string | "new" }>();
@@ -54,7 +53,7 @@ const StudentEdit = () => {
 		refetchOnReconnect: false,
 	});
 
-	const { handleSubmit, setValue, control, reset, getValues } = useForm<
+	const { handleSubmit, setValue, control, reset, register } = useForm<
 		StudentFormProps,
 		"students"
 	>();
@@ -64,7 +63,9 @@ const StudentEdit = () => {
 			...data,
 			courseId: Number(data.courseId),
 		};
-		if (id === "new")
+		if (id === "new") {
+			console.log("Submitting new student:", parseData); // Debug statement
+
 			mutatePost({
 				url: "/student",
 				data: parseData,
@@ -76,7 +77,7 @@ const StudentEdit = () => {
 				.catch((error: any) => {
 					toastErrorsApi(error);
 				});
-		else
+		} else
 			mutatePut({
 				url: "/student",
 				data: parseData,
@@ -136,25 +137,29 @@ const StudentEdit = () => {
 				control={control}
 				rules={{ required: "Campo obrigatório" }}
 				render={({ field, fieldState: { error } }) => (
-					<Skeleton
-						className="min-h-14 rounded-md [&>div]:min-h-14"
-						isLoaded={!loadingGetCourse}
-					>
-						<Combobox
-							id={field.name}
-							data={dataGetCourse ?? []}
-							value={field.value}
-							onChange={field.onChange}
+					<Skeleton className="rounded-md" isLoaded={!loadingGetCourse}>
+						<Select
+							items={dataGetCourse ?? []}
 							label="Curso"
-							filterKey={["name"]}
-							textValueKey="name"
-							isRequired
+							id={field.name}
+							onChange={field.onChange}
+							name={field.name}
+							selectedKeys={field.value ? [field.value] : new Set([])}
+							variant="bordered"
+							color="primary"
 							isInvalid={!!error}
+							isRequired
 							errorMessage={error?.message}
-							itemRenderer={(item) => (
-								<span className="font-bold">{item.name}</span>
+							classNames={{
+								value: "text-foreground",
+							}}
+						>
+							{(course) => (
+								<SelectItem key={course.id} value={course.id}>
+									{course.name}
+								</SelectItem>
 							)}
-						/>
+						</Select>
 					</Skeleton>
 				)}
 			/>
@@ -190,8 +195,16 @@ const StudentEdit = () => {
 							label="Whatsapp"
 							id={field.name}
 							type="text"
-							ref={withMask("(99) 99999-9999")}
-							onChange={field.onChange}
+							placeholder=""
+							onChange={(e) => {
+								const value = e.target.value.replace(/\D/g, "");
+								const formattedValue = value.replace(
+									/(\d{2})(\d{5})(\d{4})/,
+									"($1) $2-$3",
+								);
+								field.onChange(formattedValue);
+							}}
+							maxLength={15}
 							name={field.name}
 							value={field.value ?? ""}
 							variant="bordered"
@@ -208,7 +221,6 @@ const StudentEdit = () => {
 				control={control}
 				defaultValue=""
 				rules={{
-					required: "Campo obrigatório",
 					pattern: {
 						value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
 						message: "Email inválido",
@@ -231,58 +243,6 @@ const StudentEdit = () => {
 					</Skeleton>
 				)}
 			/>
-
-			{/* <Controller
-				name="semester"
-				control={control}
-				defaultValue=""
-				rules={{
-					required: "Campo obrigatório",
-					validate: (val) => {
-						const regex = /^(?:\d{1,4})(?:\.(?:[1-2])?)?$/;
-						if (!regex.test(val)) {
-							return "Formato inválido. Use até 4 dígitos, opcionalmente seguidos por um ponto e 1 ou 2.";
-						}
-						const [year, semester] = val.split(".");
-						if (
-							Number(year) < 1900 ||
-							Number(year) > new Date().getFullYear()
-						) {
-							return "Ano inválido";
-						}
-						if (semester && (Number(semester) < 1 || Number(semester) > 2)) {
-							return "Semestre deve ser 1 ou 2";
-						}
-						return true;
-					},
-				}}
-				render={({ field, fieldState: { error } }) => (
-					<Skeleton className="rounded-md" isLoaded={!loading}>
-						<Input
-							label="Semestre"
-							id={field.name}
-							type="text"
-							onChange={(e) => {
-								let value = e.target.value.replace(/\D/g, "");
-								if (value.length > 4) {
-									value = `${value.slice(0, 4)}.${value.slice(4, 5)}`;
-								}
-								const regex = /^(?:\d{0,4})(?:\.(?:[1-2])?)?$/;
-								if (regex.test(value)) {
-									field.onChange(value);
-								}
-							}}
-							name={field.name}
-							value={field.value}
-							variant="bordered"
-							color="primary"
-							isRequired
-							isInvalid={!!error}
-							errorMessage={error?.message}
-						/>
-					</Skeleton>
-				)}
-			/> */}
 			<Button
 				type="submit"
 				variant="ghost"

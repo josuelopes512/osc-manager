@@ -52,8 +52,8 @@ export default function CheckStatus() {
 					</p>
 					<Button
 						type="submit"
-						variant="ghost"
-						className="w-fit mt-8"
+						variant="faded"
+						className="w-fit mt-8 "
 						color="danger"
 						as={Link}
 						href="/"
