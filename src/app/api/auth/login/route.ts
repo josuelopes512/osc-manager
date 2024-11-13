@@ -1,9 +1,9 @@
 import { accountService } from "@/app/api/account/service";
+import { userService } from "@/app/api/user/service";
 import type { Account as AccountPrisma, User } from "@prisma/client";
 import type { Account } from "next-auth";
 import { NextResponse } from "next/server";
-import { userService } from "../../user/service";
-import { userApprovalService } from "../../userApproval/service";
+// import { userApprovalService } from "../../userApproval/service";
 
 export async function POST(req: Request) {
 	try {
@@ -43,7 +43,6 @@ export async function POST(req: Request) {
 			},
 		});
 
-		let user: User | null = null;
 		let acc: AccountPrisma | null = null;
 
 		if (!account) {
@@ -70,12 +69,8 @@ export async function POST(req: Request) {
 					},
 				},
 			});
-
-			user = await userService.findOne({
-				where: { id: acc.userId },
-			});
 		} else {
-			await accountService.update({
+			acc = await accountService.update({
 				where: { id: account.id },
 				data: {
 					type: accountBody.type,
@@ -100,16 +95,16 @@ export async function POST(req: Request) {
 				},
 			});
 		}
-
-		user = await userService.findOne({
-			where: { id: (account ?? acc)?.userId },
+		const user = await userService.findOne({
+			where: { id: acc?.userId },
 		});
 
-		if (user?.blocked) {
-			return NextResponse.json(
-				{ error: "User is blocked, contact support" },
-				{ status: 403 },
-			);
+		if (!user) {
+			return NextResponse.json({ msg: "User not found" }, { status: 404 });
+		}
+
+		if (user.approved === false) {
+			return NextResponse.json({ msg: "User not approved" }, { status: 403 });
 		}
 
 		return NextResponse.json(user, { status: 200 });

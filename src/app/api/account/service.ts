@@ -1,5 +1,5 @@
-import { prisma } from "@/app/api/prisma/prisma.config";
 import type { Account, Prisma } from "@prisma/client";
+import { prisma } from "../prisma/prisma.config";
 
 async function findOne(
 	args: Prisma.AccountFindUniqueArgs,

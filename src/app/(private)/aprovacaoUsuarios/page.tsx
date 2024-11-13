@@ -1,6 +1,6 @@
 "use client";
 
-import type { PUTUserApprovalDTO } from "@/app/api/userApproval/dto/put";
+import type { PUTUserApprovalDTO } from "@/app/api/user/approval/dto/put";
 import Table from "@/components/table";
 import type { ColumnProps } from "@/components/table/types";
 import {
@@ -20,7 +20,7 @@ import {
 	Tooltip,
 	useDisclosure,
 } from "@nextui-org/react";
-import type { UserApproval } from "@prisma/client";
+import type { User } from "@prisma/client";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { FaCheck } from "react-icons/fa6";
@@ -29,10 +29,10 @@ import { columnsUserApprovals } from "./constants";
 
 export default function UserApprovalList() {
 	const { data, isLoading, refetch } = useQuery({
-		queryKey: ["userApproval-get"],
+		queryKey: ["user-get"],
 		queryFn: ({ signal }) =>
-			getData<UserApproval[]>({
-				url: "/userApproval",
+			getData<User[]>({
+				url: "/user",
 				signal,
 				query: "where.approved=false",
 			}),
@@ -49,7 +49,7 @@ export default function UserApprovalList() {
 
 	const aproveUser = (id: number) => {
 		mutatePut({
-			url: "/userApproval",
+			url: "/user/approval",
 			id,
 			data: {
 				approved: true,
@@ -64,7 +64,7 @@ export default function UserApprovalList() {
 			});
 	};
 
-	const finalColumns: ColumnProps<UserApproval>[] = [
+	const finalColumns: ColumnProps<User>[] = [
 		...columnsUserApprovals,
 		{
 			uid: "actions",

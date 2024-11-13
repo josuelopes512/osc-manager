@@ -8,6 +8,12 @@ async function handler(req: any, res: NextApiResponse) {
 		...authOptions,
 		callbacks: {
 			...authOptions.callbacks,
+			session: async ({ session, token }) => {
+				session.userData = token.userData;
+				session.expiresIn = token.expiresIn;
+				session.idToken = token.idToken;
+				return session;
+			},
 			signIn: async ({ user, account, profile }) => {
 				try {
 					if (account) {
@@ -17,7 +23,7 @@ async function handler(req: any, res: NextApiResponse) {
 					return true;
 				} catch (error: any) {
 					if (error?.response.status === 403) {
-						return "/aguardandoAprovacao";
+						return `/aguardandoAprovacao?email=${user.email}`;
 					}
 					return false;
 				}

@@ -6,12 +6,28 @@ const generateFakeProject = async (count: number) => {
 	for (let i = 0; i < count; i++) {
 		const fakeData = {
 			name: faker.person.fullName(),
-			email: faker.internet.email(),
-			whatsapp: faker.phone.number(),
-			matriculation: String(faker.number.int({ min: 1000000, max: 9999999 })),
-			course: {
+			students: {
+				createMany: {
+					data: [
+						{
+							name: faker.person.fullName(),
+							courseId: 1,
+						},
+						{
+							name: faker.person.fullName(),
+							courseId: 2,
+						},
+					],
+				},
+			},
+			osc: {
 				create: {
 					name: faker.company.name(),
+				},
+			},
+			semester: {
+				create: {
+					name: faker.date.month(),
 				},
 			},
 		};

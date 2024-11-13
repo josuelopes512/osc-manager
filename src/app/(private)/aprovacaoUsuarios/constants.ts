@@ -1,7 +1,7 @@
 import type { ColumnProps } from "@/components/table/types";
-import type { Course, UserApproval } from "@prisma/client";
+import type { User } from "@prisma/client";
 
-export const columnsUserApprovals: ColumnProps<UserApproval>[] = [
+export const columnsUserApprovals: ColumnProps<User>[] = [
 	{
 		uid: "name",
 		label: "Nome",

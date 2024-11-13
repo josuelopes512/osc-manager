@@ -13,7 +13,7 @@ model User {
   email         String    @unique
   image         String?
   emailVerified Boolean?  @default(false)
-  blocked       Boolean   @default(false)
+  approved      Boolean   @default(false)
   accounts      Account[]
   sessions      Session[]
 
@@ -166,16 +166,4 @@ model VerificationToken {
 
   @@unique([identifier, token])
   @@map("verificationtokens")
-}
-
-model UserApproval {
-  id       Int     @id @default(autoincrement())
-  email    String  @unique
-  name     String?
-  approved Boolean @default(false)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
-
-  @@map("user_approvals")
 }
