@@ -211,38 +211,37 @@ const ProjectEdit = () => {
 					</Skeleton>
 				)}
 			/>
-			{dataGetSemester && (
-				<Controller
-					name="semesterId"
-					control={control}
-					rules={{ required: "Campo obrigatório" }}
-					render={({ field, fieldState: { error } }) => (
-						<Skeleton className="rounded-md" isLoaded={!loadingGetSemester}>
-							<Select
-								label="Semestre"
-								id={field.name}
-								onChange={field.onChange}
-								name={field.name}
-								selectedKeys={field.value ? [field.value] : new Set([])}
-								variant="bordered"
-								color="primary"
-								isInvalid={!!error}
-								isRequired
-								errorMessage={error?.message}
-								classNames={{
-									value: "text-foreground",
-								}}
-							>
-								{dataGetSemester?.map((a) => (
-									<SelectItem key={a.id} value={a.id}>
-										{a.name}
-									</SelectItem>
-								))}
-							</Select>
-						</Skeleton>
-					)}
-				/>
-			)}
+			<Controller
+				name="semesterId"
+				control={control}
+				rules={{ required: "Campo obrigatório" }}
+				render={({ field, fieldState: { error } }) => (
+					<Skeleton className="rounded-md" isLoaded={!loadingGetSemester}>
+						<Select
+							items={dataGetSemester ?? []}
+							label="Semestre"
+							id={field.name}
+							onChange={field.onChange}
+							name={field.name}
+							selectedKeys={field.value ? [field.value] : new Set([])}
+							variant="bordered"
+							color="primary"
+							isInvalid={!!error}
+							isRequired
+							errorMessage={error?.message}
+							classNames={{
+								value: "text-foreground",
+							}}
+						>
+							{(semester) => (
+								<SelectItem key={semester.id} value={semester.id}>
+									{semester.name}
+								</SelectItem>
+							)}
+						</Select>
+					</Skeleton>
+				)}
+			/>
 
 			<Controller
 				name="studentIds"

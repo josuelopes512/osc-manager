@@ -19,13 +19,8 @@ import {
 	Tooltip,
 	useDisclosure,
 } from "@nextui-org/react";
-import React, {
-	useCallback,
-	useEffect,
-	useMemo,
-	useState,
-	useRef,
-} from "react";
+import type React from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import { FaListCheck } from "react-icons/fa6";
 
@@ -98,7 +93,7 @@ export function Combobox<T extends object>({
 		return filteredData.slice(start, end);
 	}, [page, filteredData, rowsPerPage]);
 
-	const [selectedKeys, setSelectedKeys] = React.useState<Set<string>>();
+	const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set());
 
 	useEffect(() => {
 		if (isMultiple && !value) {
@@ -118,7 +113,6 @@ export function Combobox<T extends object>({
 						}
 					: undefined
 			}
-			// disallowEmptySelection
 			emptyContent={`Nenhum ${label.toLowerCase()} encontrado`}
 			selectionMode={isMultiple ? "multiple" : "none"}
 			selectedKeys={selectedKeys}
@@ -172,7 +166,6 @@ export function Combobox<T extends object>({
 			onInput={() => onOpen()}
 			onFocus={() => onOpen()}
 			endContent={
-				// button isIconOnly with clear icon and function to clear the input
 				!value ? null : (
 					<Button
 						size="sm"
@@ -189,14 +182,12 @@ export function Combobox<T extends object>({
 			}
 		/>
 	);
+
 	const MultipleComboBox = () => (
 		<>
 			<Select
 				label={label}
-				onSelectionChange={(value) =>
-					// nothing to do here
-					console.log(value)
-				}
+				onSelectionChange={(value) => console.log(value)}
 				selectedKeys={selectedKeys}
 				variant="bordered"
 				color="primary"
@@ -207,51 +198,46 @@ export function Combobox<T extends object>({
 				items={items}
 				selectionMode="multiple"
 				isMultiline={Array.from(selectedKeys ?? []).length > 0}
-				onOpenChange={() => {
-					//do nothing
-					onOpen();
-				}}
+				onOpenChange={() => onOpen()}
 				id={id}
 				name={id}
 				isRequired={isRequired}
 				isInvalid={isInvalid}
 				errorMessage={errorMessage}
-				renderValue={(items) => {
-					return (
-						<div className="flex flex-wrap gap-2">
-							{Array.from(selectedKeys ?? []).map((item: string) => (
-								<div key={item}>
-									<Chip
-										isCloseable
-										onClose={() => {
-											setSelectedKeys((prev) => {
-												if (!prev) return new Set();
-												prev.delete(item);
-												return new Set(prev);
-											});
-										}}
-									>
-										{LabelChipRenderer
-											? LabelChipRenderer(
-													data.find(
-														(a) =>
-															String(a[idKey]).toLowerCase() ===
-															item.toString().toLowerCase(),
-													) ?? data[0],
-												)
-											: String(
-													data.find(
-														(a) =>
-															String(a[idKey]).toLowerCase() ===
-															item.toString().toLowerCase(),
-													)?.[textValueKey],
-												)}
-									</Chip>
-								</div>
-							))}
-						</div>
-					);
-				}}
+				renderValue={(items) => (
+					<div className="flex flex-wrap gap-2">
+						{Array.from(selectedKeys ?? []).map((item: string) => (
+							<div key={item}>
+								<Chip
+									isCloseable
+									onClose={() => {
+										setSelectedKeys((prev) => {
+											if (!prev) return new Set();
+											prev.delete(item);
+											return new Set(prev);
+										});
+									}}
+								>
+									{LabelChipRenderer
+										? LabelChipRenderer(
+												data.find(
+													(a) =>
+														String(a[idKey]).toLowerCase() ===
+														item.toString().toLowerCase(),
+												) ?? data[0],
+											)
+										: String(
+												data.find(
+													(a) =>
+														String(a[idKey]).toLowerCase() ===
+														item.toString().toLowerCase(),
+												)?.[textValueKey],
+											)}
+								</Chip>
+							</div>
+						))}
+					</div>
+				)}
 			>
 				{(item) => (
 					<SelectItem key={String(item[idKey])} className="capitalize">
