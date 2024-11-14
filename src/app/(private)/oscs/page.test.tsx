@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import "@testing-library/jest-dom";
 import React from "react";
 import { toast } from "react-toastify";
-import StudentList from "./page";
+import OSCList from "./page";
 
 // Mock dependencies
 jest.mock("@/lib/functions.api");
@@ -21,11 +21,9 @@ jest.mock("react-toastify", () => ({
 
 const queryClient = new QueryClient();
 
-describe("StudentList", () => {
+describe("OSCList", () => {
 	beforeEach(() => {
-		(getData as jest.Mock).mockResolvedValue([
-			{ id: 1, name: "Student 1", course: { name: "Course 1" } },
-		]);
+		(getData as jest.Mock).mockResolvedValue([{ id: 1, name: "OSC 1" }]);
 		(useRouter as jest.Mock).mockReturnValue({ push: jest.fn() });
 	});
 
@@ -36,12 +34,12 @@ describe("StudentList", () => {
 	it("renders the table with data", async () => {
 		render(
 			<QueryClientProvider client={queryClient}>
-				<StudentList />
+				<OSCList />
 			</QueryClientProvider>,
 		);
 
 		await waitFor(() => {
-			expect(screen.getByText("Student 1")).toBeInTheDocument();
+			expect(screen.getByText("OSC 1")).toBeInTheDocument();
 		});
 	});
 
@@ -51,67 +49,70 @@ describe("StudentList", () => {
 
 		render(
 			<QueryClientProvider client={queryClient}>
-				<StudentList />
+				<OSCList />
 			</QueryClientProvider>,
 		);
 
 		await waitFor(() => {
-			expect(screen.getByText("Student 1")).toBeInTheDocument();
+			expect(screen.getByText("OSC 1")).toBeInTheDocument();
 		});
 
 		fireEvent.click(screen.getByTitle("Editar"));
 
 		await waitFor(() => {
-			expect(push).toHaveBeenCalledWith("alunos/1");
+			expect(push).toHaveBeenCalledWith("oscs/1");
 		});
 	});
 
 	it("opens the delete modal when delete button is clicked", async () => {
 		render(
 			<QueryClientProvider client={queryClient}>
-				<StudentList />
+				<OSCList />
 			</QueryClientProvider>,
 		);
 
 		await waitFor(() => {
-			expect(screen.getByText("Student 1")).toBeInTheDocument();
+			expect(screen.getByText("OSC 1")).toBeInTheDocument();
 		});
 
 		fireEvent.click(screen.getByTitle("Deletar"));
 
 		await waitFor(() => {
 			expect(
-				screen.getByText("Tem certeza que deseja deletar o aluno?"),
+				screen.getByText("Tem certeza que deseja deletar a OSC?"),
 			).toBeInTheDocument();
 		});
 	});
 
-	it("deletes the student when confirm button is clicked", async () => {
+	it("deletes the osc when confirm button is clicked", async () => {
 		(deleteData as jest.Mock).mockResolvedValue({});
 
 		render(
 			<QueryClientProvider client={queryClient}>
-				<StudentList />
+				<OSCList />
 			</QueryClientProvider>,
 		);
 
 		await waitFor(() => {
-			expect(screen.getByText("Student 1")).toBeInTheDocument();
+			expect(screen.getByText("OSC 1")).toBeInTheDocument();
 		});
 
 		fireEvent.click(screen.getByTitle("Deletar"));
 
 		await waitFor(() => {
 			expect(
-				screen.getByText("Tem certeza que deseja deletar o aluno?"),
+				screen.getByText("Tem certeza que deseja deletar a OSC?"),
 			).toBeInTheDocument();
 		});
 
 		fireEvent.click(screen.getByText("Sim"));
 
 		await waitFor(() => {
-			expect(deleteData).toHaveBeenCalledWith({ url: "/student", id: 1 });
-			expect(toast.success).toHaveBeenCalledWith("Aluno deletado com sucesso");
+			expect(deleteData).toHaveBeenCalledWith({
+				url: "/osc",
+				id: 1,
+			});
+			expect(toast.success).toHaveBeenCalledWith("OSC deletada com sucesso");
 		});
 	});
 });

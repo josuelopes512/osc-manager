@@ -79,6 +79,7 @@ export default function ProjectList() {
 							color="primary"
 							className="rounded-full"
 							onClick={() => router.push(`cursos/${item.id}`)}
+							title="Editar"
 						>
 							<FaPencilAlt size={20} />
 						</Button>
@@ -92,6 +93,7 @@ export default function ProjectList() {
 								setItemDelete(item.id);
 								onOpen();
 							}}
+							title="Deletar"
 						>
 							<FaTrash size={20} />
 						</Button>

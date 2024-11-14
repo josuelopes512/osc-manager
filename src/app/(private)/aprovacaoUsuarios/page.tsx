@@ -80,6 +80,7 @@ export default function UserApprovalList() {
 								setIdUserApproval(item.id);
 								onOpen();
 							}}
+							title="Aprovar"
 						>
 							<FaCheck size={20} />
 						</Button>
