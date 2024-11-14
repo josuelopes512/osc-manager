@@ -71,6 +71,7 @@ export default function StudentList() {
 							color="primary"
 							className="rounded-full"
 							onClick={() => router.push(`alunos/${item.id}`)}
+							title="Editar"
 						>
 							<FaPencilAlt size={20} />
 						</Button>

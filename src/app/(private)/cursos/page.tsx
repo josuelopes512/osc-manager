@@ -71,6 +71,7 @@ export default function CourseList() {
 							color="primary"
 							className="rounded-full"
 							onClick={() => router.push(`cursos/${item.id}`)}
+							title="Editar"
 						>
 							<FaPencilAlt size={20} />
 						</Button>
@@ -84,6 +85,7 @@ export default function CourseList() {
 								setItemDelete(item.id);
 								onOpen();
 							}}
+							title="Deletar"
 						>
 							<FaTrash size={20} />
 						</Button>
