@@ -57,7 +57,6 @@ model OSC {
   location String? @default("")
 
   oscSocials OSCSocial[] @relation("OSCToOSCSocial")
-  students   Student[]
   project    Project[]
 
   createdAt DateTime @default(now())
@@ -77,7 +76,6 @@ model Student {
   projectId     Int?
 
   course  Course   @relation(fields: [courseId], references: [id])
-  osc     OSC?     @relation(fields: [oscId], references: [id])
   project Project? @relation(fields: [projectId], references: [id])
 
   createdAt DateTime @default(now())
