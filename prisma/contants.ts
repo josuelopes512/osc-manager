@@ -65,7 +65,7 @@ export const projects = [
 			name: "FECARCE",
 		},
 		students: [
-			
+			{ name: "", whatsapp: "" },
 		],
 	},
 	{
@@ -75,7 +75,7 @@ export const projects = [
 			name: "Instituto Maria do Carmo",
 		},
 		students: [
-			
+			{ name: "", whatsapp: "" },
 		],
 	},
 	{
@@ -85,7 +85,7 @@ export const projects = [
 			name: "CCPSJ",
 		},
 		students: [
-
+			{ name: "", whatsapp: "" },
 		],
 	},
 	{
@@ -95,7 +95,7 @@ export const projects = [
 			name: "Mães da Resistência",
 		},
 		students: [
-			
+			{ name: "", whatsapp: "" },
 		],
 	},
 	{
@@ -105,7 +105,7 @@ export const projects = [
 			name: "Instituto Recomeçando",
 		},
 		students: [
-			
+			{ name: "", whatsapp: "" },
 		],
 	},
 	{
@@ -115,7 +115,7 @@ export const projects = [
 			name: "Saboaria Ecológica",
 		},
 		students: [
-			
+			{ name: "", whatsapp: "" },
 		],
 	},
 	{
@@ -125,7 +125,7 @@ export const projects = [
 			name: "APDCAI",
 		},
 		students: [
-			
+			{ name: "", whatsapp: "" },
 		],
 	},
 	{
@@ -135,7 +135,7 @@ export const projects = [
 			name: "Caverna de Adulão",
 		},
 		students: [
-			
+			{ name: "", whatsapp: "" },
 		],
 	},
 	{
@@ -145,7 +145,7 @@ export const projects = [
 			name: "Instituição Lucimario Caetano",
 		},
 		students: [
-			
+			{ name: "", whatsapp: "" },
 		],
 	},
 	{
@@ -155,7 +155,7 @@ export const projects = [
 			name: "Lar Beneficente Cisco de Luz",
 		},
 		students: [
-			
+			{ name: "", whatsapp: "" },
 		],
 	},
 	{
@@ -165,7 +165,7 @@ export const projects = [
 			name: "Lar Francisco de Assis",
 		},
 		students: [
-			
+			{ name: "", whatsapp: "" },
 		],
 	},
 	{
@@ -175,7 +175,7 @@ export const projects = [
 			name: "Instituto Benjamim Dias",
 		},
 		students: [
-			
+			{ name: "", whatsapp: "" },
 		],
 	},
 	{
@@ -185,7 +185,7 @@ export const projects = [
 			name: "Aera",
 		},
 		students: [
-			
+			{ name: "", whatsapp: "" },
 		],
 	},
 	{
@@ -195,7 +195,7 @@ export const projects = [
 			name: "Espaço Cultura e Vida Dorotéias",
 		},
 		students: [
-			
+			{ name: "", whatsapp: "" },
 		],
 	},
 	{
@@ -205,7 +205,7 @@ export const projects = [
 			name: "Alimentarize",
 		},
 		students: [
-			
+			{ name: "", whatsapp: "" },
 		],
 	},
 	{
@@ -215,7 +215,7 @@ export const projects = [
 			name: "Mulheres do Brasil",
 		},
 		students: [
-			
+			{ name: "", whatsapp: "" },
 		],
 	},
 ];
