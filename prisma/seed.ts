@@ -68,6 +68,7 @@ const seedProjects = async () => {
 					createMany: {
 						data: project.students.map((student) => ({
 							name: student.name,
+							whatsapp : student.whatsapp,
 							courseId: 1,
 						})),
 					},
