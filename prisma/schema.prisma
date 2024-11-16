@@ -68,8 +68,8 @@ model OSC {
 model Student {
   id            Int     @id @default(autoincrement())
   name          String
-  matriculation String? @unique
-  email         String? @unique
+  matriculation String?
+  email         String?
   whatsapp      String?
   courseId      Int
   oscId         Int?
