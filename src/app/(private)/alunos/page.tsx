@@ -29,7 +29,7 @@ export default function StudentList() {
 			getData<(Student & { course: Course })[]>({
 				url: "/student",
 				signal,
-				query: "include.course=true&&include.osc=true",
+				query: "include.course=true",
 			}),
 	});
 
