@@ -4,5 +4,5 @@ export interface POSTProjectDTO {
 	link: string;
 	oscId: number;
 	semesterId: number;
-	studentIds: number[];
+	students: number[];
 }

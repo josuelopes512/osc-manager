@@ -20,6 +20,10 @@ async function update({
 	return prisma.user.update({ ...remaining, data });
 }
 
+async function upsert({ ...remaining }: Prisma.UserUpsertArgs): Promise<User> {
+	return prisma.user.upsert({ ...remaining });
+}
+
 async function updateMany(
 	args: Prisma.UserUpdateManyArgs,
 ): Promise<Prisma.BatchPayload> {
@@ -35,6 +39,7 @@ export const userService = {
 	create,
 	find,
 	update,
+	upsert,
 	updateMany,
 	deleteOne,
 };

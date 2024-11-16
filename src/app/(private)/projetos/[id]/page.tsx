@@ -29,11 +29,11 @@ const ProjectEdit = () => {
 	const router = useRouter();
 	const { data: dataGetProject, isLoading: loadingGet } = useQuery({
 		queryFn: ({ signal }) =>
-			getData<Project>({
+			getData<Project & { students: Student[] }>({
 				url: "project",
 				id: Number.parseInt(id, 10),
 				signal,
-				query: "include.osc=true",
+				query: "include.osc=true&&include.students=true&&include.semester=true",
 			}),
 		queryKey: ["project-get-by-id", id],
 		enabled: id !== "new",
@@ -94,7 +94,7 @@ const ProjectEdit = () => {
 			...data,
 			oscId: Number(data.oscId),
 			semesterId: Number(data.semesterId),
-			studentIds: data.studentIds.map((a) => Number(a)),
+			students: data.students.map((a) => Number(a)),
 		};
 		if (id === "new")
 			mutatePost({
@@ -102,7 +102,7 @@ const ProjectEdit = () => {
 				data: parseData,
 			})
 				.then(() => {
-					toast.success("Aluno cadastrado com sucesso");
+					toast.success("Projeto cadastrado com sucesso");
 					reset();
 					router.refresh();
 				})
@@ -116,7 +116,7 @@ const ProjectEdit = () => {
 				id: Number.parseInt(id, 10),
 			})
 				.then(() => {
-					toast.success("Aluno atualizado com sucesso");
+					toast.success("Projeto atualizado com sucesso");
 				})
 				.catch((err) => {
 					toastErrorsApi(err);
@@ -128,7 +128,13 @@ const ProjectEdit = () => {
 	useEffect(() => {
 		if (dataGetProject && id !== "new") {
 			setValue("name", dataGetProject.name);
+			setValue("description", dataGetProject.description);
 			setValue("oscId", String(dataGetProject.oscId));
+			setValue("semesterId", String(dataGetProject.semesterId));
+			setValue(
+				"students",
+				dataGetProject.students.map((student) => String(student.id)),
+			);
 		}
 	}, [dataGetProject, id, setValue]);
 
@@ -244,14 +250,11 @@ const ProjectEdit = () => {
 			/>
 
 			<Controller
-				name="studentIds"
+				name="students"
 				control={control}
 				rules={{ required: "Campo obrigatório" }}
 				render={({ field, fieldState: { error } }) => (
-					<Skeleton
-						className="min-h-14 rounded-md [&>div]:min-h-14"
-						isLoaded={!loadingGetStudent}
-					>
+					<Skeleton className="rounded-md" isLoaded={!loadingGetStudent}>
 						<Combobox
 							id={field.name}
 							data={dataGetStudent ?? []}
@@ -264,6 +267,12 @@ const ProjectEdit = () => {
 							isMultiple
 							isInvalid={!!error}
 							errorMessage={error?.message}
+							// labelChipRenderer={(item) => (
+							// 	<div className="flex gap-4">
+							// 		<span className="font-bold">{item.name}</span>
+							// 		<span className="text-sm italic">({item.course.name})</span>
+							// 	</div>
+							// )}
 							itemRenderer={(item) => (
 								<div className="flex gap-4">
 									<span className="font-bold">{item.name}</span>

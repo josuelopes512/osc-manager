@@ -46,6 +46,28 @@ export async function POST(req: Request) {
 		let acc: AccountPrisma | null = null;
 
 		if (!account) {
+			const ddata = {
+				type: accountBody.type,
+				provider: accountBody.provider,
+				providerAccountId: accountBody.providerAccountId,
+				refresh_token: accountBody.refresh_token,
+				access_token: accountBody.access_token,
+				expires_at: accountBody.expires_at,
+				id_token: accountBody.id_token,
+				token_type: accountBody.token_type,
+				scope: accountBody.scope,
+				session_state: String(accountBody.session_state),
+				user: {
+					connectOrCreate: {
+						where: { email: accountBody.userData.email },
+						create: {
+							email: accountBody.userData.email,
+							name: accountBody.userData.name,
+						},
+					},
+				},
+			};
+			console.log(ddata);
 			acc = await accountService.create({
 				data: {
 					type: accountBody.type,

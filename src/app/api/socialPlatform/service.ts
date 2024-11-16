@@ -26,6 +26,12 @@ async function update({
 	return prisma.socialPlatform.update({ ...remaining, data });
 }
 
+async function upsert({
+	...remaining
+}: Prisma.SocialPlatformUpsertArgs): Promise<SocialPlatform> {
+	return prisma.socialPlatform.upsert({ ...remaining });
+}
+
 async function updateMany(
 	args: Prisma.SocialPlatformUpdateManyArgs,
 ): Promise<Prisma.BatchPayload> {
@@ -41,6 +47,7 @@ export const socialPlatformService = {
 	create,
 	find,
 	update,
+	upsert,
 	updateMany,
 	deleteOne,
 };
