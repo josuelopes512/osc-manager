@@ -5,6 +5,6 @@ export type ProjectFormProps = Omit<
 	"oscId" | "studentIds" | "semesterId"
 > & {
 	oscId: string;
-	studentIds: string[];
+	students: string[];
 	semesterId: string;
 };

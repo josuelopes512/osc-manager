@@ -20,7 +20,7 @@ export async function GET(
 
 		if (Number.isNaN(id))
 			return NextResponse.json(
-				{ msg: "Falha ao buscar dados do aluno" },
+				{ msg: "Falha ao buscar dados do projeto" },
 				{ status: 404 },
 			);
 
@@ -31,7 +31,7 @@ export async function GET(
 		return NextResponse.json(projects);
 	} catch (error) {
 		return NextResponse.json(
-			{ msg: "Falha ao buscar alunos", error },
+			{ msg: "Falha ao buscar projetos", error },
 			{ status: 500 },
 		);
 	}
@@ -48,19 +48,39 @@ export async function PUT(
 
 		if (Number.isNaN(id))
 			return NextResponse.json(
-				{ msg: "Falha ao atualizar dados do aluno" },
+				{ msg: "Falha ao atualizar dados do projeto" },
 				{ status: 404 },
 			);
 
 		const data = (await request.json()) as PUTProjectDTO;
 		const project = await projectService.update({
-			data,
+			data: {
+				...data,
+				oscId: undefined,
+				semesterId: undefined,
+				osc: {
+					connect: {
+						id: data.oscId,
+					},
+				},
+				semester: {
+					connect: {
+						id: data.semesterId,
+					},
+				},
+				students: {
+					set: data.students.map((student) => ({
+						id: student,
+					})),
+				},
+			},
 			where: { id },
 		});
 		return NextResponse.json(project);
 	} catch (error) {
+		console.log(error);
 		return NextResponse.json(
-			{ msg: "Falha ao atualizar aluno", error },
+			{ msg: "Falha ao atualizar projeto", error },
 			{ status: 500 },
 		);
 	}
@@ -79,7 +99,7 @@ export async function DELETE(
 		return NextResponse.json({ message: "Aluno deletado com sucesso" });
 	} catch (error) {
 		return NextResponse.json(
-			{ msg: "Falha ao deletar aluno", error },
+			{ msg: "Falha ao deletar projeto", error },
 			{ status: 500 },
 		);
 	}

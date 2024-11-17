@@ -77,7 +77,12 @@ describe("OSCEdit", () => {
 		fireEvent.change(screen.getByLabelText("Endereço/Localização"), {
 			target: { value: "Location 1" },
 		});
-		fireEvent.change(screen.getByLabelText("Plataforma 1"), {
+		const socialPlatformInputs = screen.getAllByLabelText("Plataforma social");
+		fireEvent.change(socialPlatformInputs[0], {
+			target: { value: "1" },
+		});
+		const linkInputs = screen.getAllByLabelText("Link");
+		fireEvent.change(linkInputs[0], {
 			target: { value: "http://example.com" },
 		});
 
@@ -89,19 +94,19 @@ describe("OSCEdit", () => {
 				data: {
 					name: "OSC 1",
 					location: "Location 1",
-					oscSocials: [
-						{
-							create: [
-								{
-									socialPlatformId: 1,
-									url: "",
-								},
-							],
-						},
-					],
+					oscSocials: {
+						create: [
+							{
+								socialPlatformId: 1,
+								link: "http://example.com",
+							},
+						],
+						delete: [1],
+						update: [],
+					},
 				},
 			});
-			expect(toast.success).toHaveBeenCalledWith("OSC cadastrado com sucesso");
+			expect(toast.success).toHaveBeenCalledWith("OSC cadastrada com sucesso");
 		});
 	});
 
@@ -140,6 +145,15 @@ describe("OSCEdit", () => {
 			target: { value: "Location 2" },
 		});
 
+		const socialPlatformInputs = screen.getAllByLabelText("Plataforma social");
+		fireEvent.change(socialPlatformInputs[0], {
+			target: { value: "1" },
+		});
+		const linkInputs = screen.getAllByLabelText("Link");
+		fireEvent.change(linkInputs[0], {
+			target: { value: "http://example.com" },
+		});
+
 		fireEvent.click(screen.getByText("Salvar"));
 
 		await waitFor(() => {
@@ -148,14 +162,17 @@ describe("OSCEdit", () => {
 				data: {
 					name: "OSC 2",
 					location: "Location 2",
-					oscSocials: [
-						{ id: 1, socialPlatformId: "1", url: "http://example.com" },
-					],
-					deletedOscSocialIds: [],
+					oscSocials: {
+						update: [
+							{ id: 1, socialPlatformId: 1, link: "http://example.com" },
+						],
+						delete: [],
+						create: [],
+					},
 				},
 				id: 1,
 			});
-			expect(toast.success).toHaveBeenCalledWith("OSC atualizado com sucesso");
+			expect(toast.success).toHaveBeenCalledWith("OSC atualizada com sucesso");
 		});
 	});
 });

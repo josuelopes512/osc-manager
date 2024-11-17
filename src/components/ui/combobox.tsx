@@ -60,9 +60,22 @@ export function Combobox<T extends object>({
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [search, setSearch] = useState("");
 	const hasSearchFilter = Boolean(search);
+
+	const sortedItems = useMemo(() => {
+		if (!data) return [];
+		const selectedSet = new Set(value);
+		return data.sort((a, b) => {
+			const aSelected = selectedSet.has(String(a[idKey]));
+			const bSelected = selectedSet.has(String(b[idKey]));
+			if (aSelected && !bSelected) return -1;
+			if (!aSelected && bSelected) return 1;
+			return 0;
+		});
+	}, [data, value, idKey]);
+
 	const filteredData = useMemo(() => {
-		if (!data?.length) return [];
-		let filteredData = [...data];
+		if (!sortedItems?.length) return [];
+		let filteredData = [...sortedItems];
 
 		if (hasSearchFilter) {
 			filteredData = filteredData.filter((item) =>
@@ -73,7 +86,8 @@ export function Combobox<T extends object>({
 		}
 
 		return filteredData;
-	}, [data, filterKey, hasSearchFilter, search]);
+	}, [sortedItems, filterKey, hasSearchFilter, search]);
+
 	const [page, setPage] = useState(1);
 
 	const [rowsPerPage, setRowsPerPage] = useState(20);
@@ -93,13 +107,9 @@ export function Combobox<T extends object>({
 		return filteredData.slice(start, end);
 	}, [page, filteredData, rowsPerPage]);
 
-	const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set());
-
 	useEffect(() => {
-		if (isMultiple && !value) {
-			setSelectedKeys(new Set());
-		}
-	}, [value, isMultiple]);
+		console.log("selectedKeys items", value);
+	}, [value]);
 
 	const Items = () => (
 		<Listbox
@@ -115,9 +125,8 @@ export function Combobox<T extends object>({
 			}
 			emptyContent={`Nenhum ${label.toLowerCase()} encontrado`}
 			selectionMode={isMultiple ? "multiple" : "none"}
-			selectedKeys={selectedKeys}
+			selectedKeys={value}
 			onSelectionChange={(val) => {
-				setSelectedKeys(val as any);
 				onChange(Array.from(val as any).map((a) => String(a)));
 			}}
 		>
@@ -188,16 +197,16 @@ export function Combobox<T extends object>({
 			<Select
 				label={label}
 				onSelectionChange={(value) => console.log(value)}
-				selectedKeys={selectedKeys}
+				selectedKeys={value}
 				variant="bordered"
 				color="primary"
 				classNames={{
 					value: "text-foreground",
 					label: "overflow-visible",
 				}}
-				items={items}
+				items={data}
 				selectionMode="multiple"
-				isMultiline={Array.from(selectedKeys ?? []).length > 0}
+				isMultiline={value?.length > 0}
 				onOpenChange={() => onOpen()}
 				id={id}
 				name={id}
@@ -206,32 +215,29 @@ export function Combobox<T extends object>({
 				errorMessage={errorMessage}
 				renderValue={(items) => (
 					<div className="flex flex-wrap gap-2">
-						{Array.from(selectedKeys ?? []).map((item: string) => (
-							<div key={item}>
+						{items.map((item) => (
+							<div key={item.key ?? ""}>
 								<Chip
 									isCloseable
 									onClose={() => {
-										setSelectedKeys((prev) => {
-											if (!prev) return new Set();
-											prev.delete(item);
-											return new Set(prev);
-										});
+										// setSelectedKeys((prev) => {
+										// 	if (!prev) return new Set();
+										// 	prev.delete(item.key as string);
+										// 	return new Set(prev);
+										// });
+										// console.log("item", selectedKeys);
+										onChange(Array.from(value).filter((a) => a !== item.key));
 									}}
 								>
 									{LabelChipRenderer
 										? LabelChipRenderer(
-												data.find(
-													(a) =>
-														String(a[idKey]).toLowerCase() ===
-														item.toString().toLowerCase(),
-												) ?? data[0],
+												items.find((a) => a.key === (item.key ?? ""))
+													?.data as T,
 											)
 										: String(
-												data.find(
-													(a) =>
-														String(a[idKey]).toLowerCase() ===
-														item.toString().toLowerCase(),
-												)?.[textValueKey],
+												items.find((a) => a.key === (item.key ?? ""))?.data?.[
+													textValueKey
+												],
 											)}
 								</Chip>
 							</div>
@@ -249,12 +255,10 @@ export function Combobox<T extends object>({
 	);
 
 	const selectAllItems = () => {
-		const allSelected = filteredData.length === selectedKeys?.size;
+		const allSelected = filteredData.length === Array.from(value)?.length;
 		if (allSelected) {
-			setSelectedKeys(new Set());
 			onChange([]);
 		} else {
-			setSelectedKeys(new Set(filteredData.map((a) => String(a[idKey]))));
 			onChange(filteredData.map((a) => String(a[idKey])));
 		}
 	};

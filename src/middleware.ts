@@ -37,10 +37,6 @@ async function middleware(req: NextRequest) {
 			PUBLIC_API_ROUTES,
 		);
 
-		console.log("route", req.nextUrl.pathname);
-
-		console.log("isPublicApiRoute", isPublicApiRoute);
-
 		// If the API route is not public and there's no valid session token, redirect to login
 		if (!isPublicApiRoute && !signed) {
 			const loginURL = new URL("/login", req.nextUrl.origin);
@@ -85,9 +81,7 @@ export default withAuth(middleware, {
 		authorized: async ({ req, token }) => {
 			const path = req.nextUrl.pathname;
 			if (!path.startsWith("/api")) {
-				console.log("Authorized:", req.nextUrl.pathname);
 				const isPublicRoute = matchRoute(path, PUBLIC_ROUTES);
-				console.log("isPublicRoute", isPublicRoute);
 				return !(!token && !isPublicRoute);
 			}
 			return true;
