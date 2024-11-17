@@ -12,7 +12,7 @@ export async function PUT(
 	},
 ) {
 	try {
-		const id = Number(context.params.id);
+		const id = context.params.id;
 
 		if (Number.isNaN(id))
 			return NextResponse.json(
