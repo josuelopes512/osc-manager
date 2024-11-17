@@ -1,8 +1,7 @@
-import { accountService } from "@/app/api/account/service";
 import { userService } from "@/app/api/user/service";
-import type { Account as AccountPrisma, User } from "@prisma/client";
 import type { Account } from "next-auth";
 import { NextResponse } from "next/server";
+import { accountService } from "../../account/service";
 // import { userApprovalService } from "../../userApproval/service";
 
 export async function POST(req: Request) {
@@ -13,116 +12,64 @@ export async function POST(req: Request) {
 			return NextResponse.json({ msg: "Email is required" }, { status: 401 });
 		}
 
-		// const userApproval = await userApprovalService.findOne({
-		// 	where: { email: accountBody.userData.email },
-		// });
+		let user = await userService.findOne({
+			where: { email: accountBody.userData.email },
+		});
 
-		// if (!userApproval) {
-		// 	await userApprovalService.create({
-		// 		data: {
-		// 			email: accountBody.userData.email,
-		// 			name: accountBody.userData.name,
-		// 		},
-		// 	});
-		// 	return NextResponse.json(
-		// 		{ msg: "User approval required" },
-		// 		{ status: 403 },
-		// 	);
-		// }
-
-		// if (userApproval.approved === false) {
-		// 	return NextResponse.json({ msg: "User not approved" }, { status: 403 });
-		// }
-
-		const account = await accountService.findOne({
+		let account = await accountService.findOne({
 			where: {
 				provider_providerAccountId: {
 					provider: accountBody.provider,
-					providerAccountId: String(accountBody.providerAccountId),
+					providerAccountId: accountBody.providerAccountId,
 				},
 			},
 		});
 
-		let acc: AccountPrisma | null = null;
-
-		if (!account) {
-			const ddata = {
-				type: accountBody.type,
-				provider: accountBody.provider,
-				providerAccountId: accountBody.providerAccountId,
-				refresh_token: accountBody.refresh_token,
-				access_token: accountBody.access_token,
-				expires_at: accountBody.expires_at,
-				id_token: accountBody.id_token,
-				token_type: accountBody.token_type,
-				scope: accountBody.scope,
-				session_state: String(accountBody.session_state),
-				user: {
-					connectOrCreate: {
-						where: { email: accountBody.userData.email },
+		if (!user) {
+			user = await userService.create({
+				data: {
+					id: String(accountBody.userData.id),
+					email: accountBody.userData.email,
+					name: accountBody.userData.name,
+					approved: false,
+					accounts: {
 						create: {
-							email: accountBody.userData.email,
-							name: accountBody.userData.name,
-						},
-					},
-				},
-			};
-			console.log(ddata);
-			acc = await accountService.create({
-				data: {
-					type: accountBody.type,
-					provider: accountBody.provider,
-					providerAccountId: accountBody.providerAccountId,
-					refresh_token: accountBody.refresh_token,
-					access_token: accountBody.access_token,
-					expires_at: accountBody.expires_at,
-					id_token: accountBody.id_token,
-					token_type: accountBody.token_type,
-					scope: accountBody.scope,
-					session_state: String(accountBody.session_state),
-					user: {
-						connectOrCreate: {
-							where: { email: accountBody.userData.email },
-							create: {
-								email: accountBody.userData.email,
-								name: accountBody.userData.name,
-							},
-						},
-					},
-				},
-			});
-		} else {
-			acc = await accountService.update({
-				where: { id: account.id },
-				data: {
-					type: accountBody.type,
-					provider: accountBody.provider,
-					providerAccountId: accountBody.providerAccountId,
-					refresh_token: accountBody.refresh_token,
-					access_token: accountBody.access_token,
-					expires_at: accountBody.expires_at,
-					id_token: accountBody.id_token,
-					token_type: accountBody.token_type,
-					scope: accountBody.scope,
-					session_state: String(accountBody.session_state),
-					user: {
-						connectOrCreate: {
-							where: { email: accountBody.userData.email },
-							create: {
-								email: accountBody.userData.email,
-								name: accountBody.userData.name,
-							},
+							type: accountBody.type,
+							provider: accountBody.provider,
+							providerAccountId: accountBody.providerAccountId,
+							refresh_token: accountBody.refresh_token,
+							access_token: accountBody.access_token,
+							expires_at: accountBody.expires_at,
+							id_token: accountBody.id_token,
+							token_type: accountBody.token_type,
+							scope: accountBody.scope,
+							session_state: String(accountBody.session_state),
 						},
 					},
 				},
 			});
 		}
-		const user = await userService.findOne({
-			where: { id: acc?.userId },
-		});
 
-		if (!user) {
-			return NextResponse.json({ msg: "User not found" }, { status: 404 });
+		if (!account) {
+			account = await accountService.create({
+				data: {
+					provider: accountBody.provider,
+					providerAccountId: accountBody.providerAccountId,
+					type: accountBody.type,
+					refresh_token: accountBody.refresh_token,
+					access_token: accountBody.access_token,
+					expires_at: accountBody.expires_at,
+					id_token: accountBody.id_token,
+					token_type: accountBody.token_type,
+					scope: accountBody.scope,
+					session_state: String(accountBody.session_state),
+					user: {
+						connect: {
+							email: accountBody.userData.email,
+						},
+					},
+				},
+			});
 		}
 
 		if (user.approved === false) {
