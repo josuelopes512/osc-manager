@@ -54,9 +54,7 @@ export const projects = [
 		osc: {
 			name: "Instituto Vida Videira",
 		},
-		students: [
-			
-		],
+		students: [],
 	},
 	{
 		id: 2,
@@ -64,9 +62,7 @@ export const projects = [
 		osc: {
 			name: "FECARCE",
 		},
-		students: [
-			{ name: "", whatsapp: "" },
-		],
+		students: [{ name: "", whatsapp: "" }],
 	},
 	{
 		id: 3,
@@ -74,9 +70,7 @@ export const projects = [
 		osc: {
 			name: "Instituto Maria do Carmo",
 		},
-		students: [
-			{ name: "", whatsapp: "" },
-		],
+		students: [{ name: "", whatsapp: "" }],
 	},
 	{
 		id: 4,
@@ -84,9 +78,7 @@ export const projects = [
 		osc: {
 			name: "CCPSJ",
 		},
-		students: [
-			{ name: "", whatsapp: "" },
-		],
+		students: [{ name: "", whatsapp: "" }],
 	},
 	{
 		id: 5,
@@ -94,9 +86,7 @@ export const projects = [
 		osc: {
 			name: "Mães da Resistência",
 		},
-		students: [
-			{ name: "", whatsapp: "" },
-		],
+		students: [{ name: "", whatsapp: "" }],
 	},
 	{
 		id: 6,
@@ -104,9 +94,7 @@ export const projects = [
 		osc: {
 			name: "Instituto Recomeçando",
 		},
-		students: [
-			{ name: "", whatsapp: "" },
-		],
+		students: [{ name: "", whatsapp: "" }],
 	},
 	{
 		id: 7,
@@ -114,9 +102,7 @@ export const projects = [
 		osc: {
 			name: "Saboaria Ecológica",
 		},
-		students: [
-			{ name: "", whatsapp: "" },
-		],
+		students: [{ name: "", whatsapp: "" }],
 	},
 	{
 		id: 8,
@@ -124,9 +110,7 @@ export const projects = [
 		osc: {
 			name: "APDCAI",
 		},
-		students: [
-			{ name: "", whatsapp: "" },
-		],
+		students: [{ name: "", whatsapp: "" }],
 	},
 	{
 		id: 9,
@@ -134,9 +118,7 @@ export const projects = [
 		osc: {
 			name: "Caverna de Adulão",
 		},
-		students: [
-			{ name: "", whatsapp: "" },
-		],
+		students: [{ name: "", whatsapp: "" }],
 	},
 	{
 		id: 10,
@@ -144,9 +126,7 @@ export const projects = [
 		osc: {
 			name: "Instituição Lucimario Caetano",
 		},
-		students: [
-			{ name: "", whatsapp: "" },
-		],
+		students: [{ name: "", whatsapp: "" }],
 	},
 	{
 		id: 11,
@@ -154,9 +134,7 @@ export const projects = [
 		osc: {
 			name: "Lar Beneficente Cisco de Luz",
 		},
-		students: [
-			{ name: "", whatsapp: "" },
-		],
+		students: [{ name: "", whatsapp: "" }],
 	},
 	{
 		id: 12,
@@ -164,9 +142,7 @@ export const projects = [
 		osc: {
 			name: "Lar Francisco de Assis",
 		},
-		students: [
-			{ name: "", whatsapp: "" },
-		],
+		students: [{ name: "", whatsapp: "" }],
 	},
 	{
 		id: 13,
@@ -174,9 +150,7 @@ export const projects = [
 		osc: {
 			name: "Instituto Benjamim Dias",
 		},
-		students: [
-			{ name: "", whatsapp: "" },
-		],
+		students: [{ name: "", whatsapp: "" }],
 	},
 	{
 		id: 14,
@@ -184,9 +158,7 @@ export const projects = [
 		osc: {
 			name: "Aera",
 		},
-		students: [
-			{ name: "", whatsapp: "" },
-		],
+		students: [{ name: "", whatsapp: "" }],
 	},
 	{
 		id: 15,
@@ -194,9 +166,7 @@ export const projects = [
 		osc: {
 			name: "Espaço Cultura e Vida Dorotéias",
 		},
-		students: [
-			{ name: "", whatsapp: "" },
-		],
+		students: [{ name: "", whatsapp: "" }],
 	},
 	{
 		id: 16,
@@ -204,9 +174,7 @@ export const projects = [
 		osc: {
 			name: "Alimentarize",
 		},
-		students: [
-			{ name: "", whatsapp: "" },
-		],
+		students: [{ name: "", whatsapp: "" }],
 	},
 	{
 		id: 17,
@@ -214,26 +182,24 @@ export const projects = [
 		osc: {
 			name: "Mulheres do Brasil",
 		},
-		students: [
-			{ name: "", whatsapp: "" },
-		],
+		students: [{ name: "", whatsapp: "" }],
 	},
 ];
 export const users = [
 	{
-		id: 1,
+		id: "1",
 		name: "Levi Gleik",
 		email: "leviacedo1@gmail.com",
 		approved: true,
 	},
 	{
-		id: 2,
+		id: "2",
 		name: "Josué Lopes",
 		email: "cmastercode77@gmail.com",
 		approved: true,
 	},
 	{
-		id: 3,
+		id: "3",
 		name: "Caio Portela",
 		email: "ccarvalho451@gmail.com",
 		approved: true,
