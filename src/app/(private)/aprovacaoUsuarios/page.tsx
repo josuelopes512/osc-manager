@@ -77,7 +77,7 @@ export default function UserApprovalList() {
 							color="success"
 							className="rounded-full"
 							onClick={() => {
-								setIdUserApproval(item.id);
+								setIdUserApproval(Number(item.id));
 								onOpen();
 							}}
 							title="Aprovar"

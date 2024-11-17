@@ -32,7 +32,7 @@ export async function POST(request: Request) {
 				},
 				semesterId: undefined,
 				students: {
-					connect: data.studentIds.map((id) => ({ id })),
+					connect: data.students.map((id) => ({ id })),
 				},
 				studentIds: undefined,
 			},

@@ -30,7 +30,7 @@ async function updateMany(
 	return prisma.user.updateMany(args);
 }
 
-export const deleteOne = async (id: number) => {
+export const deleteOne = async (id: string) => {
 	return prisma.user.delete({ where: { id } });
 };
 
