@@ -126,6 +126,53 @@ model Project {
   @@map("projects")
 }
 
+model Survey {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  questions Question[]
+
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt()
+
+  @@map("surveys")
+}
+
+enum QuestionType {
+  MultipleChoice
+  CheckBox
+  ShortAnswer
+}
+
+model Question {
+  id   Int    @id @default(autoincrement())
+  name        String
+  type QuestionType
+  
+  answers Answer[]
+  
+  surveyId Int
+  survey   Survey @relation(fields: [surveyId], references: [id])
+
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt()
+
+  @@map("questions")
+}
+
+model Answer {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  questionId Int
+  question   Question @relation(fields: [questionId], references: [id])
+
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt()
+
+  @@map("answers")
+}
+
 model Account {
   id                Int     @id @default(autoincrement())
   userId            String  @map("user_id")

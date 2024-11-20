@@ -1,4 +1,3 @@
-import { Plus } from "lucide-react";
 import { FaGraduationCap, FaPlus } from "react-icons/fa6";
 
 const GraduationCapPlus: React.FC<{ className?: string }> = ({ className }) => {

@@ -1,16 +1,10 @@
 import GraduationCapPlus from "@/assets/icons/GraduationCapPlus";
-import { Image } from "@nextui-org/react";
-import { Bookmark, LayoutGrid, Plus, SquarePen, Users } from "lucide-react";
+import RiSurveyFillPlus from "@/assets/icons/RiSurveyFillPlus";
 import { BsFillHouseAddFill, BsFillHousesFill } from "react-icons/bs";
-import { FaTasks, FaUserCog } from "react-icons/fa";
-import {
-	FaGraduationCap,
-	FaSquare,
-	FaUserPlus,
-	FaUsers,
-} from "react-icons/fa6";
-import type { IconType } from "react-icons/lib";
+import { FaUserCog } from "react-icons/fa";
+import { FaGraduationCap, FaUserPlus, FaUsers } from "react-icons/fa6";
 import { MdOutlineAddTask, MdSpaceDashboard, MdTaskAlt } from "react-icons/md";
+import { RiSurveyFill } from "react-icons/ri";
 
 export type Submenu = {
 	href: string;
@@ -112,7 +106,24 @@ export function getMenuList(pathname: string): Group[] {
 						{
 							href: "/cursos/new",
 							label: "Adicionar Curso",
-							Icon: () => <GraduationCapPlus />,
+							Icon: RiSurveyFillPlus,
+						},
+					],
+				},
+				{
+					href: "/questionarios",
+					label: "Questionários",
+					icon: RiSurveyFill,
+					submenus: [
+						{
+							href: "/questionarios",
+							label: "Todos Questionários",
+							Icon: RiSurveyFill,
+						},
+						{
+							href: "/questionarios/new",
+							label: "Adicionar Questionário",
+							Icon: RiSurveyFillPlus,
 						},
 					],
 				},
