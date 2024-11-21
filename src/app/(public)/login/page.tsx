@@ -1,18 +1,10 @@
 "use client";
-import {
-	Button,
-	Card,
-	CardBody,
-	CardFooter,
-	CardHeader,
-	Image,
-} from "@nextui-org/react";
+import { Button, Card, CardBody, CardHeader, Image } from "@nextui-org/react";
 import { useMutation } from "@tanstack/react-query";
 import React from "react";
 
 import type { FormLoginProps } from "@/app/(public)/login/types";
-import logo from "@/assets/imagens/logo.png";
-import Loading from "@/components/loading";
+import logo from "@/assets/imagens/logo-full.png";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -51,7 +43,7 @@ const Login = () => {
 				</CardHeader>
 				<CardBody>
 					<div className="flex justify-center mt-8">
-						<Image src={logo.src} alt="App Logo" className="w-48 h-48 mb-6" />
+						<Image src={logo.src} alt="App Logo" className="w-80 h-80 mb-6" />
 					</div>
 					<Button
 						onClick={() => {
