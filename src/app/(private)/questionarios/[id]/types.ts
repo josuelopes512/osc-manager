@@ -1,10 +1,6 @@
-import type { Survey } from "@prisma/client";
+import type { ArrayPath, Control, FieldValues } from "react-hook-form";
 
-export type SurveyFormProps = Omit<
-	Survey,
-	"oscId" | "studentIds" | "semesterId"
-> & {
-	oscId: string;
-	students: string[];
-	semesterId: string;
+export type NestedFieldArrayProps<T extends FieldValues> = {
+	control: Control<T>;
+	name: ArrayPath<T>;
 };

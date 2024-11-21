@@ -1,0 +1,71 @@
+"use client";
+import { Button, Input, Tooltip } from "@nextui-org/react";
+import { Controller, useFieldArray } from "react-hook-form";
+import { FaTrash, FaRegSquare } from "react-icons/fa";
+import type { NestedFieldArrayProps } from "../types";
+
+export default function FieldArrayCheckBox({
+	control,
+	name,
+}: NestedFieldArrayProps<any>) {
+	const { fields, append, remove } = useFieldArray({
+		control,
+		name: name,
+	});
+
+	return (
+		<div className="flex flex-col gap-4">
+			{fields.map((item, index) => (
+				<div key={item.id} className="flex items-center gap-2">
+					<Controller
+						name={`${name}.${index}.option`}
+						control={control}
+						render={({ field, fieldState: { error } }) => (
+							<Input
+								label="Opção"
+								id={field.name}
+								type="text"
+								onChange={field.onChange}
+								name={field.name}
+								value={field.value}
+								variant="bordered"
+								color="primary"
+								isInvalid={!!error}
+								errorMessage={error?.message}
+								startContent={<FaRegSquare size={20} />}
+							/>
+						)}
+					/>
+					<Tooltip
+						content="Deletar"
+						placement="bottom-end"
+						className="text-white"
+						color="danger"
+					>
+						<Button
+							type="button"
+							color="danger"
+							className="w-fit rounded-full text-main-white"
+							onClick={() => remove(index)}
+							isIconOnly
+						>
+							<FaTrash size={20} className="text-white" />
+						</Button>
+					</Tooltip>
+				</div>
+			))}
+			<Button
+				type="button"
+				variant="ghost"
+				className="w-fit"
+				onClick={() => {
+					append({
+						option: "",
+					} as any);
+				}}
+			>
+				Adicionar opção
+			</Button>
+		</div>
+	);
+}

@@ -145,19 +145,35 @@ enum QuestionType {
 }
 
 model Question {
-  id   Int    @id @default(autoincrement())
-  name        String
-  type QuestionType
-  
-  answers Answer[]
-  
-  surveyId Int
-  survey   Survey @relation(fields: [surveyId], references: [id])
+  id             Int             @id @default(autoincrement())
+  name           String
+  type           QuestionType
 
-  createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt()
+  multipleChoice MultipleChoice[]
+  checkBox       CheckBox[]
+  answer         Answer[]
 
+  shortAnswer    String?
+  surveyId       Int
+  survey         Survey          @relation(fields: [surveyId], references: [id])
+  createdAt      DateTime        @default(now())
+  updateAt       DateTime        @updatedAt()
+  
   @@map("questions")
+}
+
+model MultipleChoice {
+  id       Int      @id @default(autoincrement())
+  choice  String // Array of choices
+  question Question @relation(fields: [questionId], references: [id])
+  questionId Int
+}
+
+model CheckBox {
+  id       Int      @id @default(autoincrement())
+  option  String // Array of options
+  question Question @relation(fields: [questionId], references: [id])
+  questionId Int
 }
 
 model Answer {

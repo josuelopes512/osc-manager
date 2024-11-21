@@ -20,8 +20,17 @@ import { useEffect } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
-import type { Question, QuestionType, Survey } from "@prisma/client";
-import { FaTrash } from "react-icons/fa";
+import type {
+	CheckBox,
+	MultipleChoice,
+	Question,
+	QuestionType,
+	Survey,
+} from "@prisma/client";
+import { FaCheckSquare, FaRegDotCircle, FaTrash } from "react-icons/fa";
+import { IoText } from "react-icons/io5";
+import FieldArrayMultipleChoice from "./components/FieldArrayMultipleChoice";
+import FieldArrayCheckBox from "./components/FieldArrayCheckBox";
 
 const SurveyEdit = () => {
 	const { id } = useParams<{ id: string | "new" }>();
@@ -49,7 +58,12 @@ const SurveyEdit = () => {
 
 	const { handleSubmit, setValue, control, reset, watch } = useForm<
 		Survey & {
-			questions: { name: string; questionType: QuestionType }[];
+			questions: {
+				name: string;
+				questionType?: QuestionType;
+				multipleChoice?: MultipleChoice[];
+				checkBox?: CheckBox[];
+			}[];
 		},
 		"surveys"
 	>();
@@ -64,31 +78,33 @@ const SurveyEdit = () => {
 	});
 
 	const onSubmit = (data: Survey) => {
-		if (id === "new")
-			mutatePost({
-				url: "/survey",
-				data,
-			})
-				.then(() => {
-					toast.success("Questionário cadastrado com sucesso");
-					reset();
-					router.refresh();
-				})
-				.catch((error: any) => {
-					toastErrorsApi(error);
-				});
-		else
-			mutatePut({
-				url: "/survey",
-				data,
-				id: Number.parseInt(id, 10),
-			})
-				.then(() => {
-					toast.success("Questionário atualizado com sucesso");
-				})
-				.catch((err) => {
-					toastErrorsApi(err);
-				});
+		console.log("field", data);
+
+		// if (id === "new")
+		// 	mutatePost({
+		// 		url: "/survey",
+		// 		data,
+		// 	})
+		// 		.then(() => {
+		// 			toast.success("Questionário cadastrado com sucesso");
+		// 			reset();
+		// 			router.refresh();
+		// 		})
+		// 		.catch((error: any) => {
+		// 			toastErrorsApi(error);
+		// 		});
+		// else
+		// 	mutatePut({
+		// 		url: "/survey",
+		// 		data,
+		// 		id: Number.parseInt(id, 10),
+		// 	})
+		// 		.then(() => {
+		// 			toast.success("Questionário atualizado com sucesso");
+		// 		})
+		// 		.catch((err) => {
+		// 			toastErrorsApi(err);
+		// 		});
 	};
 
 	const loading = loadingGet || loadingPost || loadingPut;
@@ -100,7 +116,7 @@ const SurveyEdit = () => {
 	}, [dataGetSurvey, id, setValue]);
 
 	useEffect(() => {
-		appendQuestions({ name: "", questionType: "ShortAnswer" });
+		appendQuestions({ name: "" });
 	}, [appendQuestions]);
 
 	return (
@@ -136,6 +152,7 @@ const SurveyEdit = () => {
 				const questionType = watch(
 					`questions.${indexQuestions}.questionType`,
 				) as QuestionType;
+
 				return (
 					<div
 						key={item.id}
@@ -163,111 +180,114 @@ const SurveyEdit = () => {
 								</Button>
 							</Tooltip>
 						</div>
-						<Controller
-							name={`questions.${indexQuestions}.questionType`}
-							control={control}
-							defaultValue="MultipleChoice"
-							render={({ field, fieldState: { error } }) => (
-								<Skeleton className="rounded-md" isLoaded={!loading}>
-									<Select
-										label="Tipo de pergunta"
-										id={field.name}
-										onChange={field.onChange}
-										name={field.name}
-										value={field.value}
-										variant="bordered"
-										color="primary"
-										isInvalid={!!error}
-										errorMessage={error?.message}
-									>
-										<SelectItem key="MultipleChoice" value="MultipleChoice">
-											Multipla escolha
-										</SelectItem>
-										<SelectItem key="ShortAnswer" value="ShortAnswer">
-											Texto
-										</SelectItem>
-										<SelectItem key="CheckBox" value="CheckBox">
-											Caixa de seleção
-										</SelectItem>
-									</Select>
-								</Skeleton>
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+							<Controller
+								name={`questions.${indexQuestions}.questionType`}
+								control={control}
+								render={({ field, fieldState: { error } }) => (
+									<Skeleton className="rounded-md" isLoaded={!loading}>
+										<Select
+											label="Tipo de pergunta"
+											id={field.name}
+											onChange={field.onChange}
+											name={field.name}
+											value={field.value}
+											variant="bordered"
+											color="primary"
+											isInvalid={!!error}
+											errorMessage={error?.message}
+											renderValue={(items) =>
+												items.map((item) => (
+													<div
+														key={item.key}
+														className="flex items-center mt-1 gap-2"
+													>
+														{item.key === "ShortAnswer" && <IoText size={20} />}
+														{item.key === "MultipleChoice" && (
+															<FaRegDotCircle size={20} />
+														)}
+														{item.key === "CheckBox" && (
+															<FaCheckSquare size={20} />
+														)}
+														<span>{item.textValue}</span>
+													</div>
+												))
+											}
+										>
+											<SelectItem
+												key="ShortAnswer"
+												value="ShortAnswer"
+												classNames={{
+													title: "flex items-center gap-2",
+												}}
+												textValue="Texto"
+											>
+												<IoText />
+												Texto
+											</SelectItem>
+											<SelectItem
+												key="MultipleChoice"
+												value="MultipleChoice"
+												classNames={{
+													title: "flex items-center gap-2",
+												}}
+												textValue="Multipla escolha"
+											>
+												<FaRegDotCircle />
+												Multipla escolha
+											</SelectItem>
+
+											<SelectItem
+												key="CheckBox"
+												value="CheckBox"
+												classNames={{
+													title: "flex items-center gap-2",
+												}}
+												textValue="Caixa de seleção"
+											>
+												<FaCheckSquare />
+												Caixa de seleção
+											</SelectItem>
+										</Select>
+									</Skeleton>
+								)}
+							/>
+							<Controller
+								name={`questions.${indexQuestions}.name`}
+								control={control}
+								defaultValue=""
+								rules={{ required: "Campo obrigatório" }}
+								render={({ field, fieldState: { error } }) => (
+									<Skeleton className="rounded-md" isLoaded={!loading}>
+										<Input
+											label="Pergunta"
+											id={field.name}
+											type="text"
+											onChange={field.onChange}
+											name={field.name}
+											value={field.value}
+											variant="bordered"
+											color="primary"
+											isRequired
+											isInvalid={!!error}
+											errorMessage={error?.message}
+										/>
+									</Skeleton>
+								)}
+							/>
+							{questionType === "MultipleChoice" && (
+								<FieldArrayMultipleChoice
+									control={control}
+									name={`questions.${indexQuestions}.multipleChoice`}
+								/>
 							)}
-						/>
-						{questionType === "ShortAnswer" && (
-							<Controller
-								name={`questions.${indexQuestions}.name`}
-								control={control}
-								defaultValue=""
-								rules={{ required: "Campo obrigatório" }}
-								render={({ field, fieldState: { error } }) => (
-									<Skeleton className="rounded-md" isLoaded={!loading}>
-										<Input
-											label="Pergunta"
-											id={field.name}
-											type="text"
-											onChange={field.onChange}
-											name={field.name}
-											value={field.value}
-											variant="bordered"
-											color="primary"
-											isRequired
-											isInvalid={!!error}
-											errorMessage={error?.message}
-										/>
-									</Skeleton>
-								)}
-							/>
-						)}
-						{questionType === "MultipleChoice" && (
-							<Controller
-								name={`questions.${indexQuestions}.name`}
-								control={control}
-								defaultValue=""
-								rules={{ required: "Campo obrigatório" }}
-								render={({ field, fieldState: { error } }) => (
-									<Skeleton className="rounded-md" isLoaded={!loading}>
-										<Input
-											label="Pergunta"
-											id={field.name}
-											type="text"
-											onChange={field.onChange}
-											name={field.name}
-											value={field.value}
-											variant="bordered"
-											color="primary"
-											isRequired
-											isInvalid={!!error}
-											errorMessage={error?.message}
-										/>
-									</Skeleton>
-								)}
-							/>
-						)}
-						{questionType === "CheckBox" && (
-							<Controller
-								name={`questions.${indexQuestions}.name`}
-								control={control}
-								defaultValue=""
-								rules={{ required: "Campo obrigatório" }}
-								render={({ field, fieldState: { error } }) => (
-									<Skeleton className="rounded-md" isLoaded={!loading}>
-										<Input
-											label="Pergunta"
-											id={field.name}
-											type="text"
-											onChange={field.onChange}
-											name={field.name}
-											value={field.value}
-											variant="bordered"
-											color="primary"
-											isRequired
-											isInvalid={!!error}
-											errorMessage={error?.message}
-										/>
-									</Skeleton>
-								)}
-							/>
-						)}
+							{questionType === "CheckBox" && (
+								<FieldArrayCheckBox
+									control={control}
+									name={`questions.${indexQuestions}.checkBox`}
+								/>
+							)}
+						</div>
 					</div>
 				);
 			})}
