@@ -5,8 +5,10 @@ import { Button } from "@/components/ui/button";
 import { useSidebar } from "@/hooks/use-sidebar";
 import { useStore } from "@/hooks/use-store";
 import { cn } from "@/lib/utils";
+import { Image } from "@nextui-org/react";
 import { PanelsTopLeft } from "lucide-react";
 import Link from "next/link";
+import logo from "@/assets/imagens/logo.png";
 
 export function Sidebar() {
 	const sidebar = useStore(useSidebar, (x) => x);
@@ -35,7 +37,8 @@ export function Sidebar() {
 					asChild
 				>
 					<Link href="/" className="flex items-center gap-2">
-						<PanelsTopLeft className="w-6 h-6 mr-1" />
+						<Image src={logo.src} alt="Logo" className="w-14 h-14" />
+
 						<h1
 							className={cn(
 								"font-bold text-lg whitespace-nowrap transition-[transform,opacity,display] ease-in-out duration-300",
