@@ -1,3 +1,10 @@
+import { CheckBox, MultipleChoice, QuestionType } from "@prisma/client";
 import type { POSTSurveyDTO } from "./post";
 
-export interface PUTSurveyDTO extends POSTSurveyDTO {}
+export interface PUTSurveyDTO {
+	name: string;
+	questions: {
+		create: POSTSurveyDTO["questions"]["create"];
+		delete: number[];
+	};
+}

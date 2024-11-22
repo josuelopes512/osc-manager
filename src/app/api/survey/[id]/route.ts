@@ -2,6 +2,7 @@ import { getQuery } from "@/lib/query";
 import { type NextRequest, NextResponse } from "next/server";
 import type { PUTSurveyDTO } from "../dto/put";
 import { surveyService } from "../service";
+import { questionService } from "../../questions/service";
 
 type Params = {
 	id: string;
@@ -38,7 +39,7 @@ export async function GET(
 }
 
 export async function PUT(
-	request: Request,
+	request: NextRequest,
 	context: {
 		params: Params;
 	},
@@ -53,29 +54,44 @@ export async function PUT(
 			);
 
 		const data = (await request.json()) as PUTSurveyDTO;
+
 		const survey = await surveyService.update({
+			where: { id },
 			data: {
-				...data,
-				oscId: undefined,
-				semesterId: undefined,
-				osc: {
-					connect: {
-						id: data.oscId,
-					},
-				},
-				semester: {
-					connect: {
-						id: data.semesterId,
-					},
-				},
-				students: {
-					set: data.students.map((student) => ({
-						id: student,
-					})),
+				name: data.name,
+				questions: {
+					deleteMany: data.questions?.delete
+						? { id: { in: data.questions.delete } }
+						: undefined,
 				},
 			},
-			where: { id },
 		});
+		await Promise.all(
+			data.questions.create.map(async (question) => {
+				await questionService.create({
+					data: {
+						...question,
+						surveyId: survey.id,
+						multipleChoice: {
+							create: question.multipleChoice?.map((choice) => ({
+								...choice,
+								id: undefined,
+								questionId: undefined,
+								choice: choice.choice ?? "",
+							})),
+						},
+						checkBox: {
+							create: question.checkBox?.map((option) => ({
+								...option,
+								id: undefined,
+								questionId: undefined,
+								option: option.option ?? "",
+							})),
+						},
+					},
+				});
+			}),
+		);
 		return NextResponse.json(survey);
 	} catch (error) {
 		console.log(error);
@@ -87,7 +103,7 @@ export async function PUT(
 }
 
 export async function DELETE(
-	request: Request,
+	request: NextRequest,
 	context: {
 		params: Params;
 	},

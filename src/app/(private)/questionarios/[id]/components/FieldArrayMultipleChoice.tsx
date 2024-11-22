@@ -21,6 +21,7 @@ export default function FieldArrayMultipleChoice({
 					<Controller
 						name={`${name}.${index}.choice`}
 						control={control}
+						rules={{ required: "Campo obrigatório" }}
 						render={({ field, fieldState: { error } }) => (
 							<Input
 								label="Opção"
@@ -31,6 +32,7 @@ export default function FieldArrayMultipleChoice({
 								value={field.value}
 								variant="bordered"
 								color="primary"
+								isRequired
 								isInvalid={!!error}
 								errorMessage={error?.message}
 								startContent={<FiCircle size={20} />}

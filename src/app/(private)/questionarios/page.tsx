@@ -15,7 +15,7 @@ import {
 	Tooltip,
 	useDisclosure,
 } from "@nextui-org/react";
-import type { OSC, Survey, Semester } from "@prisma/client";
+import type { OSC, Survey, Semester, Question } from "@prisma/client";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -27,16 +27,10 @@ export default function SurveyList() {
 	const { data, isLoading, refetch } = useQuery({
 		queryKey: ["survey-get"],
 		queryFn: ({ signal }) =>
-			getData<(Survey & { semester: Semester; osc: OSC })[]>({
+			getData<Survey[]>({
 				url: "/survey",
 				signal,
-				query: "include.semester=true&&include.osc=true&orderBy.name=asc",
 			}),
-		select: (data) =>
-			data.map((item) => ({
-				...item,
-				name: capitalize(item.name),
-			})),
 	});
 
 	const { mutateAsync: mutateDelete, isPending: loadingDelete } = useMutation({
@@ -56,7 +50,7 @@ export default function SurveyList() {
 			id: id,
 		})
 			.then(() => {
-				toast.success("Projeto deletado com sucesso");
+				toast.success("Questionário deletado com sucesso");
 				void refetch();
 			})
 			.catch((err) => {
@@ -64,43 +58,42 @@ export default function SurveyList() {
 			});
 	};
 
-	const finalColumns: ColumnProps<Survey & { semester: Semester; osc: OSC }>[] =
-		[
-			...columnsSurveys,
-			{
-				uid: "actions",
-				label: "Ações",
-				renderCell: (item) => (
-					<div className="relative flex cursor-pointer items-center justify-end gap-5">
-						<Tooltip content="Editar" placement="bottom-end" color="secondary">
-							<Button
-								isIconOnly
-								color="primary"
-								className="rounded-full"
-								onClick={() => router.push(`questionarios/${item.id}`)}
-								title="Editar"
-							>
-								<FaPencilAlt size={20} />
-							</Button>
-						</Tooltip>
-						<Tooltip content="Deletar" placement="bottom-end" color="danger">
-							<Button
-								isIconOnly
-								color="danger"
-								className="rounded-full"
-								onClick={() => {
-									setItemDelete(item.id);
-									onOpen();
-								}}
-								title="Deletar"
-							>
-								<FaTrash size={20} />
-							</Button>
-						</Tooltip>
-					</div>
-				),
-			},
-		];
+	const finalColumns: ColumnProps<Survey>[] = [
+		...columnsSurveys,
+		{
+			uid: "actions",
+			label: "Ações",
+			renderCell: (item) => (
+				<div className="relative flex cursor-pointer items-center justify-end gap-5">
+					<Tooltip content="Editar" placement="bottom-end" color="secondary">
+						<Button
+							isIconOnly
+							color="primary"
+							className="rounded-full"
+							onClick={() => router.push(`questionarios/${item.id}`)}
+							title="Editar"
+						>
+							<FaPencilAlt size={20} />
+						</Button>
+					</Tooltip>
+					<Tooltip content="Deletar" placement="bottom-end" color="danger">
+						<Button
+							isIconOnly
+							color="danger"
+							className="rounded-full"
+							onClick={() => {
+								setItemDelete(item.id);
+								onOpen();
+							}}
+							title="Deletar"
+						>
+							<FaTrash size={20} />
+						</Button>
+					</Tooltip>
+				</div>
+			),
+		},
+	];
 
 	const loading = isLoading || loadingDelete;
 

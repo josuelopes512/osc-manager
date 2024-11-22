@@ -31,40 +31,38 @@ import { FaCheckSquare, FaRegDotCircle, FaTrash } from "react-icons/fa";
 import { IoText } from "react-icons/io5";
 import FieldArrayMultipleChoice from "./components/FieldArrayMultipleChoice";
 import FieldArrayCheckBox from "./components/FieldArrayCheckBox";
+import type { SurveyWithQuestions } from "./types";
 
 const SurveyEdit = () => {
 	const { id } = useParams<{ id: string | "new" }>();
 	const router = useRouter();
 	const { data: dataGetSurvey, isLoading: loadingGet } = useQuery({
 		queryFn: ({ signal }) =>
-			getData<Survey>({
+			getData<SurveyWithQuestions>({
 				url: "survey",
 				id: Number.parseInt(id, 10),
 				signal,
+				query:
+					"include.questions.include.multipleChoice=true&&include.questions.include.checkBox=true",
 			}),
 		queryKey: ["survey-get-by-id", id],
 		enabled: id !== "new",
 	});
 
 	const { mutateAsync: mutatePost, isPending: loadingPost } = useMutation({
-		mutationFn: async (val: PostData<Survey>) => postData<Survey, Survey>(val),
+		mutationFn: async (val: PostData<SurveyWithQuestions>) =>
+			postData<Survey, SurveyWithQuestions>(val),
 		mutationKey: ["survey-post"],
 	});
 
 	const { mutateAsync: mutatePut, isPending: loadingPut } = useMutation({
-		mutationFn: (val: PutData<Survey>) => putData<Survey, Survey>(val),
+		mutationFn: (val: PutData<SurveyWithQuestions>) =>
+			putData<Survey, SurveyWithQuestions>(val),
 		mutationKey: ["survey-put"],
 	});
 
 	const { handleSubmit, setValue, control, reset, watch } = useForm<
-		Survey & {
-			questions: {
-				name: string;
-				questionType?: QuestionType;
-				multipleChoice?: MultipleChoice[];
-				checkBox?: CheckBox[];
-			}[];
-		},
+		SurveyWithQuestions,
 		"surveys"
 	>();
 
@@ -77,34 +75,68 @@ const SurveyEdit = () => {
 		name: "questions",
 	});
 
-	const onSubmit = (data: Survey) => {
-		console.log("field", data);
+	const onSubmit = (data: SurveyWithQuestions) => {
+		const existingQuestions = dataGetSurvey?.questions || [];
 
-		// if (id === "new")
-		// 	mutatePost({
-		// 		url: "/survey",
-		// 		data,
-		// 	})
-		// 		.then(() => {
-		// 			toast.success("Questionário cadastrado com sucesso");
-		// 			reset();
-		// 			router.refresh();
-		// 		})
-		// 		.catch((error: any) => {
-		// 			toastErrorsApi(error);
-		// 		});
-		// else
-		// 	mutatePut({
-		// 		url: "/survey",
-		// 		data,
-		// 		id: Number.parseInt(id, 10),
-		// 	})
-		// 		.then(() => {
-		// 			toast.success("Questionário atualizado com sucesso");
-		// 		})
-		// 		.catch((err) => {
-		// 			toastErrorsApi(err);
-		// 		});
+		data.questions = data.questions.map((question) => {
+			switch (question.type) {
+				case "ShortAnswer":
+					return {
+						...question,
+						multipleChoice: undefined,
+						checkBox: undefined,
+					};
+				case "MultipleChoice":
+					return { ...question, checkBox: undefined };
+				case "CheckBox":
+					return { ...question, multipleChoice: undefined };
+				default:
+					return question;
+			}
+		});
+
+		console.log(data.questions);
+
+		const parseData = {
+			name: data.name,
+			questions: {
+				create: data.questions.map((q) => ({
+					name: q.name,
+					type: q.type,
+					multipleChoice: q.multipleChoice,
+					checkBox: q.checkBox,
+				})),
+				delete: existingQuestions.map((q) => q.id),
+			},
+		} as any;
+
+		// console.log(parseData);
+
+		if (id === "new")
+			mutatePost({
+				url: "/survey",
+				data: parseData,
+			})
+				.then(() => {
+					toast.success("Questionário cadastrado com sucesso");
+					reset();
+					router.refresh();
+				})
+				.catch((error: any) => {
+					toastErrorsApi(error);
+				});
+		else
+			mutatePut({
+				url: "/survey",
+				data: parseData,
+				id: Number.parseInt(id, 10),
+			})
+				.then(() => {
+					toast.success("Questionário atualizado com sucesso");
+				})
+				.catch((err) => {
+					toastErrorsApi(err);
+				});
 	};
 
 	const loading = loadingGet || loadingPost || loadingPut;
@@ -112,11 +144,17 @@ const SurveyEdit = () => {
 	useEffect(() => {
 		if (dataGetSurvey && id !== "new") {
 			setValue("name", dataGetSurvey.name);
+			setValue("questions", dataGetSurvey.questions);
 		}
 	}, [dataGetSurvey, id, setValue]);
 
 	useEffect(() => {
-		appendQuestions({ name: "" });
+		appendQuestions({
+			name: "",
+			type: "ShortAnswer",
+			multipleChoice: [{ choice: "" }],
+			checkBox: [{ option: "" }],
+		});
 	}, [appendQuestions]);
 
 	return (
@@ -149,9 +187,7 @@ const SurveyEdit = () => {
 				)}
 			/>
 			{questionsFields?.map((item, indexQuestions) => {
-				const questionType = watch(
-					`questions.${indexQuestions}.questionType`,
-				) as QuestionType;
+				const type = watch(`questions.${indexQuestions}.type`) as QuestionType;
 
 				return (
 					<div
@@ -182,8 +218,10 @@ const SurveyEdit = () => {
 						</div>
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 							<Controller
-								name={`questions.${indexQuestions}.questionType`}
+								name={`questions.${indexQuestions}.type`}
 								control={control}
+								rules={{ required: "Campo obrigatório" }}
+								defaultValue="ShortAnswer"
 								render={({ field, fieldState: { error } }) => (
 									<Skeleton className="rounded-md" isLoaded={!loading}>
 										<Select
@@ -191,11 +229,26 @@ const SurveyEdit = () => {
 											id={field.name}
 											onChange={field.onChange}
 											name={field.name}
-											value={field.value}
+											selectedKeys={field.value ? [field.value] : new Set([])}
 											variant="bordered"
 											color="primary"
+											isRequired
 											isInvalid={!!error}
 											errorMessage={error?.message}
+											items={[
+												{
+													key: "ShortAnswer",
+													textValue: "Texto",
+												},
+												{
+													key: "MultipleChoice",
+													textValue: "Multipla escolha",
+												},
+												{
+													key: "CheckBox",
+													textValue: "Caixa de seleção",
+												},
+											]}
 											renderValue={(items) =>
 												items.map((item) => (
 													<div
@@ -214,40 +267,25 @@ const SurveyEdit = () => {
 												))
 											}
 										>
-											<SelectItem
-												key="ShortAnswer"
-												value="ShortAnswer"
-												classNames={{
-													title: "flex items-center gap-2",
-												}}
-												textValue="Texto"
-											>
-												<IoText />
-												Texto
-											</SelectItem>
-											<SelectItem
-												key="MultipleChoice"
-												value="MultipleChoice"
-												classNames={{
-													title: "flex items-center gap-2",
-												}}
-												textValue="Multipla escolha"
-											>
-												<FaRegDotCircle />
-												Multipla escolha
-											</SelectItem>
-
-											<SelectItem
-												key="CheckBox"
-												value="CheckBox"
-												classNames={{
-													title: "flex items-center gap-2",
-												}}
-												textValue="Caixa de seleção"
-											>
-												<FaCheckSquare />
-												Caixa de seleção
-											</SelectItem>
+											{(item) => (
+												<SelectItem
+													key={item.key}
+													value={item.key}
+													classNames={{
+														title: "flex items-center gap-2",
+													}}
+													textValue={item.textValue}
+												>
+													{item.key === "ShortAnswer" && <IoText size={20} />}
+													{item.key === "MultipleChoice" && (
+														<FaRegDotCircle size={20} />
+													)}
+													{item.key === "CheckBox" && (
+														<FaCheckSquare size={20} />
+													)}
+													{item.textValue}
+												</SelectItem>
+											)}
 										</Select>
 									</Skeleton>
 								)}
@@ -275,13 +313,13 @@ const SurveyEdit = () => {
 									</Skeleton>
 								)}
 							/>
-							{questionType === "MultipleChoice" && (
+							{type === "MultipleChoice" && (
 								<FieldArrayMultipleChoice
 									control={control}
 									name={`questions.${indexQuestions}.multipleChoice`}
 								/>
 							)}
-							{questionType === "CheckBox" && (
+							{type === "CheckBox" && (
 								<FieldArrayCheckBox
 									control={control}
 									name={`questions.${indexQuestions}.checkBox`}
@@ -291,6 +329,22 @@ const SurveyEdit = () => {
 					</div>
 				);
 			})}
+			<Button
+				type="button"
+				variant="ghost"
+				className="w-fit"
+				isDisabled={loading}
+				onClick={() => {
+					appendQuestions({
+						name: "",
+						type: "ShortAnswer",
+						multipleChoice: [{ choice: "" }],
+						checkBox: [{ option: "" }],
+					});
+				}}
+			>
+				Adicionar pergunta
+			</Button>
 			<Button
 				type="submit"
 				variant="ghost"

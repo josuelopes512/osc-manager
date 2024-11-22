@@ -151,11 +151,9 @@ model Question {
 
   multipleChoice MultipleChoice[]
   checkBox       CheckBox[]
-  answer         Answer[]
 
-  shortAnswer    String?
   surveyId       Int
-  survey         Survey          @relation(fields: [surveyId], references: [id])
+  survey         Survey          @relation(fields: [surveyId], references: [id], onDelete: Cascade)
   createdAt      DateTime        @default(now())
   updateAt       DateTime        @updatedAt()
   
@@ -165,28 +163,15 @@ model Question {
 model MultipleChoice {
   id       Int      @id @default(autoincrement())
   choice  String // Array of choices
-  question Question @relation(fields: [questionId], references: [id])
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
   questionId Int
 }
 
 model CheckBox {
   id       Int      @id @default(autoincrement())
   option  String // Array of options
-  question Question @relation(fields: [questionId], references: [id])
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
   questionId Int
-}
-
-model Answer {
-  id   Int    @id @default(autoincrement())
-  name String
-
-  questionId Int
-  question   Question @relation(fields: [questionId], references: [id])
-
-  createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt()
-
-  @@map("answers")
 }
 
 model Account {

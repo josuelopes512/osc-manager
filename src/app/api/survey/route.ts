@@ -2,6 +2,7 @@ import { getQuery } from "@/lib/query";
 import { type NextRequest, NextResponse } from "next/server";
 import type { POSTSurveyDTO } from "./dto/post";
 import { surveyService } from "./service";
+import { questionService } from "../questions/service";
 
 export async function GET(req: NextRequest) {
 	try {
@@ -23,20 +24,31 @@ export async function POST(request: Request) {
 		const survey = await surveyService.create({
 			data: {
 				...data,
-				osc: {
-					connect: { id: data.oscId },
-				},
-				oscId: undefined,
-				semester: {
-					connect: { id: data.semesterId },
-				},
-				semesterId: undefined,
-				students: {
-					connect: data.students.map((id) => ({ id })),
-				},
-				studentIds: undefined,
+				questions: undefined,
 			},
-		} as any);
+		});
+		await Promise.all(
+			data.questions.create.map(async (question) => {
+				await questionService.create({
+					data: {
+						...question,
+						surveyId: survey.id,
+						multipleChoice: {
+							create: question.multipleChoice?.map((choice) => ({
+								...choice,
+								choice: choice.choice ?? "",
+							})),
+						},
+						checkBox: {
+							create: question.checkBox?.map((option) => ({
+								...option,
+								option: option.option ?? "",
+							})),
+						},
+					},
+				});
+			}),
+		);
 		return NextResponse.json(survey);
 	} catch (error) {
 		console.log(error);

@@ -1,8 +1,13 @@
+import type { CheckBox, MultipleChoice, QuestionType } from "@prisma/client";
+
 export interface POSTSurveyDTO {
 	name: string;
-	description: string;
-	link: string;
-	oscId: number;
-	semesterId: number;
-	students: number[];
+	questions: {
+		create: {
+			name: string;
+			type: QuestionType;
+			multipleChoice?: Partial<MultipleChoice>[];
+			checkBox?: Partial<CheckBox>[];
+		}[];
+	};
 }

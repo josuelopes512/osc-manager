@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { columnsSurveys } from "./constants";
 
 export const metadata: Metadata = {
-	title: "Projetos",
+	title: "Questionários",
 };
 
 export default async function Layout({
