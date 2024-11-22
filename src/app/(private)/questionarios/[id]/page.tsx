@@ -32,6 +32,7 @@ import { IoText } from "react-icons/io5";
 import FieldArrayMultipleChoice from "./components/FieldArrayMultipleChoice";
 import FieldArrayCheckBox from "./components/FieldArrayCheckBox";
 import type { SurveyWithQuestions } from "./types";
+import type { POSTSurveyDTO } from "@/app/api/survey/dto/post";
 
 const SurveyEdit = () => {
 	const { id } = useParams<{ id: string | "new" }>();
@@ -50,14 +51,14 @@ const SurveyEdit = () => {
 	});
 
 	const { mutateAsync: mutatePost, isPending: loadingPost } = useMutation({
-		mutationFn: async (val: PostData<SurveyWithQuestions>) =>
-			postData<Survey, SurveyWithQuestions>(val),
+		mutationFn: async (val: PostData<POSTSurveyDTO>) =>
+			postData<Survey, POSTSurveyDTO>(val),
 		mutationKey: ["survey-post"],
 	});
 
 	const { mutateAsync: mutatePut, isPending: loadingPut } = useMutation({
-		mutationFn: (val: PutData<SurveyWithQuestions>) =>
-			putData<Survey, SurveyWithQuestions>(val),
+		mutationFn: (val: PutData<POSTSurveyDTO>) =>
+			putData<Survey, POSTSurveyDTO>(val),
 		mutationKey: ["survey-put"],
 	});
 
@@ -108,7 +109,7 @@ const SurveyEdit = () => {
 				})),
 				delete: existingQuestions.map((q) => q.id),
 			},
-		} as any;
+		} as POSTSurveyDTO;
 
 		// console.log(parseData);
 

@@ -131,6 +131,7 @@ model Survey {
   name String
 
   questions Question[]
+  surveyAnswers SurveyAnswer[]
 
   createdAt DateTime @default(now())
   updateAt  DateTime @updatedAt()
@@ -154,6 +155,9 @@ model Question {
 
   surveyId       Int
   survey         Survey          @relation(fields: [surveyId], references: [id], onDelete: Cascade)
+  
+  surveyAnswer   SurveyAnswer[]
+
   createdAt      DateTime        @default(now())
   updateAt       DateTime        @updatedAt()
   
@@ -173,6 +177,22 @@ model CheckBox {
   question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
   questionId Int
 }
+
+model SurveyAnswer {
+  id         Int        @id @default(autoincrement())
+
+  surveyId   Int
+  survey     Survey     @relation(fields: [surveyId], references: [id], onDelete: Cascade)
+  questionId Int
+  question   Question   @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  answer     String     // This can store the answer in a serialized format, or you can use separate fields for each type
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt()
+
+  @@map("survey_answers")
+}
+
 
 model Account {
   id                Int     @id @default(autoincrement())
