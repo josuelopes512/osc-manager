@@ -11,6 +11,7 @@ import {
 	Skeleton,
 } from "@nextui-org/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
 const SurveyPage = () => {
@@ -34,15 +35,21 @@ const SurveyPage = () => {
 			}),
 	});
 
-	const { handleSubmit, control } = useForm<SurveyWithQuestions>();
+	const { setValue, handleSubmit, control } = useForm<SurveyWithQuestions>();
 
 	const { fields } = useFieldArray({
 		control,
 		name: "questions",
+		keyName: "idField",
 	});
 
+	useEffect(() => {
+		setValue("questions", surveyData?.questions);
+	}, [surveyData, setValue]);
+
 	const onSubmit = (data: any) => {
-		console.log(fields);
+		console.log("data", data);
+		console.log("fields", fields);
 
 		// submitSurvey(data)
 		//   .then(() => {
@@ -57,7 +64,7 @@ const SurveyPage = () => {
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-			{surveyData?.questions.map((field, index) => (
+			{fields.map((field, index) => (
 				<div key={field.id} className="flex flex-col gap-2">
 					{field.type === "ShortAnswer" && (
 						<div className="bg-content1 p-4 rounded-lg">
@@ -82,42 +89,46 @@ const SurveyPage = () => {
 						</div>
 					)}
 					{field.type === "CheckBox" && (
-						<CheckboxGroup
-							label={field.name}
-							className="bg-content1 p-4 rounded-lg"
-						>
-							{field.checkBox?.map((option) => (
-								<Controller
-									key={option.id}
-									name={`questions.${index}.checkBox.${option.id ?? 0}.option`}
-									control={control}
-									render={({ field: { onChange, value } }) => (
-										<Checkbox value={value} onChange={onChange}>
+						<Controller
+							key={field.id}
+							name={`questions.${index}.checkBox.${field.id ?? 0}.option`}
+							control={control}
+							render={({ field: { onChange, value } }) => (
+								<CheckboxGroup
+									label={field.name}
+									value={[value ?? ""]}
+									onValueChange={onChange}
+									className="bg-content1 p-4 rounded-lg"
+								>
+									{field.checkBox?.map((option) => (
+										<Checkbox key={option.id} value={option.option}>
 											{option.option}
 										</Checkbox>
-									)}
-								/>
-							))}
-						</CheckboxGroup>
+									))}
+								</CheckboxGroup>
+							)}
+						/>
 					)}
 					{field.type === "MultipleChoice" && (
-						<RadioGroup
-							label={field.name}
-							className="bg-content1 p-4 rounded-lg"
-						>
-							{field.multipleChoice?.map((option) => (
-								<Controller
-									key={option.id}
-									name={`questions.${index}.multipleChoice.${option.id ?? 0}.choice`}
-									control={control}
-									render={({ field: { onChange, value } }) => (
-										<Radio value={value ?? ""} onChange={onChange}>
-											{option.choice}
+						<Controller
+							key={field.id}
+							name={`questions.${index}.multipleChoice.${field.id ?? 0}.choice`}
+							control={control}
+							render={({ field: { onChange, value } }) => (
+								<RadioGroup
+									label={field.name}
+									className="bg-content1 p-4 rounded-lg"
+									value={value}
+									onValueChange={onChange}
+								>
+									{field.multipleChoice?.map((choice) => (
+										<Radio key={choice.id} value={choice.choice ?? ""}>
+											{choice.choice}
 										</Radio>
-									)}
-								/>
-							))}
-						</RadioGroup>
+									))}
+								</RadioGroup>
+							)}
+						/>
 					)}
 				</div>
 			))}

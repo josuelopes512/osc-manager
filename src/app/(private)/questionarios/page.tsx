@@ -70,7 +70,7 @@ export default function SurveyList() {
 							isIconOnly
 							color="primary"
 							className="rounded-full"
-							onClick={() => router.push(`questionarios/${item.id}`)}
+							onPress={() => router.push(`questionarios/${item.id}`)}
 							title="Editar"
 						>
 							<FaPencilAlt size={20} />
@@ -81,7 +81,7 @@ export default function SurveyList() {
 							isIconOnly
 							color="danger"
 							className="rounded-full"
-							onClick={() => {
+							onPress={() => {
 								setItemDelete(item.id);
 								onOpen();
 							}}

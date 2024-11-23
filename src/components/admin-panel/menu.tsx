@@ -48,7 +48,7 @@ export function Menu({ isOpen }: MenuProps) {
 							)}
 							{menus.map(({ href, label, icon: Icon, active, submenus }) =>
 								!submenus || submenus.length === 0 ? (
-									<div className="w-full" key={href}>
+									<div className="w-full" key={label}>
 										<TooltipProvider disableHoverableContent>
 											<Tooltip delayDuration={100}>
 												<TooltipTrigger asChild>
@@ -89,7 +89,7 @@ export function Menu({ isOpen }: MenuProps) {
 										</TooltipProvider>
 									</div>
 								) : (
-									<div className="w-full" key={href}>
+									<div className="w-full" key={label}>
 										<CollapseMenuButton
 											icon={Icon}
 											label={label}
@@ -111,7 +111,7 @@ export function Menu({ isOpen }: MenuProps) {
 							<Tooltip delayDuration={100}>
 								<TooltipTrigger asChild>
 									<Button
-										onClick={() => {
+										onPress={() => {
 											signOut();
 										}}
 										variant="outline"

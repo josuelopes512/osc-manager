@@ -27,27 +27,37 @@ export async function POST(request: Request) {
 				questions: undefined,
 			},
 		});
+		// const survey = { id: 9 };
+		// console.log(data);
+
 		await Promise.all(
-			data.questions.create.map(async (question) => {
-				await questionService.create({
-					data: {
-						...question,
-						surveyId: survey.id,
-						multipleChoice: {
-							create: question.multipleChoice?.map((choice) => ({
-								...choice,
-								choice: choice.choice ?? "",
-							})),
+			data.questions.create
+				.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+				.map(async (question) => {
+					await questionService.create({
+						data: {
+							...question,
+							surveyId: survey.id,
+							order: question.order,
+							multipleChoice: {
+								create: question.multipleChoice
+									?.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+									.map((choice) => ({
+										...choice,
+										choice: choice.choice ?? "",
+									})),
+							},
+							checkBox: {
+								create: question.checkBox
+									?.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+									.map((option) => ({
+										...option,
+										option: option.option ?? "",
+									})),
+							},
 						},
-						checkBox: {
-							create: question.checkBox?.map((option) => ({
-								...option,
-								option: option.option ?? "",
-							})),
-						},
-					},
-				});
-			}),
+					});
+				}),
 		);
 		return NextResponse.json(survey);
 	} catch (error) {

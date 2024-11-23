@@ -70,7 +70,7 @@ export default function StudentList() {
 							isIconOnly
 							color="primary"
 							className="rounded-full"
-							onClick={() => router.push(`alunos/${item.id}`)}
+							onPress={() => router.push(`alunos/${item.id}`)}
 							title="Editar"
 						>
 							<FaPencilAlt size={20} />
@@ -82,7 +82,7 @@ export default function StudentList() {
 							title="Deletar"
 							color="danger"
 							className="rounded-full"
-							onClick={() => {
+							onPress={() => {
 								setItemDelete(item.id);
 								onOpen();
 							}}

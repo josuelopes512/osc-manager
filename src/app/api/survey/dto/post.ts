@@ -6,6 +6,7 @@ export interface POSTSurveyDTO {
 		create: {
 			name: string;
 			type: QuestionType;
+			order: number;
 			multipleChoice?: Partial<MultipleChoice>[];
 			checkBox?: Partial<CheckBox>[];
 		}[];

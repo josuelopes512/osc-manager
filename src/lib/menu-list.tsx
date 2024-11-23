@@ -29,7 +29,7 @@ type Group = {
 export function getMenuList(pathname: string): Group[] {
 	return [
 		{
-			groupLabel: "",
+			groupLabel: "Painel",
 			menus: [
 				{
 					href: "/dashboard",

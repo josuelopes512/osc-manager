@@ -12,11 +12,12 @@ import {
 	Select,
 	SelectItem,
 	Skeleton,
+	Textarea,
 	Tooltip,
 } from "@nextui-org/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
@@ -37,6 +38,7 @@ import type { POSTSurveyDTO } from "@/app/api/survey/dto/post";
 const SurveyEdit = () => {
 	const { id } = useParams<{ id: string | "new" }>();
 	const router = useRouter();
+
 	const { data: dataGetSurvey, isLoading: loadingGet } = useQuery({
 		queryFn: ({ signal }) =>
 			getData<SurveyWithQuestions>({
@@ -44,11 +46,17 @@ const SurveyEdit = () => {
 				id: Number.parseInt(id, 10),
 				signal,
 				query:
-					"include.questions.include.multipleChoice=true&&include.questions.include.checkBox=true",
+					"include.questions.include.multipleChoice=true" +
+					"&&include.questions.include.checkBox=true" +
+					"&&include.questions.orderBy.order=asc",
 			}),
 		queryKey: ["survey-get-by-id", id],
 		enabled: id !== "new",
 	});
+
+	const [lastOrder, setLastOrder] = useState(
+		dataGetSurvey?.questions?.length || 1,
+	);
 
 	const { mutateAsync: mutatePost, isPending: loadingPost } = useMutation({
 		mutationFn: async (val: PostData<POSTSurveyDTO>) =>
@@ -100,9 +108,11 @@ const SurveyEdit = () => {
 
 		const parseData = {
 			name: data.name,
+			description: data.description,
 			questions: {
 				create: data.questions.map((q) => ({
 					name: q.name,
+					order: q.order,
 					type: q.type,
 					multipleChoice: q.multipleChoice,
 					checkBox: q.checkBox,
@@ -145,6 +155,7 @@ const SurveyEdit = () => {
 	useEffect(() => {
 		if (dataGetSurvey && id !== "new") {
 			setValue("name", dataGetSurvey.name);
+			setValue("description", dataGetSurvey.description);
 			setValue("questions", dataGetSurvey.questions);
 		}
 	}, [dataGetSurvey, id, setValue]);
@@ -152,9 +163,10 @@ const SurveyEdit = () => {
 	useEffect(() => {
 		appendQuestions({
 			name: "",
+			order: 1,
 			type: "ShortAnswer",
-			multipleChoice: [{ choice: "" }],
-			checkBox: [{ option: "" }],
+			multipleChoice: [{ choice: "", order: 1 }],
+			checkBox: [{ option: "", order: 1 }],
 		});
 	}, [appendQuestions]);
 
@@ -187,7 +199,28 @@ const SurveyEdit = () => {
 					</Skeleton>
 				)}
 			/>
-			{questionsFields?.map((item, indexQuestions) => {
+			<Controller
+				name="description"
+				control={control}
+				defaultValue=""
+				render={({ field, fieldState: { error } }) => (
+					<Skeleton className="rounded-md" isLoaded={!loading}>
+						<Textarea
+							label="Descrição do questionário"
+							id={field.name}
+							type="text"
+							onChange={field.onChange}
+							name={field.name}
+							value={field.value ?? ""}
+							variant="bordered"
+							color="primary"
+							isInvalid={!!error}
+							errorMessage={error?.message}
+						/>
+					</Skeleton>
+				)}
+			/>
+			{questionsFields.map((item, indexQuestions) => {
 				const type = watch(`questions.${indexQuestions}.type`) as QuestionType;
 
 				return (
@@ -209,7 +242,7 @@ const SurveyEdit = () => {
 									type="button"
 									color="danger"
 									className="w-fit rounded-full text-main-white"
-									onClick={() => removeQuestions(indexQuestions)}
+									onPress={() => removeQuestions(indexQuestions)}
 									isDisabled={loading}
 									isIconOnly
 								>
@@ -316,14 +349,14 @@ const SurveyEdit = () => {
 							/>
 							{type === "MultipleChoice" && (
 								<FieldArrayMultipleChoice
-									control={control}
-									name={`questions.${indexQuestions}.multipleChoice`}
+									control={control as any}
+									name={`questions.${indexQuestions}.multipleChoice` as any}
 								/>
 							)}
 							{type === "CheckBox" && (
 								<FieldArrayCheckBox
-									control={control}
-									name={`questions.${indexQuestions}.checkBox`}
+									control={control as any}
+									name={`questions.${indexQuestions}.checkBox` as any}
 								/>
 							)}
 						</div>
@@ -335,12 +368,13 @@ const SurveyEdit = () => {
 				variant="ghost"
 				className="w-fit"
 				isDisabled={loading}
-				onClick={() => {
+				onPress={() => {
 					appendQuestions({
 						name: "",
+						order: questionsFields?.length,
 						type: "ShortAnswer",
-						multipleChoice: [{ choice: "" }],
-						checkBox: [{ option: "" }],
+						multipleChoice: [{ choice: "", order: 1 }],
+						checkBox: [{ option: "", order: 1 }],
 					});
 				}}
 			>

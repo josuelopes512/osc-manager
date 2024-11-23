@@ -129,6 +129,7 @@ model Project {
 model Survey {
   id   Int    @id @default(autoincrement())
   name String
+  description String?
 
   questions Question[]
   surveyAnswers SurveyAnswer[]
@@ -148,6 +149,7 @@ enum QuestionType {
 model Question {
   id             Int             @id @default(autoincrement())
   name           String
+  order          Int @default(0)
   type           QuestionType
 
   multipleChoice MultipleChoice[]
@@ -167,6 +169,8 @@ model Question {
 model MultipleChoice {
   id       Int      @id @default(autoincrement())
   choice  String // Array of choices
+  order          Int @default(0)
+
   question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
   questionId Int
 }
@@ -174,6 +178,8 @@ model MultipleChoice {
 model CheckBox {
   id       Int      @id @default(autoincrement())
   option  String // Array of options
+  order          Int @default(0)
+
   question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
   questionId Int
 }

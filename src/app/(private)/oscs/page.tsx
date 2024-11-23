@@ -70,7 +70,7 @@ export default function OSCList() {
 							isIconOnly
 							color="primary"
 							className="rounded-full"
-							onClick={() => router.push(`oscs/${item.id}`)}
+							onPress={() => router.push(`oscs/${item.id}`)}
 							title="Editar"
 						>
 							<FaPencilAlt size={20} />
@@ -81,7 +81,7 @@ export default function OSCList() {
 							isIconOnly
 							color="danger"
 							className="rounded-full"
-							onClick={() => {
+							onPress={() => {
 								setItemDelete(item.id);
 								onOpen();
 							}}

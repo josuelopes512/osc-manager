@@ -150,7 +150,7 @@ export function Combobox<T extends object>({
 				label: "cursor-pointer w-full",
 				input: "cursor-pointer",
 			}}
-			onClick={onOpen}
+			onPress={onOpen}
 			onSelect={onOpen}
 			variant="bordered"
 			color="primary"
@@ -180,7 +180,7 @@ export function Combobox<T extends object>({
 						size="sm"
 						variant="light"
 						radius="full"
-						onClick={() => {
+						onPress={() => {
 							onChange("");
 						}}
 						isIconOnly
@@ -320,7 +320,7 @@ export function Combobox<T extends object>({
 									>
 										<Button
 											variant="flat"
-											onClick={selectAllItems}
+											onPress={selectAllItems}
 											className="rounded-full"
 											isIconOnly
 										>
@@ -337,7 +337,7 @@ export function Combobox<T extends object>({
 									{isMultiple && (
 										<Button
 											variant="flat"
-											onClick={onClose}
+											onPress={onClose}
 											className="mt-4 w-full"
 										>
 											Confirmar
@@ -381,7 +381,7 @@ export function Combobox<T extends object>({
 												{rowsPagination.map((value) => (
 													<DropdownItem
 														key={value}
-														onClick={() => onRowsPerPageChange(value)}
+														onPress={() => onRowsPerPageChange(value)}
 													>
 														{value}
 													</DropdownItem>

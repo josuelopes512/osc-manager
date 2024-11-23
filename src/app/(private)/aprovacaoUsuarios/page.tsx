@@ -76,7 +76,7 @@ export default function UserApprovalList() {
 							isIconOnly
 							color="success"
 							className="rounded-full"
-							onClick={() => {
+							onPress={() => {
 								setIdUserApproval(Number(item.id));
 								onOpen();
 							}}

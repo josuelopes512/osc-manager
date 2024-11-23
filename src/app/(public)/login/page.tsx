@@ -46,7 +46,7 @@ const Login = () => {
 						<Image src={logo.src} alt="App Logo" className="w-80 h-80 mb-6" />
 					</div>
 					<Button
-						onClick={() => {
+						onPress={() => {
 							mutateLoginGoogle();
 						}}
 						className="w-full bg-white text-gray-700 hover:bg-gray-100 border border-gray-300"
