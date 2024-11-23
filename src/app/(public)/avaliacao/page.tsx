@@ -44,7 +44,7 @@ const SurveyPage = () => {
 	});
 
 	useEffect(() => {
-		setValue("questions", surveyData?.questions);
+		setValue("questions", surveyData?.questions as any);
 	}, [surveyData, setValue]);
 
 	const onSubmit = (data: any) => {
