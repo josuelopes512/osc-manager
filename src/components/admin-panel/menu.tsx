@@ -111,7 +111,7 @@ export function Menu({ isOpen }: MenuProps) {
 							<Tooltip delayDuration={100}>
 								<TooltipTrigger asChild>
 									<Button
-										onPress={() => {
+										onClick={() => {
 											signOut();
 										}}
 										variant="outline"

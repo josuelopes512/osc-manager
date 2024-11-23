@@ -70,7 +70,7 @@ export function UserNav() {
 				<DropdownMenuSeparator />
 				<DropdownMenuItem
 					className="hover:cursor-pointer"
-					onPress={() => {
+					onClick={() => {
 						signOut();
 					}}
 				>
