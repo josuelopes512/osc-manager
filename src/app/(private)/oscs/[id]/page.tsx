@@ -207,7 +207,7 @@ const OSCEdit = () => {
 								type="button"
 								color="danger"
 								className="w-fit rounded-full text-main-white"
-								onClick={() => removeOscSocials(indexOscsocials)}
+								onPress={() => removeOscSocials(indexOscsocials)}
 								isDisabled={loading}
 								isIconOnly
 							>
@@ -275,7 +275,7 @@ const OSCEdit = () => {
 				color="primary"
 				className="w-fit rounded-full data-[hover=true]:bg-main-200 data-[hover=true]:text-main-white"
 				isDisabled={loading}
-				onClick={() => {
+				onPress={() => {
 					appendOscSocials({
 						link: "",
 						socialPlatformId: "",

@@ -1,0 +1,99 @@
+import type { NextRequest } from "next/server";
+import { courseService } from "../service";
+import { DELETE, GET, PUT } from "./route";
+
+jest.mock("../service");
+
+describe("Course API Routes", () => {
+	afterEach(() => {
+		jest.clearAllMocks();
+	});
+
+	describe("GET /course/:id", () => {
+		it("should return course data for a valid ID", async () => {
+			const mockCourse = { id: 1, name: "Course 1" };
+			jest.fn().mockResolvedValue(mockCourse);
+
+			const req = {} as NextRequest;
+			const context = { params: { id: "1" } };
+
+			const response = await GET(req, context);
+			const json = await response.json();
+
+			expect(json).toEqual(mockCourse);
+			expect(courseService.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
+		});
+
+		it("should return 404 for an invalid ID", async () => {
+			courseService.findOne.mockResolvedValue(null);
+
+			const req = {} as NextRequest;
+			const context = { params: { id: "invalid" } };
+
+			const response = await GET(req, context);
+			const json = await response.json();
+
+			expect(json).toEqual({ msg: "Falha ao buscar dados do curso" });
+			expect(response.status).toBe(404);
+		});
+	});
+
+	describe("PUT /course/:id", () => {
+		it("should update course data for a valid ID", async () => {
+			const mockCourse = { id: 1, name: "Updated Course" };
+			courseService.update.mockResolvedValue(mockCourse);
+
+			const req = { json: async () => ({ name: "Updated Course" }) } as any;
+			const context = { params: { id: "1" } };
+
+			const response = await PUT(req, context);
+			const json = await response.json();
+
+			expect(json).toEqual(mockCourse);
+			expect(courseService.update).toHaveBeenCalledWith(1, {
+				name: "Updated Course",
+			});
+		});
+
+		it("should return 404 for an invalid ID", async () => {
+			courseService.update.mockResolvedValue(null);
+
+			const req = { json: async () => ({ name: "Updated Course" }) } as any;
+			const context = { params: { id: "invalid" } };
+
+			const response = await PUT(req, context);
+			const json = await response.json();
+
+			expect(json).toEqual({ msg: "Falha ao atualizar dados do curso" });
+			expect(response.status).toBe(404);
+		});
+	});
+
+	describe("DELETE /course/:id", () => {
+		it("should delete course data for a valid ID", async () => {
+			courseService.delete.mockResolvedValue(true);
+
+			const req = {} as any;
+			const context = { params: { id: "1" } };
+
+			const response = await DELETE(req, context);
+			const json = await response.json();
+
+			expect(json).toEqual({ msg: "Curso deletado com sucesso" });
+			expect(courseService.delete).toHaveBeenCalledWith(1);
+		});
+
+		it("should return 404 for an invalid ID", async () => {
+			courseService.delete.mockResolvedValue(false);
+
+			const req = {} as any;
+			const context = { params: { id: "invalid" } };
+
+			const response = await DELETE(req, context);
+			const json = await response.json();
+
+			expect(json).toEqual({ msg: "Falha ao deletar curso" });
+			expect(response.status).toBe(404);
+		});
+	});
+});

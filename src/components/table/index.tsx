@@ -199,7 +199,7 @@ const Table = <T extends Record<string, any>>({
 							{rowsPagination.map((value) => (
 								<DropdownItem
 									key={value}
-									onClick={() => onRowsPerPageChange(value)}
+									onPress={() => onRowsPerPageChange(value)}
 								>
 									{value}
 								</DropdownItem>

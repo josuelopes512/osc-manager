@@ -126,6 +126,83 @@ model Project {
   @@map("projects")
 }
 
+model Survey {
+  id   Int    @id @default(autoincrement())
+  name String
+  description String?
+
+  questions Question[]
+  surveyAnswers SurveyAnswer[]
+
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt()
+
+  @@map("surveys")
+}
+
+enum QuestionType {
+  MultipleChoice
+  CheckBox
+  ShortAnswer
+}
+
+model Question {
+  id             Int             @id @default(autoincrement())
+  name           String
+  order          Int @default(0)
+  required       Boolean @default(false)
+  type           QuestionType
+
+  multipleChoice MultipleChoice[]
+  checkBox       CheckBox[]
+
+  surveyId       Int
+  survey         Survey          @relation(fields: [surveyId], references: [id], onDelete: Cascade)
+  
+  surveyAnswer   SurveyAnswer[]
+
+  createdAt      DateTime        @default(now())
+  updateAt       DateTime        @updatedAt()
+  
+  @@map("questions")
+}
+
+model MultipleChoice {
+  id       Int      @id @default(autoincrement())
+  choice  String 
+  other   String?
+  order          Int @default(0)
+
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId Int
+}
+
+model CheckBox {
+  id       Int      @id @default(autoincrement())
+  option  String // Array of options
+  other    String?
+  order          Int @default(0)
+
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId Int
+}
+
+model SurveyAnswer {
+  id         Int        @id @default(autoincrement())
+
+  surveyId   Int
+  survey     Survey     @relation(fields: [surveyId], references: [id], onDelete: Cascade)
+  questionId Int
+  question   Question   @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  answer     String     // This can store the answer in a serialized format, or you can use separate fields for each type
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt()
+
+  @@map("survey_answers")
+}
+
+
 model Account {
   id                Int     @id @default(autoincrement())
   userId            String  @map("user_id")

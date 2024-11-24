@@ -1,0 +1,61 @@
+import { NextRequest } from "next/server";
+import { GET, POST } from "./route";
+import { oscService } from "./service";
+
+jest.mock("./service");
+
+describe("OSC API Routes", () => {
+	afterEach(() => {
+		jest.clearAllMocks();
+	});
+
+	describe("GET /osc", () => {
+		it("should return all OSCs", async () => {
+			const mockOSCs = [
+				{ id: 1, name: "OSC 1" },
+				{ id: 2, name: "OSC 2" },
+			];
+			oscService.find.mockResolvedValue(mockOSCs);
+
+			const response = await GET();
+			const json = await response.json();
+
+			expect(json).toEqual(mockOSCs);
+			expect(oscService.find).toHaveBeenCalledWith({});
+		});
+	});
+
+	describe("POST /osc", () => {
+		it("should create a new OSC with valid data", async () => {
+			const mockOSC = { id: 1, name: "New OSC" };
+			oscService.create.mockResolvedValue(mockOSC);
+
+			const req = {
+				json: async () => ({ name: "New OSC", oscSocials: { create: [] } }),
+			} as any;
+
+			const response = await POST(req);
+			const json = await response.json();
+
+			expect(json).toEqual(mockOSC);
+			expect(oscService.create).toHaveBeenCalledWith({
+				data: { name: "New OSC", oscSocials: { createMany: { data: [] } } },
+			});
+		});
+
+		it("should return an error for missing required fields", async () => {
+			oscService.create.mockRejectedValue(new Error("Validation error"));
+
+			const req = { json: async () => ({}) } as any;
+
+			const response = await POST(req);
+			const json = await response.json();
+
+			expect(json).toEqual({
+				error: new Error("Validation error"),
+				msg: "Falha ao criar OSC",
+			});
+			expect(response.status).toBe(500);
+		});
+	});
+});

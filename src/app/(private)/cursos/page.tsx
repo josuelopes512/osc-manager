@@ -70,7 +70,7 @@ export default function CourseList() {
 							isIconOnly
 							color="primary"
 							className="rounded-full"
-							onClick={() => router.push(`cursos/${item.id}`)}
+							onPress={() => router.push(`cursos/${item.id}`)}
 							title="Editar"
 						>
 							<FaPencilAlt size={20} />
@@ -81,7 +81,7 @@ export default function CourseList() {
 							isIconOnly
 							color="danger"
 							className="rounded-full"
-							onClick={() => {
+							onPress={() => {
 								setItemDelete(item.id);
 								onOpen();
 							}}

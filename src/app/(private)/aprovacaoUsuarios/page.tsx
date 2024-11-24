@@ -76,8 +76,8 @@ export default function UserApprovalList() {
 							isIconOnly
 							color="success"
 							className="rounded-full"
-							onClick={() => {
-								setEmailUserApproval(item.email);
+							onPress={() => {
+								setEmailUserApproval(item.id);
 								onOpen();
 							}}
 							title="Aprovar"

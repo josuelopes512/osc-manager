@@ -78,7 +78,7 @@ export default function ProjectList() {
 							isIconOnly
 							color="primary"
 							className="rounded-full"
-							onClick={() => router.push(`projetos/${item.id}`)}
+							onPress={() => router.push(`projetos/${item.id}`)}
 							title="Editar"
 						>
 							<FaPencilAlt size={20} />
@@ -89,7 +89,7 @@ export default function ProjectList() {
 							isIconOnly
 							color="danger"
 							className="rounded-full"
-							onClick={() => {
+							onPress={() => {
 								setItemDelete(item.id);
 								onOpen();
 							}}

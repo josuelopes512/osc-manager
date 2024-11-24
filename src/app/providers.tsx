@@ -51,7 +51,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
 					<h1 className="text-2xl font-bold">Ocorreu um erro</h1>
 					<Button
 						className="mt-4"
-						onClick={() => {
+						onPress={() => {
 							resetErrorBoundary();
 						}}
 					>
