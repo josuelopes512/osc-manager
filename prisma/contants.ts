@@ -235,6 +235,7 @@ export const semesters = [
 	{ id: 27, name: "2034.1" },
 	{ id: 28, name: "2034.2" },
 ];
+
 const surveyAluno = {
 	id: 1,
 	name: "Questionário: Colaboração Acadêmica com Organizações da Sociedade Civil (Aluno)",
@@ -319,21 +320,6 @@ const surveyAluno = {
 				order: 6,
 				type: "CheckBox",
 				required: true,
-				checkBox: [
-					{ option: "Falta de clareza nas expectativas da OSC", order: 1 },
-					{
-						option: "Dificuldade em aplicar conceitos teóricos à prática",
-						order: 2,
-					},
-					{ option: "Falta de tempo para desenvolver o projeto", order: 3 },
-					{
-						option: "Limitações de recursos (financeiros, materiais)",
-						order: 4,
-					},
-					{ option: "Falta de orientação adequada", order: 5 },
-					{ option: "Nenhuma", order: 6 },
-					{ option: "Other", order: 7 },
-				],
 			},
 			{
 				name: "Como você descreveria sua experiência geral de trabalho com a OSC?",
@@ -435,23 +421,6 @@ const surveysRepresentantes = {
 				order: 3,
 				type: "CheckBox",
 				required: true,
-				checkBox: [
-					{
-						option: "Falta de alinhamento entre expectativas de OSCs e alunos",
-						order: 1,
-					},
-					{
-						option: "Dificuldade dos alunos em aplicar a teoria na prática",
-						order: 2,
-					},
-					{
-						option: "Limitações de tempo e recursos para orientar os alunos",
-						order: 3,
-					},
-					{ option: "Falta de feedback contínuo das OSCs", order: 4 },
-					{ option: "Nenhuma", order: 5 },
-					{ option: "Other", order: 6 },
-				],
 			},
 			{
 				name: "Você acredita que os trabalhos acadêmicos realizados atendem às demandas das OSCs?",
@@ -548,26 +517,6 @@ const surveysProfessores = {
 				order: 4,
 				type: "CheckBox",
 				required: true,
-				checkBox: [
-					{
-						option: "Falta de clareza nas expectativas dos alunos",
-						order: 1,
-					},
-					{
-						option: "Prazos incompatíveis com as necessidades da OSC",
-						order: 2,
-					},
-					{
-						option: "Dificuldade na comunicação entre OSC e alunos",
-						order: 3,
-					},
-					{
-						option: "Resultados teóricos que não são aplicáveis",
-						order: 4,
-					},
-					{ option: "Nenhuma", order: 5 },
-					{ option: "Other", order: 6 },
-				],
 			},
 			{
 				name: "Qual foi o impacto prático dos trabalhos acadêmicos na OSC?",
@@ -590,3 +539,5 @@ const surveysProfessores = {
 		],
 	},
 };
+
+export const surveys = [surveyAluno, surveysRepresentantes, surveysProfessores];
