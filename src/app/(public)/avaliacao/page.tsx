@@ -38,30 +38,10 @@ const SurveyPage = () => {
 			}),
 	});
 
-	const { register, handleSubmit, control, getValues, setValue, watch } =
+	const { register, handleSubmit, control, watch } =
 		useForm<SurveyAnswerProps>();
 
-	const { fields } = useFieldArray({
-		control,
-		name: "questions",
-		keyName: "idField",
-	});
-
-	// useEffect(() => {
-	// 	if (surveyData)
-	// 		setValue(
-	// 			"questions",
-	// 			surveyData?.questions.map((q) => ({
-	// 				...q,
-	// 				// multipleChoice: [],
-	// 				// checkBox: [],
-	// 			})),
-	// 		);
-	// }, [surveyData, setValue]);
-
-	const onSubmit = (data: any) => {
-		console.log(data);
-
+	const onSubmit = (data: SurveyAnswerProps) => {
 		const parsedData = {
 			...data,
 			questions: data.questions
@@ -273,7 +253,7 @@ const SurveyPage = () => {
 				);
 			})}
 			<Button type="submit" disabled={submitting} className="mt-4">
-				Submit
+				Enviar
 			</Button>
 		</form>
 	);
