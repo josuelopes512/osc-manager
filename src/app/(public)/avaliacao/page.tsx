@@ -21,7 +21,7 @@ const SurveyPage = () => {
 		queryFn: ({ signal }) =>
 			getData<SurveyWithQuestions>({
 				url: "survey",
-				id: 13,
+				id: 18,
 				signal,
 				query:
 					"include.questions.include.multipleChoice=true" +
@@ -102,6 +102,8 @@ const SurveyPage = () => {
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+			<h1 className="text-2xl font-bold">{surveyData?.name}</h1>
+			<span className="text-foreground-500">{surveyData?.description}</span>
 			{surveyData?.questions.map((question, index) => {
 				const checkbox = watch(`questions.${index}.checkBox`);
 				const multipleChoice = watch(`questions.${index}.multipleChoice`);
@@ -131,7 +133,7 @@ const SurveyPage = () => {
 											variant="bordered"
 											color="primary"
 											classNames={{
-												label: "text-foreground-500",
+												label: "text-foreground-700 text-lg",
 												input: "placeholder:opacity-0",
 											}}
 											isInvalid={!!error}
@@ -165,6 +167,9 @@ const SurveyPage = () => {
 											isRequired={question.required}
 											isInvalid={!!error}
 											errorMessage={error?.message}
+											classNames={{
+												label: "text-foreground-700 text-lg",
+											}}
 										>
 											{question.checkBox
 												?.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
@@ -222,6 +227,9 @@ const SurveyPage = () => {
 											label={question.name}
 											value={field.value}
 											onChange={field.onChange}
+											classNames={{
+												label: "text-foreground-700 text-lg",
+											}}
 											isRequired={question.required}
 											isInvalid={!!error}
 											errorMessage={error?.message}
