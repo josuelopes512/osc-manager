@@ -60,7 +60,7 @@ const SurveyPage = () => {
 					} = q;
 					const parsedCheckBox = JSON.stringify(checkBox);
 					return {
-						id: Number(id),
+						questionId: Number(id),
 						answer: multipleChoice || parsedCheckBox || name,
 						other: checkBoxOther || multipleChoiceOther,
 					};
