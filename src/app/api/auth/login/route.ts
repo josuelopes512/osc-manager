@@ -1,6 +1,7 @@
 import { userService } from "@/app/api/user/service";
 import type { Account } from "next-auth";
 import { NextResponse } from "next/server";
+import { users } from "../../../../../prisma/contants";
 import { accountService } from "../../account/service";
 // import { userApprovalService } from "../../userApproval/service";
 
@@ -25,13 +26,18 @@ export async function POST(req: Request) {
 			},
 		});
 
+		// check if user is in the list of users
+		const userInList = users.find(
+			(user) => user.email === accountBody.userData?.email,
+		);
+
 		if (!user) {
 			user = await userService.create({
 				data: {
 					id: String(accountBody.userData.id),
 					email: accountBody.userData.email,
 					name: accountBody.userData.name,
-					approved: false,
+					approved: userInList?.approved || false,
 					accounts: {
 						create: {
 							type: accountBody.type,
@@ -48,6 +54,10 @@ export async function POST(req: Request) {
 					},
 				},
 			});
+			if (user.approved === false) {
+				return NextResponse.json({ msg: "User not approved" }, { status: 403 });
+			}
+			return NextResponse.json(user, { status: 200 });
 		}
 
 		if (!account) {
@@ -64,8 +74,14 @@ export async function POST(req: Request) {
 					scope: accountBody.scope,
 					session_state: String(accountBody.session_state),
 					user: {
-						connect: {
-							email: accountBody.userData.email,
+						connectOrCreate: {
+							create: {
+								id: String(accountBody.userData.id),
+								email: accountBody.userData.email,
+								name: accountBody.userData.name,
+								approved: userInList?.approved || false,
+							},
+							where: { id: String(accountBody.userData.id) },
 						},
 					},
 				},

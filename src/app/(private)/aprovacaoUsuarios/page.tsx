@@ -43,11 +43,11 @@ export default function UserApprovalList() {
 		mutationKey: ["user-approval-put"],
 	});
 
-	const [idUserApproval, setIdUserApproval] = useState<number>();
+	const [emailUserApproval, setEmailUserApproval] = useState<string>();
 
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-	const aproveUser = (id: number) => {
+	const aproveUser = (id: string) => {
 		mutatePut({
 			url: "/user/approval",
 			id,
@@ -77,7 +77,7 @@ export default function UserApprovalList() {
 							color="success"
 							className="rounded-full"
 							onPress={() => {
-								setIdUserApproval(Number(item.id));
+								setEmailUserApproval(item.id);
 								onOpen();
 							}}
 							title="Aprovar"
@@ -121,8 +121,8 @@ export default function UserApprovalList() {
 								<Button
 									color="primary"
 									onPress={() => {
-										if (!idUserApproval) return;
-										aproveUser(idUserApproval);
+										if (!emailUserApproval) return;
+										aproveUser(emailUserApproval);
 										onClose();
 									}}
 								>
