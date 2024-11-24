@@ -17,6 +17,7 @@ export type SurveyWithQuestions = Survey & {
 		name: string;
 		order: number;
 		type?: QuestionType;
+		required?: boolean;
 		multipleChoice?: Partial<MultipleChoice>[];
 		checkBox?: Partial<CheckBox>[];
 	}[];

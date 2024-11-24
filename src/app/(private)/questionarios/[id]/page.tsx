@@ -9,9 +9,11 @@ import type { PostData, PutData } from "@/types/api";
 import {
 	Button,
 	Input,
+	Radio,
 	Select,
 	SelectItem,
 	Skeleton,
+	Switch,
 	Textarea,
 	Tooltip,
 } from "@nextui-org/react";
@@ -21,19 +23,13 @@ import { useEffect, useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
-import type {
-	CheckBox,
-	MultipleChoice,
-	Question,
-	QuestionType,
-	Survey,
-} from "@prisma/client";
+import type { POSTSurveyDTO } from "@/app/api/survey/dto/post";
+import type { QuestionType, Survey } from "@prisma/client";
 import { FaCheckSquare, FaRegDotCircle, FaTrash } from "react-icons/fa";
 import { IoText } from "react-icons/io5";
-import FieldArrayMultipleChoice from "./components/FieldArrayMultipleChoice";
 import FieldArrayCheckBox from "./components/FieldArrayCheckBox";
+import FieldArrayMultipleChoice from "./components/FieldArrayMultipleChoice";
 import type { SurveyWithQuestions } from "./types";
-import type { POSTSurveyDTO } from "@/app/api/survey/dto/post";
 
 const SurveyEdit = () => {
 	const { id } = useParams<{ id: string | "new" }>();
@@ -114,6 +110,7 @@ const SurveyEdit = () => {
 					name: q.name,
 					order: q.order,
 					type: q.type,
+					required: q.required,
 					multipleChoice: q.multipleChoice,
 					checkBox: q.checkBox,
 				})),
@@ -165,6 +162,7 @@ const SurveyEdit = () => {
 			name: "",
 			order: 1,
 			type: "ShortAnswer",
+			required: false,
 			multipleChoice: [{ choice: "", order: 1 }],
 			checkBox: [{ option: "", order: 1 }],
 		});
@@ -250,16 +248,19 @@ const SurveyEdit = () => {
 								</Button>
 							</Tooltip>
 						</div>
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+						<div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-4">
 							<Controller
 								name={`questions.${indexQuestions}.type`}
 								control={control}
 								rules={{ required: "Campo obrigatório" }}
 								defaultValue="ShortAnswer"
 								render={({ field, fieldState: { error } }) => (
-									<Skeleton className="rounded-md" isLoaded={!loading}>
+									<Skeleton
+										className="rounded-md col-span-4 md:col-span-2 lg:col-span-1"
+										isLoaded={!loading}
+									>
 										<Select
-											label="Tipo de pergunta"
+											label="Tipo"
 											id={field.name}
 											onChange={field.onChange}
 											name={field.name}
@@ -330,7 +331,10 @@ const SurveyEdit = () => {
 								defaultValue=""
 								rules={{ required: "Campo obrigatório" }}
 								render={({ field, fieldState: { error } }) => (
-									<Skeleton className="rounded-md" isLoaded={!loading}>
+									<Skeleton
+										className="rounded-md col-span-4 md:col-span-2"
+										isLoaded={!loading}
+									>
 										<Input
 											label="Pergunta"
 											id={field.name}
@@ -345,6 +349,23 @@ const SurveyEdit = () => {
 											errorMessage={error?.message}
 										/>
 									</Skeleton>
+								)}
+							/>
+							<Controller
+								name={`questions.${indexQuestions}.required`}
+								control={control}
+								defaultValue={false}
+								render={({ field, fieldState: { error } }) => (
+									<Switch
+										id={field.name}
+										onValueChange={field.onChange}
+										name={field.name}
+										isSelected={field.value}
+										color="success"
+										className="col-span-1"
+									>
+										Obrigatório
+									</Switch>
 								)}
 							/>
 							{type === "MultipleChoice" && (

@@ -19,7 +19,7 @@ export default function FieldArrayMultipleChoice({
 	});
 
 	return (
-		<div className="flex flex-col gap-4">
+		<div className="flex flex-col gap-4 col-span-4">
 			{fields
 				.sort((a, b) => ((a.order ?? 0) > (b.order ?? 0) ? 1 : -1))
 				.map((item, index) => (
@@ -94,10 +94,13 @@ export default function FieldArrayMultipleChoice({
 					variant="ghost"
 					className="w-fit"
 					onPress={() => {
-						const insertIndex = fields.findIndex(
-							(item) => item.choice === "Outro",
-						);
-						insert(insertIndex === -1 ? fields.length : insertIndex, {
+						if (
+							fields.length > 0 &&
+							fields[fields.length - 1].choice === "Outro"
+						) {
+							remove(fields.length - 1);
+						}
+						append({
 							choice: "",
 							order: fields.length + 1,
 						});

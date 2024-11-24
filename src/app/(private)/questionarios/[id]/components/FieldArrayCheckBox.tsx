@@ -18,7 +18,7 @@ export default function FieldArrayCheckBox({
 	});
 
 	return (
-		<div className="flex flex-col gap-4">
+		<div className="flex flex-col gap-4 col-span-4">
 			{fields
 				.sort((a, b) => ((a.order ?? 0) > (b.order ?? 0) ? 1 : -1))
 				.map((item, index) => (
@@ -91,10 +91,13 @@ export default function FieldArrayCheckBox({
 					variant="ghost"
 					className="w-fit"
 					onPress={() => {
-						const insertIndex = fields.findIndex(
-							(item) => item.option === "Outro",
-						);
-						insert(insertIndex === -1 ? fields.length : insertIndex, {
+						if (
+							fields.length > 0 &&
+							fields[fields.length - 1].option === "Outro"
+						) {
+							remove(fields.length - 1);
+						}
+						append({
 							option: "",
 							order: fields.length + 1,
 						});

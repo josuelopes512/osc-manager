@@ -150,6 +150,7 @@ model Question {
   id             Int             @id @default(autoincrement())
   name           String
   order          Int @default(0)
+  required       Boolean @default(false)
   type           QuestionType
 
   multipleChoice MultipleChoice[]
@@ -168,7 +169,8 @@ model Question {
 
 model MultipleChoice {
   id       Int      @id @default(autoincrement())
-  choice  String // Array of choices
+  choice  String 
+  other   String?
   order          Int @default(0)
 
   question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
@@ -178,6 +180,7 @@ model MultipleChoice {
 model CheckBox {
   id       Int      @id @default(autoincrement())
   option  String // Array of options
+  other    String?
   order          Int @default(0)
 
   question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
