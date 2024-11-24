@@ -11,35 +11,43 @@ interface Student {
 	name: string;
 	whatsapp?: string;
 	courseId?: string;
-  }
-  
-  interface Project {
+}
+
+interface Project {
 	id: string;
 	name: string;
 	description?: string;
 	link?: string;
 	osc: { name: string };
 	students: Student[];
-  }
+}
 
-async function upsertData(entityName: string, data: any[], upsertHandler: (item: any) => Promise<void>) {
+async function upsertData(
+	entityName: string,
+	data: any[],
+	upsertHandler: (item: any) => Promise<void>,
+) {
 	console.log(`Seeding ${entityName} (${data.length} records)...`);
 	await Promise.all(
 		data.map(async (item) => {
-		await upsertHandler(item);
-		})
+			await upsertHandler(item);
+		}),
 	);
 	console.log(`${entityName} seeded.`);
 }
 
 async function seedSocials() {
-	await upsertData("social media platforms", socialMediaPlatforms, async (social) => {
-		await prisma.socialPlatform.upsert({
-			create: social,
-			update: social,
-			where: { id: social.id },
-		});
-	});
+	await upsertData(
+		"social media platforms",
+		socialMediaPlatforms,
+		async (social) => {
+			await prisma.socialPlatform.upsert({
+				create: social,
+				update: social,
+				where: { id: social.id },
+			});
+		},
+	);
 }
 
 async function seedCourses() {
@@ -118,7 +126,7 @@ async function seed() {
 		console.log("Starting the seeding process...");
 		await seedSocials();
 		await seedCourses();
-		await seedUsers();
+		// await seedUsers();
 		await seedSemesters();
 		await seedProjects();
 	} catch (e) {
