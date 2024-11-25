@@ -188,8 +188,27 @@ const ProjectEdit = () => {
 					</Skeleton>
 				)}
 			/>
-
-			<input hidden {...register("link")} />
+			<Controller
+				name="link"
+				control={control}
+				defaultValue=""
+				render={({ field, fieldState: { error } }) => (
+					<Skeleton className="rounded-md" isLoaded={!loading}>
+						<Input
+							label="Link do projeto"
+							id={field.name}
+							type="text"
+							onChange={field.onChange}
+							name={field.name}
+							value={field.value ?? ""}
+							variant="bordered"
+							color="primary"
+							isInvalid={!!error}
+							errorMessage={error?.message}
+						/>
+					</Skeleton>
+				)}
+			/>
 			<Controller
 				name="oscId"
 				control={control}
