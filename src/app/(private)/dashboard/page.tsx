@@ -45,6 +45,10 @@ export default function Home() {
 		],
 	};
 
+	const isGoogleForms = process.env.NEXT_PUBLIC_GRAPH_GOOGLE_FORMS === "true";
+
+	console.log("isGoogleForms", isGoogleForms);
+
 	return (
 		<div className="flex flex-col justify-between w-full">
 			<h1 className="text-3xl font-bold mt-2 mb-4">Dashboard</h1>
@@ -52,7 +56,7 @@ export default function Home() {
 				items={dataSurvey ?? []}
 				label="Questionário"
 				placeholder="Selecione um questionário"
-				className="max-w-xs"
+				className="max-w-xs mb-2"
 			>
 				{(survey) => (
 					<SelectItem key={survey.id} value={survey.id}>
@@ -60,15 +64,17 @@ export default function Home() {
 					</SelectItem>
 				)}
 			</Select>
-			<SurveyCharts surveyData={data} />
-			{/* <iframe
-				title="Google Sheets"
-				className="w-[1435px] overflow-x-hidden h-screen border-0 bg-black"
-				allowFullScreen
-				width={640}
-				height={1705}
-				src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTYeey6PnXWMDA_VPlarT6dJ6t_BYKA6cbd7RxY6lXaJgkET_2Y7vaiN1EOAOoB-p8XJppZ2_aWoRAZ/pubhtml?gid=179606886&amp;single=true&amp;widget=true&amp;headers=false"
-			/> */}
+			{!isGoogleForms && <SurveyCharts surveyData={data} />}
+			{isGoogleForms && (
+				<iframe
+					title="Google Sheets"
+					className="w-[1435px] overflow-x-hidden h-screen border-0 bg-black"
+					allowFullScreen
+					width={640}
+					height={1705}
+					src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTYeey6PnXWMDA_VPlarT6dJ6t_BYKA6cbd7RxY6lXaJgkET_2Y7vaiN1EOAOoB-p8XJppZ2_aWoRAZ/pubhtml?gid=179606886&amp;single=true&amp;widget=true&amp;headers=false"
+				/>
+			)}
 		</div>
 	);
 }
