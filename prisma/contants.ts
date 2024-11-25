@@ -238,7 +238,7 @@ export const semesters = [
 
 const surveyAluno = {
 	id: 1,
-	name: "Questionário: Colaboração Acadêmica com Organizações da Sociedade Civil (Aluno)",
+	name: "Colaboração Acadêmica com Organizações da Sociedade Civil (Aluno)",
 	description:
 		"Este questionário tem como objetivo coletar dados sobre a organização e a execução de trabalhos acadêmicos realizados por alunos em parceria com Organizações da Sociedade Civil (OSCs). Sua participação é voluntária e confidencial. As informações coletadas serão utilizadas exclusivamente para fins acadêmicos.",
 	questions: {
@@ -370,7 +370,7 @@ const surveyAluno = {
 
 const surveysRepresentantes = {
 	id: 2,
-	name: "Questionário: Colaboração Acadêmica com Organizações da Sociedade Civil (Representantes)",
+	name: "Colaboração Acadêmica com Organizações da Sociedade Civil (Representantes)",
 	description:
 		"Este questionário tem como objetivo coletar dados sobre a organização e a execução de trabalhos acadêmicos realizados por alunos em parceria com Organizações da Sociedade Civil (OSCs). Sua participação é voluntária e confidencial. As informações coletadas serão utilizadas exclusivamente para fins acadêmicos.",
 	questions: {
@@ -457,8 +457,8 @@ const surveysRepresentantes = {
 };
 
 const surveysProfessores = {
-	id: 2,
-	name: "Questionário: Colaboração Acadêmica com Organizações da Sociedade Civil (Representantes)",
+	id: 3,
+	name: "Colaboração Acadêmica com Organizações da Sociedade Civil (Professores/Coordenador de curso)",
 	description:
 		"Este questionário tem como objetivo coletar dados sobre a organização e a execução de trabalhos acadêmicos realizados por alunos em parceria com Organizações da Sociedade Civil (OSCs). Sua participação é voluntária e confidencial. As informações coletadas serão utilizadas exclusivamente para fins acadêmicos.",
 	questions: {

@@ -1,8 +1,24 @@
 "use client";
 
+import { Select, SelectItem } from "@nextui-org/react";
 import SurveyCharts from "./surveyGraph";
+import { useQuery } from "@tanstack/react-query";
+import { getData } from "@/lib/functions.api";
+import type { Survey } from "@prisma/client";
 
 export default function Home() {
+	const {
+		data: dataSurvey,
+		isLoading,
+		refetch,
+	} = useQuery({
+		queryKey: ["survey-get"],
+		queryFn: ({ signal }) =>
+			getData<Survey[]>({
+				url: "/survey",
+				signal,
+			}),
+	});
 	const data = {
 		questions: [
 			{
@@ -30,7 +46,20 @@ export default function Home() {
 	};
 
 	return (
-		<div className="flex items-center justify-center w-full">
+		<div className="flex flex-col justify-between w-full">
+			<h1 className="text-3xl font-bold mt-2 mb-4">Dashboard</h1>
+			<Select
+				items={dataSurvey ?? []}
+				label="Questionário"
+				placeholder="Selecione um questionário"
+				className="max-w-xs"
+			>
+				{(survey) => (
+					<SelectItem key={survey.id} value={survey.id}>
+						{survey.name}
+					</SelectItem>
+				)}
+			</Select>
 			<SurveyCharts surveyData={data} />
 			{/* <iframe
 				title="Google Sheets"
