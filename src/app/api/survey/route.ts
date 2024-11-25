@@ -27,8 +27,6 @@ export async function POST(request: Request) {
 				questions: undefined,
 			},
 		});
-		// const survey = { id: 9 };
-		// console.log(data);
 
 		await Promise.all(
 			data.questions.create
@@ -63,7 +61,7 @@ export async function POST(request: Request) {
 	} catch (error) {
 		console.log(error);
 		return NextResponse.json(
-			{ msg: "Falha ao criar pesquisa", error },
+			{ msg: "Falha ao criar questionário", error },
 			{ status: 500 },
 		);
 	}

@@ -1,6 +1,6 @@
 import type { Survey } from "@prisma/client";
 
-export type SurveyAnswerProps = Survey & {
+export type SurveyAnswerFormProps = Survey & {
 	questions: {
 		id: number;
 		name: string;

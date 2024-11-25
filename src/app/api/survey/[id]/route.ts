@@ -21,7 +21,7 @@ export async function GET(
 
 		if (Number.isNaN(id))
 			return NextResponse.json(
-				{ msg: "Falha ao buscar dados do pesquisa" },
+				{ msg: "Falha ao buscar dados do questionário" },
 				{ status: 404 },
 			);
 
@@ -32,7 +32,7 @@ export async function GET(
 		return NextResponse.json(surveys);
 	} catch (error) {
 		return NextResponse.json(
-			{ msg: "Falha ao buscar pesquisas", error },
+			{ msg: "Falha ao buscar questionários", error },
 			{ status: 500 },
 		);
 	}
@@ -49,7 +49,7 @@ export async function PUT(
 
 		if (Number.isNaN(id))
 			return NextResponse.json(
-				{ msg: "Falha ao atualizar dados do pesquisa" },
+				{ msg: "Falha ao atualizar dados do questionário" },
 				{ status: 404 },
 			);
 
@@ -96,7 +96,7 @@ export async function PUT(
 	} catch (error) {
 		console.log(error);
 		return NextResponse.json(
-			{ msg: "Falha ao atualizar pesquisa", error },
+			{ msg: "Falha ao atualizar questionário", error },
 			{ status: 500 },
 		);
 	}
@@ -112,10 +112,10 @@ export async function DELETE(
 		const id = Number(context.params.id);
 
 		await surveyService.deleteOne(id);
-		return NextResponse.json({ message: "Aluno deletado com sucesso" });
+		return NextResponse.json({ message: "Questionário deletado com sucesso" });
 	} catch (error) {
 		return NextResponse.json(
-			{ msg: "Falha ao deletar pesquisa", error },
+			{ msg: "Falha ao deletar questionário", error },
 			{ status: 500 },
 		);
 	}
