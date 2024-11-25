@@ -11,6 +11,12 @@ Este é um projeto [Next.js](https://nextjs.org) para gerenciamento de projetos 
 - Desempenho Rápido
 - Segurança de Nível Empresarial
 
+## Questionario utilizado como base
+
+[viewanalytics](https://docs.google.com/forms/d/1aaLxBrEvFuWZpcE16p95_pmbk7DOKDxKe7kgOVYmGY4/viewanalytics)
+
+[questionario-osc](https://docs.google.com/forms/d/1aaLxBrEvFuWZpcE16p95_pmbk7DOKDxKe7kgOVYmGY4/prefill)
+
 ## Tecnologias Utilizadas
 
 - [Next.js](https://nextjs.org)

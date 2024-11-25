@@ -4,6 +4,7 @@ import {
 	projects,
 	semesters,
 	socialMediaPlatforms,
+	surveys,
 	users,
 } from "./contants";
 
@@ -121,6 +122,46 @@ const seedProjects = async () => {
 	});
 };
 
+async function seedSurveys() {
+	await upsertData("surveys", surveys, async (survey) => {
+		await prisma.survey.upsert({
+			create: { ...survey, questions: undefined },
+			update: { ...survey, questions: undefined },
+			where: { id: survey.id },
+		});
+
+		await Promise.all(
+			survey.questions.create
+				.sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0))
+				.map(async (question: any) => {
+					await prisma.question.create({
+						data: {
+							...question,
+							surveyId: survey.id,
+							order: question.order,
+							multipleChoice: {
+								create: question.multipleChoice
+									?.sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0))
+									.map((choice: any) => ({
+										...choice,
+										choice: choice.choice ?? "",
+									})),
+							},
+							checkBox: {
+								create: question.checkBox
+									?.sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0))
+									.map((option: any) => ({
+										...option,
+										option: option.option ?? "",
+									})),
+							},
+						},
+					});
+				}),
+		);
+	});
+}
+
 async function seed() {
 	try {
 		console.log("Starting the seeding process...");
@@ -128,6 +169,7 @@ async function seed() {
 		await seedCourses();
 		// await seedUsers();
 		await seedSemesters();
+		await seedSurveys();
 		await seedProjects();
 	} catch (e) {
 		console.error(e);

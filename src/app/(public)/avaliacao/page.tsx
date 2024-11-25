@@ -21,7 +21,7 @@ const SurveyPage = () => {
 		queryFn: ({ signal }) =>
 			getData<SurveyWithQuestions>({
 				url: "survey",
-				id: 18,
+				id: 1,
 				signal,
 				query:
 					"include.questions.include.multipleChoice=true" +
@@ -60,7 +60,7 @@ const SurveyPage = () => {
 					} = q;
 					const parsedCheckBox = JSON.stringify(checkBox);
 					return {
-						id: Number(id),
+						questionId: Number(id),
 						answer: multipleChoice || parsedCheckBox || name,
 						other: checkBoxOther || multipleChoiceOther,
 					};
