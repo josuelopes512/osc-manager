@@ -35,7 +35,7 @@ const Login = () => {
 	const loading = isPendingGoogle;
 
 	return (
-		<div className="min-h-screen flex items-center justify-center bg-gray-100">
+		<div className="min-h-screen flex items-center justify-center bg-content2">
 			<Card className="py-4 w-full max-w-md">
 				<CardHeader className="flex flex-col text-center">
 					<h1 className="text-2xl font-bold">Bem vindo</h1>

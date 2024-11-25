@@ -1,27 +1,31 @@
 "use client";
 import type { SurveyWithQuestions } from "@/app/(private)/questionarios/[id]/types";
-import { getData, postData } from "@/lib/functions.api";
+import type { POSTSurveyAnswerDTO } from "@/app/api/surveyAnswer/dto/post";
+import { getData, postData, toastErrorsApi } from "@/lib/functions.api";
+import type { PostData } from "@/types/api";
 import {
 	Button,
-	Input,
-	CheckboxGroup,
 	Checkbox,
-	RadioGroup,
+	CheckboxGroup,
+	Input,
 	Radio,
+	RadioGroup,
 	Skeleton,
 } from "@nextui-org/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
-import type { SurveyAnswerProps } from "./types";
+import { useParams } from "next/navigation";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import type { SurveyAnswerFormProps } from "../types";
 
 const SurveyPage = () => {
+	const { id } = useParams<{ id: string | "new" }>();
 	const { data: surveyData, isLoading: surveyLoading } = useQuery({
-		queryKey: ["survey-get"],
+		queryKey: ["survey-get", id],
 		queryFn: ({ signal }) =>
 			getData<SurveyWithQuestions>({
 				url: "survey",
-				id: 1,
+				id: Number(id),
 				signal,
 				query:
 					"include.questions.include.multipleChoice=true" +
@@ -31,51 +35,53 @@ const SurveyPage = () => {
 	});
 
 	const { mutateAsync: submitSurvey, isPending: submitting } = useMutation({
-		mutationFn: async (data) =>
-			postData({
-				url: "/survey/submit",
-				data,
-			}),
+		mutationFn: async (val: PostData<POSTSurveyAnswerDTO>) =>
+			postData<POSTSurveyAnswerDTO, any>(val),
 	});
 
 	const { register, handleSubmit, control, watch } =
-		useForm<SurveyAnswerProps>();
+		useForm<SurveyAnswerFormProps>();
 
-	const onSubmit = (data: SurveyAnswerProps) => {
+	const onSubmit = (data: SurveyAnswerFormProps) => {
 		const parsedData = {
-			...data,
-			questions: data.questions
-				.filter((q: SurveyAnswerProps["questions"][number]) => {
-					const answer = q.multipleChoice || q.checkBox || q.name;
-					return answer !== undefined && answer !== "";
-				})
-				.map((q: SurveyAnswerProps["questions"][number]) => {
-					const {
-						id,
-						multipleChoice,
-						checkBox,
-						name,
-						checkBoxOther,
-						multipleChoiceOther,
-					} = q;
-					const parsedCheckBox = JSON.stringify(checkBox);
-					return {
-						questionId: Number(id),
-						answer: multipleChoice || parsedCheckBox || name,
-						other: checkBoxOther || multipleChoiceOther,
-					};
-				}),
+			surveyId: Number(id),
+			responses: {
+				create: data.questions
+					.filter((q: SurveyAnswerFormProps["questions"][number]) => {
+						const answer = q.multipleChoice || q.checkBox || q.name;
+						return answer !== undefined && answer !== "";
+					})
+					.map((q: SurveyAnswerFormProps["questions"][number]) => {
+						const {
+							id,
+							multipleChoice,
+							checkBox,
+							name,
+							checkBoxOther,
+							multipleChoiceOther,
+						} = q;
+						const parsedCheckBox = JSON.stringify(checkBox);
+						return {
+							questionId: Number(id),
+							answer: multipleChoice || parsedCheckBox || name,
+							other: checkBoxOther || multipleChoiceOther,
+						};
+					}),
+			},
 		};
 
-		console.log("parsedData", parsedData.questions);
+		console.log("parsedData", parsedData.responses);
 
-		// submitSurvey(data)
-		//   .then(() => {
-		//     alert('Survey submitted successfully!');
-		//   })
-		//   .catch((error) => {
-		//     console.error('Submission error:', error);
-		//   });
+		submitSurvey({
+			url: "surveyAnswer",
+			data: parsedData,
+		})
+			.then(() => {
+				toast.success("Respostas enviadas com sucesso!");
+			})
+			.catch((error) => {
+				toastErrorsApi(error);
+			});
 	};
 
 	if (surveyLoading) return <Skeleton />;

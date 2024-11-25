@@ -9,32 +9,48 @@ import { useState } from "react";
 export default function Home() {
 	const [selectedSurveyId, setSelectedSurveyId] = useState<number | null>(null);
 
-	const { data: dataSurvey, isLoading: isLoadingSurveys, error: surveysError } = useQuery<{ id: number; description: string; name: string }[], Error>(
-	{
+	const {
+		data: dataSurvey,
+		isLoading: isLoadingSurveys,
+		error: surveysError,
+	} = useQuery<{ id: number; description: string; name: string }[], Error>({
 		queryKey: ["survey-list"],
 		queryFn: ({ signal }) =>
 			getData<{ id: number; description: string; name: string }[]>({
-			url: "/survey",
-			signal,
+				url: "/survey",
+				signal,
 			}),
 	});
-	
-	const { data: surveyAnswers, isLoading: isLoadingAnswers, error: answersError } = useQuery<
-	  { id: number; responses: { question: { name: string }; answer: string }[] }[], Error
+
+	const {
+		data: surveyAnswers,
+		isLoading: isLoadingAnswers,
+		error: answersError,
+	} = useQuery<
+		{
+			id: number;
+			responses: { question: { name: string }; answer: string }[];
+		}[],
+		Error
 	>({
-	  queryKey: ["survey-answers", selectedSurveyId],
-	  queryFn: ({ signal }) =>
-		getData<{ id: number; responses: { question: { name: string }; answer: string }[] }[]>({
-		  url: `/survey/${selectedSurveyId}/answers`,
-		  signal,
-		}),
-	  enabled: !!selectedSurveyId,
+		queryKey: ["survey-answers", selectedSurveyId],
+		queryFn: ({ signal }) =>
+			getData<
+				{
+					id: number;
+					responses: { question: { name: string }; answer: string }[];
+				}[]
+			>({
+				url: `/survey/${selectedSurveyId}/answers`,
+				signal,
+			}),
+		enabled: !!selectedSurveyId,
 	});
-	
+
 	if (isLoadingSurveys || isLoadingAnswers) {
 		return <div>Loading...</div>;
 	}
-	
+
 	if (surveysError || answersError) {
 		return <div>Error: {surveysError?.message || answersError?.message}</div>;
 	}
@@ -66,21 +82,24 @@ export default function Home() {
 	};
 
 	const surveyData = surveyAnswers
-	? {
-		questions: surveyAnswers.map((answer) => {
-			return {
-				question: answer.responses[0]?.question.name,
-				answers: {
-					labels: answer.responses.map((resp) => resp.answer),
-					values: answer.responses.reduce<Record<string, number>>((acc, resp) => {
-					acc[resp.answer] = (acc[resp.answer] || 0) + 1;
-					return acc;
-					}, {}),
-				},
-			};
-		}),
-		}
-	: data;
+		? {
+				questions: surveyAnswers.map((answer) => {
+					return {
+						question: answer.responses[0]?.question.name,
+						answers: {
+							labels: answer.responses.map((resp) => resp.answer),
+							values: answer.responses.reduce<Record<string, number>>(
+								(acc, resp) => {
+									acc[resp.answer] = (acc[resp.answer] || 0) + 1;
+									return acc;
+								},
+								{},
+							),
+						},
+					};
+				}),
+			}
+		: data;
 
 	const isGoogleForms = process.env.NEXT_PUBLIC_GRAPH_GOOGLE_FORMS === "true";
 
@@ -93,8 +112,10 @@ export default function Home() {
 				placeholder="Selecione um questionário"
 				className="max-w-xs mb-2"
 				isDisabled={isLoadingSurveys || !!surveysError}
-				onSelectionChange={(value) => {
+				onChange={(e) => {
+					const value = e.target.value;
 					setSelectedSurveyId(Number(value));
+					console.log(`Selected survey: ${value}`);
 
 					if (isGoogleForms) {
 						setSelectedSurveyId(null);

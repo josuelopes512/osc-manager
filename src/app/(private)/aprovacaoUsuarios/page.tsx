@@ -77,7 +77,7 @@ export default function UserApprovalList() {
 							color="success"
 							className="rounded-full"
 							onPress={() => {
-								setEmailUserApproval(item.id);
+								setEmailUserApproval(item.email);
 								onOpen();
 							}}
 							title="Aprovar"
