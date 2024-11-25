@@ -21,7 +21,7 @@ const SurveyPage = () => {
 		queryFn: ({ signal }) =>
 			getData<SurveyWithQuestions>({
 				url: "survey",
-				id: 18,
+				id: 1,
 				signal,
 				query:
 					"include.questions.include.multipleChoice=true" +
