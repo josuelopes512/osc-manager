@@ -72,14 +72,25 @@ const SurveyCharts = ({ surveyData }: any) => {
 			<h1>{surveyData.name}</h1>
 			<p>{surveyData.description}</p>
 
-			<div style={{ maxWidth: "500px", margin: "20px auto" }}>
-				<h2>{surveyData.questions[0].question}</h2>
-				<Pie data={pieData} />
-			</div>
+			{/* Container flexível para os gráficos */}
+			<div
+				style={{
+				display: "flex", 
+				justifyContent: "center", 
+				alignItems: "flex-start", 
+				gap: "150px", 
+				flexWrap: "wrap", 
+				}}
+			>
+				<div style={{ maxWidth: "400px" }}>
+					<h2>{surveyData.questions[0].question}</h2>
+					<Pie data={pieData} />
+				</div>
 
-			<div style={{ maxWidth: "500px", margin: "20px auto" }}>
-				<h2>{surveyData.questions[1].question}</h2>
-				<Bar data={barData} options={barOptions as any} />
+				<div style={{ maxWidth: "450px" }}>
+					<h2>{surveyData.questions[1].question}</h2>
+					<Bar data={barData} options={barOptions as any} />
+				</div>
 			</div>
 		</div>
 	);
