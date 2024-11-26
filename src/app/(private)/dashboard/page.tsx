@@ -5,6 +5,7 @@ import SurveyCharts from "./surveyGraph";
 import { useQuery } from "@tanstack/react-query";
 import { getData } from "@/lib/functions.api";
 import { useState } from "react";
+import type { SurveAnswersDashboard } from "@/app/api/survey/[id]/answers/route";
 
 export default function Home() {
 	const [selectedSurveyId, setSelectedSurveyId] = useState<number | null>(null);
@@ -26,21 +27,10 @@ export default function Home() {
 		data: surveyAnswers,
 		isLoading: isLoadingAnswers,
 		error: answersError,
-	} = useQuery<
-		{
-			id: number;
-			responses: { question: { name: string }; answer: string }[];
-		}[],
-		Error
-	>({
+	} = useQuery<SurveAnswersDashboard, Error>({
 		queryKey: ["survey-answers", selectedSurveyId],
 		queryFn: ({ signal }) =>
-			getData<
-				{
-					id: number;
-					responses: { question: { name: string }; answer: string }[];
-				}[]
-			>({
+			getData<SurveAnswersDashboard>({
 				url: `/survey/${selectedSurveyId}/answers`,
 				signal,
 			}),
@@ -55,51 +45,31 @@ export default function Home() {
 		return <div>Error: {surveysError?.message || answersError?.message}</div>;
 	}
 
-	const data = {
-		questions: [
-			{
-				question: "Qual é o seu papel no processo de colaboração com OSCs?",
-				answers: {
-					labels: ["Aluno", "Representante de OSC", "Professor"],
-					values: [50, 30, 20], // Respostas simuladas
-				},
-			},
-			{
-				question:
-					"Como você descreveria sua experiência geral de trabalho com a OSC?",
-				answers: {
-					labels: [
-						"Muito positiva",
-						"Positiva",
-						"Neutra",
-						"Negativa",
-						"Muito negativa",
-					],
-					values: [40, 35, 15, 5, 5],
-				},
-			},
-		],
-	};
-
-	const surveyData = surveyAnswers
-		? {
-				questions: surveyAnswers.map((answer) => {
-					return {
-						question: answer.responses[0]?.question.name,
-						answers: {
-							labels: answer.responses.map((resp) => resp.answer),
-							values: answer.responses.reduce<Record<string, number>>(
-								(acc, resp) => {
-									acc[resp.answer] = (acc[resp.answer] || 0) + 1;
-									return acc;
-								},
-								{},
-							),
-						},
-					};
-				}),
-			}
-		: data;
+	// const data = {
+	// 	questions: [
+	// 		{
+	// 			question: "Qual é o seu papel no processo de colaboração com OSCs?",
+	// 			answers: {
+	// 				labels: ["Aluno", "Representante de OSC", "Professor"],
+	// 				values: [50, 30, 20], // Respostas simuladas
+	// 			},
+	// 		},
+	// 		{
+	// 			question:
+	// 				"Como você descreveria sua experiência geral de trabalho com a OSC?",
+	// 			answers: {
+	// 				labels: [
+	// 					"Muito positiva",
+	// 					"Positiva",
+	// 					"Neutra",
+	// 					"Negativa",
+	// 					"Muito negativa",
+	// 				],
+	// 				values: [40, 35, 15, 5, 5],
+	// 			},
+	// 		},
+	// 	],
+	// };
 
 	const isGoogleForms = process.env.NEXT_PUBLIC_GRAPH_GOOGLE_FORMS === "true";
 
@@ -129,9 +99,10 @@ export default function Home() {
 				)}
 			</Select>
 
-			{surveyData && !isGoogleForms ? (
-				<SurveyCharts surveyData={surveyData} />
-			) : isGoogleForms ? (
+			{!isGoogleForms && surveyAnswers && (
+				<SurveyCharts surveyData={surveyAnswers} />
+			)}
+			{isGoogleForms && (
 				<iframe
 					title="Google Sheets"
 					className="w-[1435px] overflow-x-hidden h-screen border-0 bg-black"
@@ -140,12 +111,6 @@ export default function Home() {
 					height={1705}
 					src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTYeey6PnXWMDA_VPlarT6dJ6t_BYKA6cbd7RxY6lXaJgkET_2Y7vaiN1EOAOoB-p8XJppZ2_aWoRAZ/pubhtml?gid=179606886&amp;single=true&amp;widget=true&amp;headers=false"
 				/>
-			) : isLoadingAnswers ? (
-				<p>Carregando respostas...</p>
-			) : answersError ? (
-				<p>Erro ao carregar respostas: {answersError}</p>
-			) : (
-				<p>Selecione um questionário para visualizar os resultados.</p>
 			)}
 		</div>
 	);

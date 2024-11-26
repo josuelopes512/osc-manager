@@ -10,6 +10,7 @@ import {
 	LinearScale,
 	BarElement,
 } from "chart.js";
+import type { SurveAnswersDashboard } from "@/app/api/survey/[id]/answers/route";
 
 ChartJS.register(
 	ArcElement,
@@ -20,13 +21,15 @@ ChartJS.register(
 	BarElement,
 );
 
-const SurveyCharts = ({ surveyData }: any) => {
+const SurveyCharts = ({
+	surveyData,
+}: { surveyData: SurveAnswersDashboard }) => {
 	// Dados para o gráfico de pizza
 	const pieData = {
-		labels: surveyData.questions[0].answers.labels,
+		labels: surveyData.questions?.[0]?.answers.labels,
 		datasets: [
 			{
-				data: surveyData.questions[0].answers.values,
+				data: surveyData.questions?.[0].answers.values,
 				backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
 				hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
 			},
@@ -35,11 +38,11 @@ const SurveyCharts = ({ surveyData }: any) => {
 
 	// Dados para o gráfico de colunas
 	const barData = {
-		labels: surveyData.questions[1].answers.labels,
+		labels: surveyData.questions?.[1]?.answers.labels,
 		datasets: [
 			{
 				label: "Respostas",
-				data: surveyData.questions[1].answers.values,
+				data: surveyData.questions?.[1]?.answers.values,
 				backgroundColor: "rgba(75, 192, 192, 0.2)",
 				borderColor: "rgba(75, 192, 192, 1)",
 				borderWidth: 1,
@@ -57,7 +60,7 @@ const SurveyCharts = ({ surveyData }: any) => {
 			},
 			title: {
 				display: true,
-				text: surveyData.questions[1].question,
+				text: surveyData.questions?.[1]?.question,
 			},
 		},
 		scales: {
@@ -69,26 +72,23 @@ const SurveyCharts = ({ surveyData }: any) => {
 
 	return (
 		<div>
-			<h1>{surveyData.name}</h1>
-			<p>{surveyData.description}</p>
-
 			{/* Container flexível para os gráficos */}
 			<div
 				style={{
-				display: "flex", 
-				justifyContent: "center", 
-				alignItems: "flex-start", 
-				gap: "150px", 
-				flexWrap: "wrap", 
+					display: "flex",
+					justifyContent: "center",
+					alignItems: "flex-start",
+					gap: "150px",
+					flexWrap: "wrap",
 				}}
 			>
 				<div style={{ maxWidth: "400px" }}>
-					<h2>{surveyData.questions[0].question}</h2>
+					<h2>{surveyData.questions?.[0]?.question}</h2>
 					<Pie data={pieData} />
 				</div>
 
 				<div style={{ maxWidth: "450px" }}>
-					<h2>{surveyData.questions[1].question}</h2>
+					<h2>{surveyData.questions?.[1]?.question}</h2>
 					<Bar data={barData} options={barOptions as any} />
 				</div>
 			</div>
