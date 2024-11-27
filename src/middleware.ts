@@ -69,6 +69,7 @@ async function middleware(req: NextRequest) {
 		const redirect = req.nextUrl.searchParams.get("redirect");
 		if (redirect) absoluteURL.pathname = decodeURIComponent(redirect);
 		if (req.nextUrl.pathname === "/") return NextResponse.next();
+		if (req.nextUrl.pathname.includes("/avaliacao")) return NextResponse.next();
 
 		return NextResponse.redirect(absoluteURL.toString());
 	}

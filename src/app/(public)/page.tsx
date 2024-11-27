@@ -1,14 +1,15 @@
 "use client";
 import { Button, Card, CardBody, CardHeader, Link } from "@nextui-org/react";
 import {
-	BarChart2,
-	ChevronRight,
-	LineChart,
-	PieChart,
-	Shield,
-	Users,
-	Zap,
-} from "lucide-react";
+	FaChartBar,
+	FaChevronRight,
+	FaChartLine,
+	FaChartPie,
+	FaShield,
+	FaUsers,
+} from "react-icons/fa6";
+
+import { AiFillThunderbolt } from "react-icons/ai";
 
 export default function LandingPage() {
 	return (
@@ -44,37 +45,37 @@ export default function LandingPage() {
 						{[
 							{
 								title: "Dashboards Interativos",
-								icon: BarChart2,
+								icon: FaChartBar,
 								description:
 									"Crie visualizações impressionantes com apenas alguns cliques",
 							},
 							{
 								title: "Colaboração em Tempo Real",
-								icon: Users,
+								icon: FaUsers,
 								description:
 									"Trabalhe em conjunto de forma transparente com sua equipe",
 							},
 							{
 								title: "Análises Avançadas",
-								icon: PieChart,
+								icon: FaChartPie,
 								description:
 									"Descubra insights ocultos com nossas poderosas ferramentas de análise",
 							},
 							{
 								title: "Relatórios Personalizados",
-								icon: LineChart,
+								icon: FaChartLine,
 								description:
 									"Gere relatórios profissionais adaptados às suas necessidades",
 							},
 							{
 								title: "Rápido como um Raio",
-								icon: Zap,
+								icon: AiFillThunderbolt,
 								description:
 									"Experimente um desempenho extremamente rápido, mesmo com conjuntos de dados grandes",
 							},
 							{
 								title: "Seguro e Confiável",
-								icon: Shield,
+								icon: FaShield,
 								description:
 									"Seus dados estão seguros com nossa segurança de nível empresarial",
 							},

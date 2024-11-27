@@ -2,7 +2,7 @@ import { getQuery } from "@/lib/query";
 import { type NextRequest, NextResponse } from "next/server";
 import type { PUTSurveyDTO } from "../dto/put";
 import { surveyService } from "../service";
-import { questionService } from "../../questions/service";
+import { questionService } from "../../question/service";
 
 type Params = {
 	id: string;

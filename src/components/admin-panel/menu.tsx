@@ -1,6 +1,6 @@
 "use client";
 
-import { LogOut } from "lucide-react";
+import { FaSignOutAlt } from "react-icons/fa";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -118,7 +118,7 @@ export function Menu({ isOpen }: MenuProps) {
 										className="w-full justify-center h-10 mt-5"
 									>
 										<span className={cn(isOpen === false ? "" : "mr-4")}>
-											<LogOut size={18} />
+											<FaSignOutAlt size={18} />
 										</span>
 										<p
 											className={cn(

@@ -2,7 +2,7 @@ import { getQuery } from "@/lib/query";
 import { type NextRequest, NextResponse } from "next/server";
 import type { POSTSurveyDTO } from "./dto/post";
 import { surveyService } from "./service";
-import { questionService } from "../questions/service";
+import { questionService } from "../question/service";
 
 export async function GET(req: NextRequest) {
 	try {

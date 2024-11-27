@@ -10,7 +10,7 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { MoonIcon, SunIcon } from "lucide-react";
+import { AiFillMoon, AiFillSun } from "react-icons/ai";
 
 export function ModeToggle() {
 	const { setTheme, theme } = useTheme();
@@ -25,8 +25,8 @@ export function ModeToggle() {
 						size="icon"
 						onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
 					>
-						<SunIcon className="w-[1.2rem] h-[1.2rem] rotate-90 scale-0 transition-transform ease-in-out duration-500 dark:rotate-0 dark:scale-100" />
-						<MoonIcon className="absolute w-[1.2rem] h-[1.2rem] rotate-0 scale-1000 transition-transform ease-in-out duration-500 dark:-rotate-90 dark:scale-0" />
+						<AiFillSun className="w-[1.2rem] h-[1.2rem] rotate-90 scale-0 transition-transform ease-in-out duration-500 dark:rotate-0 dark:scale-100" />
+						<AiFillMoon className="absolute w-[1.2rem] h-[1.2rem] rotate-0 scale-1000 transition-transform ease-in-out duration-500 dark:-rotate-90 dark:scale-0" />
 						<span className="sr-only">Mudar tema</span>
 					</Button>
 				</TooltipTrigger>
