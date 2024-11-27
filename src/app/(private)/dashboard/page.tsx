@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getData } from "@/lib/functions.api";
 import { useState } from "react";
 import type { SurveAnswersDashboard } from "@/app/api/survey/[id]/answers/route";
+import Loading from "@/components/loading";
 
 export default function Home() {
 	const [selectedSurveyId, setSelectedSurveyId] = useState<number | null>(null);
@@ -38,7 +39,7 @@ export default function Home() {
 	});
 
 	if (isLoadingSurveys || isLoadingAnswers) {
-		return <div>Loading...</div>;
+		return <Loading />;
 	}
 
 	if (surveysError || answersError) {

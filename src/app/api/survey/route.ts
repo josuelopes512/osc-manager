@@ -1,13 +1,12 @@
 import { getQuery } from "@/lib/query";
 import { type NextRequest, NextResponse } from "next/server";
+import { questionService } from "../question/service";
 import type { POSTSurveyDTO } from "./dto/post";
 import { surveyService } from "./service";
-import { questionService } from "../question/service";
 
 export async function GET(req: NextRequest) {
 	try {
 		const query = getQuery(req);
-
 		const surveys = await surveyService.find(query);
 		return NextResponse.json(surveys);
 	} catch (error) {
