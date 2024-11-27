@@ -1,5 +1,4 @@
 import { faker } from "@faker-js/faker";
-import type { Survey } from "@prisma/client";
 import { prisma } from "../prisma/prisma.config";
 
 const generateFakeSurvey = async (count: number) => {

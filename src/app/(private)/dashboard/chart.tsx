@@ -33,31 +33,33 @@ const SurveyCharts = ({
 }) => {
 	const [isPie, setIsPie] = useState(surveyData.type === "MultipleChoice");
 
-	const pieData = {
+	const data = {
 		labels: surveyData.answers.labels,
 		datasets: [
 			{
 				label: "Respostas",
 				data: surveyData.answers.values,
-				backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
-				hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+				backgroundColor: [
+					"#FF6384",
+					"#36A2EB",
+					"#216869",
+					"#49a078",
+					"#9cc5a1",
+					"#dce1de",
+					"#bbc5aa",
+				],
+				hoverBackgroundColor: [
+					"#FF6384",
+					"#36A2EB",
+					"#216869",
+					"#49a078",
+					"#9cc5a1",
+					"#dce1de",
+					"#bbc5aa",
+				],
 			},
 		],
 	} as any;
-
-	// Dados para o gráfico de colunas
-	const barData = {
-		labels: surveyData.answers.labels,
-		datasets: [
-			{
-				label: "Respostas",
-				data: surveyData.answers.values,
-				backgroundColor: ["rgba(75, 192, 192, 0.2)"],
-				borderColor: ["rgba(75, 192, 192, 1)"],
-				borderWidth: 1,
-			},
-		],
-	} as ChartData<"bar", number[], string>;
 
 	// Configurações para o gráfico de colunas
 	const barOptions = {
@@ -128,8 +130,8 @@ const SurveyCharts = ({
 					</Button>
 				</NextUITooltip>
 			</div>
-			{isPie && <Pie data={pieData} options={pieOptions} />}
-			{!isPie && <Bar data={pieData} options={barOptions} />}
+			{isPie && <Pie data={data} options={pieOptions} />}
+			{!isPie && <Bar data={data} options={barOptions} />}
 		</div>
 	);
 };
