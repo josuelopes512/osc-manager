@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
 	try {
 		const query = getQuery(req);
 		const surveys = await surveyService.find(query);
-		return NextResponse.json(surveys);
+		return NextResponse.json(surveys, { status: 400 });
 	} catch (error) {
 		return NextResponse.json(
 			{ msg: "Falha ao buscar pesquisas", error },
