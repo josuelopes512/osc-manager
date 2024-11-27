@@ -1,4 +1,4 @@
-import { ChevronLeft } from "lucide-react";
+import { HiChevronLeft } from "react-icons/hi";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -17,7 +17,7 @@ export function SidebarToggle({ isOpen, setIsOpen }: SidebarToggleProps) {
 				variant="outline"
 				size="icon"
 			>
-				<ChevronLeft
+				<HiChevronLeft
 					className={cn(
 						"h-4 w-4 transition-transform ease-in-out duration-700",
 						isOpen === false ? "rotate-180" : "rotate-0",

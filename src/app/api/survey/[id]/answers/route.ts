@@ -5,6 +5,7 @@ import type {
 	CheckBox,
 	MultipleChoice,
 	Question,
+	QuestionType,
 	SurveyAnswer,
 } from "@prisma/client";
 import { type NextRequest, NextResponse } from "next/server";
@@ -16,6 +17,7 @@ type Params = {
 export type SurveAnswersDashboard = {
 	questions: {
 		question: string;
+		type: QuestionType;
 		answers: {
 			labels: string[];
 			values: number[];
@@ -68,6 +70,9 @@ export async function GET(
 				multipleChoice: true,
 				checkBox: true,
 			},
+			orderBy: {
+				order: "asc",
+			},
 		})) as (Question & {
 			multipleChoice: MultipleChoice[];
 			checkBox: CheckBox[];
@@ -104,7 +109,26 @@ export async function GET(
 					answers.values.push(count);
 				}
 			}
-			surveyAnswersDashboard.questions.push({ question: name, answers });
+
+			if (quest.type === "CheckBox") {
+				for (const option of quest.checkBox) {
+					answers.labels.push(option.option);
+					const count = surveyWithoutShortAnswer
+						.flatMap(({ responses }) => responses)
+						.filter(
+							({ question: { id: questionId }, answer }) =>
+								questionId === quest.id &&
+								JSON.parse(answer).includes(option.option),
+						).length;
+
+					answers.values.push(count);
+				}
+			}
+			surveyAnswersDashboard.questions.push({
+				question: name,
+				answers,
+				type: quest.type,
+			});
 		}
 
 		return NextResponse.json(surveyAnswersDashboard);

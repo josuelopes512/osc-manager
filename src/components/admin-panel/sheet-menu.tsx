@@ -1,4 +1,5 @@
-import { MenuIcon, PanelsTopLeft } from "lucide-react";
+import { AiOutlineMenu } from "react-icons/ai";
+import { LuPanelLeft } from "react-icons/lu";
 import Link from "next/link";
 
 import { Menu } from "@/components/admin-panel/menu";
@@ -16,7 +17,7 @@ export function SheetMenu() {
 		<Sheet>
 			<SheetTrigger className="lg:hidden" asChild>
 				<Button className="h-8" variant="outline" size="icon">
-					<MenuIcon size={20} />
+					<AiOutlineMenu size={20} />
 				</Button>
 			</SheetTrigger>
 			<SheetContent className="sm:w-72 px-3 h-full flex flex-col" side="left">
@@ -27,7 +28,7 @@ export function SheetMenu() {
 						asChild
 					>
 						<Link href="/dashboard" className="flex items-center gap-2">
-							<PanelsTopLeft className="w-6 h-6 mr-1" />
+							<LuPanelLeft className="w-6 h-6 mr-1" />
 							<SheetTitle className="font-bold text-lg">OSC Manager</SheetTitle>
 						</Link>
 					</Button>

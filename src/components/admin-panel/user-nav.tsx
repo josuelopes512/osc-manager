@@ -1,6 +1,6 @@
 "use client";
 
-import { LayoutGrid, LogOut, User } from "lucide-react";
+import { LuLayoutGrid } from "react-icons/lu";
 import Link from "next/link";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -21,6 +21,7 @@ import {
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { signOut, useSession } from "next-auth/react";
+import { FaSignOutAlt } from "react-icons/fa";
 
 export function UserNav() {
 	const { data } = useSession();
@@ -62,7 +63,7 @@ export function UserNav() {
 				<DropdownMenuGroup>
 					<DropdownMenuItem className="hover:cursor-pointer" asChild>
 						<Link href="/dashboard" className="flex items-center">
-							<LayoutGrid className="w-4 h-4 mr-3 text-muted-foreground" />
+							<LuLayoutGrid className="w-4 h-4 mr-3 text-muted-foreground" />
 							Dashboard
 						</Link>
 					</DropdownMenuItem>
@@ -74,7 +75,7 @@ export function UserNav() {
 						signOut();
 					}}
 				>
-					<LogOut className="w-4 h-4 mr-3 text-muted-foreground" />
+					<FaSignOutAlt className="w-4 h-4 mr-3 text-muted-foreground" />
 					Sair
 				</DropdownMenuItem>
 			</DropdownMenuContent>

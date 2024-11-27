@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown } from "lucide-react";
+import { FaChevronDown } from "react-icons/fa6";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -89,7 +89,7 @@ export function CollapseMenuButton({
 									: "-translate-x-96 opacity-0",
 							)}
 						>
-							<ChevronDown
+							<FaChevronDown
 								size={18}
 								className="transition-transform duration-200"
 							/>

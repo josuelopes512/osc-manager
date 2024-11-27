@@ -39,7 +39,7 @@ const SurveyPage = () => {
 			postData<POSTSurveyAnswerDTO, any>(val),
 	});
 
-	const { register, handleSubmit, control, watch } =
+	const { register, handleSubmit, control, watch, setValue } =
 		useForm<SurveyAnswerFormProps>();
 
 	const onSubmit = (data: SurveyAnswerFormProps) => {
@@ -149,7 +149,10 @@ const SurveyPage = () => {
 										<CheckboxGroup
 											label={question.name}
 											value={field.value}
-											onChange={field.onChange}
+											onChange={(e) => {
+												field.onChange(e);
+												setValue(`questions.${index}.checkBoxOther`, "");
+											}}
 											isRequired={question.required}
 											isInvalid={!!error}
 											errorMessage={error?.message}

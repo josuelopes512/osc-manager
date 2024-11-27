@@ -1,7 +1,7 @@
 "use client";
 
 import { Select, SelectItem } from "@nextui-org/react";
-import SurveyCharts from "./surveyGraph";
+import SurveyCharts from "./chart";
 import { useQuery } from "@tanstack/react-query";
 import { getData } from "@/lib/functions.api";
 import { useState } from "react";
@@ -100,7 +100,11 @@ export default function Home() {
 			</Select>
 
 			{!isGoogleForms && surveyAnswers && (
-				<SurveyCharts surveyData={surveyAnswers} />
+				<div className="flex justify-center items-start gap-48 flex-wrap py-8">
+					{surveyAnswers.questions.map((question) => (
+						<SurveyCharts key={question.question} surveyData={question} />
+					))}
+				</div>
 			)}
 			{isGoogleForms && (
 				<iframe
