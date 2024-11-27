@@ -6,6 +6,8 @@ import { useQuery } from "@tanstack/react-query";
 import { getData } from "@/lib/functions.api";
 import { useState } from "react";
 import type { SurveAnswersDashboard } from "@/app/api/survey/[id]/answers/route";
+import Loading from "@/components/loading";
+import { FaExclamationTriangle } from "react-icons/fa";
 
 export default function Home() {
 	const [selectedSurveyId, setSelectedSurveyId] = useState<number | null>(null);
@@ -38,11 +40,18 @@ export default function Home() {
 	});
 
 	if (isLoadingSurveys || isLoadingAnswers) {
-		return <div>Loading...</div>;
+		return <Loading />;
 	}
 
 	if (surveysError || answersError) {
-		return <div>Error: {surveysError?.message || answersError?.message}</div>;
+		return (
+			<div className="w-full flex items-center justify-center">
+				<div className="flex items-center justify-center p-4 text-red-700 bg-red-100 border border-red-400 rounded-lg w-fit">
+					<FaExclamationTriangle className="mr-2" />
+					<span>Erro ao carregar os questionários</span>
+				</div>
+			</div>
+		);
 	}
 
 	// const data = {

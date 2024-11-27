@@ -3,7 +3,6 @@
 import Table from "@/components/table";
 import type { ColumnProps } from "@/components/table/types";
 import { deleteData, getData, toastErrorsApi } from "@/lib/functions.api";
-import { capitalize } from "@/lib/utils";
 import type { DeleteData } from "@/types/api";
 import {
 	Button,
@@ -15,13 +14,14 @@ import {
 	Tooltip,
 	useDisclosure,
 } from "@nextui-org/react";
-import type { OSC, Survey, Semester, Question } from "@prisma/client";
+import type { Survey } from "@prisma/client";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { FaPencilAlt, FaTrash } from "react-icons/fa";
+import { FaEye, FaPencilAlt, FaTrash } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { columnsSurveys } from "./constants";
+import Link from "next/link";
 
 export default function SurveyList() {
 	const { data, isLoading, refetch } = useQuery({
@@ -65,6 +65,23 @@ export default function SurveyList() {
 			label: "Ações",
 			renderCell: (item) => (
 				<div className="relative flex cursor-pointer items-center justify-end gap-5">
+					<Tooltip
+						content="Visualizar"
+						placement="bottom-end"
+						className="bg-blue-400"
+					>
+						<Button
+							isIconOnly
+							className="rounded-full bg-blue-400"
+							as={Link}
+							href={`/avaliacao/${item.id}`}
+							target="_blank"
+							rel="noopener noreferrer"
+							title="Visualizar"
+						>
+							<FaEye size={20} />
+						</Button>
+					</Tooltip>
 					<Tooltip content="Editar" placement="bottom-end" color="secondary">
 						<Button
 							isIconOnly
