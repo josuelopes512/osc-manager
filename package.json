@@ -7,7 +7,6 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-		"seed": "npx tsx prisma/seed.ts",
 		"prisma_studio:dev": "dotenv -e .env -- prisma studio",
 		"prisma_studio:prod": "dotenv -e .env.production -- prisma studio",
 		"run-fakers": "npx tsx scripts/run-fakers.ts",
@@ -80,5 +79,8 @@
 		"tailwindcss": "^3.4.1",
 		"ts-node": "^10.9.2",
 		"typescript": "^5"
+	},
+	"prisma": {
+		"seed": "npx tsx prisma/seed.ts"
 	}
 }
