@@ -16,6 +16,7 @@ export default function StudentsPage() {
       }
 
       const data = await response.json();
+      
       setStudentsExported(data);
 
       // Baixar como arquivo JSON

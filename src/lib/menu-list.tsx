@@ -127,6 +127,18 @@ export function getMenuList(pathname: string): Group[] {
 						},
 					],
 				},
+				{
+					href: "/data",
+					label: "Importar/Exportar",
+					icon: RiSurveyFill,
+					submenus: [
+						{
+							href: "/data",
+							label: "Importar/Exportar dados",
+							Icon: RiSurveyFill,
+						}
+					],
+				},
 			],
 		},
 		{

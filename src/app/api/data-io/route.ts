@@ -1,5 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import { NextApiRequest, NextApiResponse } from "next";
 import { type NextRequest, NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
@@ -27,11 +26,13 @@ export async function GET(req: NextRequest) {
 
 export async function POST(request: Request) {
 	try {
-        const students = await request.json();
+		const students = await request.json();
 
-		if (!Array.isArray(students)) {
-            return NextResponse.json({ error: "O corpo da requisição deve ser um array de alunos." }, { status: 400 });
-        }
+		if (!Array.isArray(students)) 
+		{
+			return NextResponse.json({ error: "O corpo da requisição deve ser um array de alunos." }, { status: 400 });
+		}
+		
         const createdStudents = await prisma.student.createMany({
             data: students.map(student => ({
               name: student.name,
