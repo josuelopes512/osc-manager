@@ -1,7 +1,7 @@
 import { userService } from "@/app/api/user/service";
 import type { Account } from "next-auth";
 import { NextResponse } from "next/server";
-import { users } from "../../../../../prisma/contants";
+import { users } from "../../../../../prisma/constants";
 import { accountService } from "../../account/service";
 // import { userApprovalService } from "../../userApproval/service";
 

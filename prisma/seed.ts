@@ -6,7 +6,7 @@ import {
 	socialMediaPlatforms,
 	surveys,
 	users,
-} from "./contants";
+} from "./constants";
 
 interface Student {
 	name: string;
