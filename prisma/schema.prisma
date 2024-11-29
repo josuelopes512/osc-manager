@@ -39,11 +39,11 @@ model SocialPlatform {
 model OSCSocial {
   id               Int    @id @default(autoincrement())
   oscId            Int
-  socialPlatformId Int
+  socialPlatformId Int?
   link             String
 
-  osc            OSC            @relation("OSCToOSCSocial", fields: [oscId], references: [id], onDelete: Cascade)
-  socialPlatform SocialPlatform @relation(fields: [socialPlatformId], references: [id], onDelete: Cascade)
+  osc            OSC             @relation("OSCToOSCSocial", fields: [oscId], references: [id], onDelete: Cascade)
+  socialPlatform SocialPlatform? @relation(fields: [socialPlatformId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updateAt  DateTime @updatedAt()
@@ -71,12 +71,13 @@ model Student {
   matriculation String?
   email         String?
   whatsapp      String?
-  courseId      Int
+  courseId      Int?
   oscId         Int?
   projectId     Int?
 
-  course  Course   @relation(fields: [courseId], references: [id])
-  project Project? @relation(fields: [projectId], references: [id])
+  course  Course?   @relation(fields: [courseId], references: [id])
+  project Project?  @relation(fields: [projectId], references: [id])
+  osc     OSC?      @relation(fields: [oscId], references: [id])
 
   createdAt DateTime @default(now())
   updateAt  DateTime @updatedAt()
@@ -114,10 +115,10 @@ model Project {
   description String?
   link        String?
   oscId       Int
-  semesterId  Int
+  semesterId  Int?
 
-  osc      OSC       @relation(fields: [oscId], references: [id])
-  semester Semester  @relation(fields: [semesterId], references: [id])
+  osc      OSC        @relation(fields: [oscId], references: [id])
+  semester Semester?  @relation(fields: [semesterId], references: [id])
   students Student[]
 
   createdAt DateTime @default(now())
