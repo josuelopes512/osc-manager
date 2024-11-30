@@ -140,42 +140,17 @@ export default function Home() {
 		a.remove();
 	};
 
-	// 	questions: [
-	// 		{
-	// 			question: "Qual é o seu papel no processo de colaboração com OSCs?",
-	// 			answers: {
-	// 				labels: ["Aluno", "Representante de OSC", "Professor"],
-	// 				values: [50, 30, 20], // Respostas simuladas
-	// 			},
-	// 		},
-	// 		{
-	// 			question:
-	// 				"Como você descreveria sua experiência geral de trabalho com a OSC?",
-	// 			answers: {
-	// 				labels: [
-	// 					"Muito positiva",
-	// 					"Positiva",
-	// 					"Neutra",
-	// 					"Negativa",
-	// 					"Muito negativa",
-	// 				],
-	// 				values: [40, 35, 15, 5, 5],
-	// 			},
-	// 		},
-	// 	],
-	// };
-
 	const isGoogleForms = process.env.NEXT_PUBLIC_GRAPH_GOOGLE_FORMS === "true";
 
 	return (
 		<div className="flex flex-col justify-between w-full">
 			<h1 className="text-3xl font-bold mt-2 mb-4">Dashboard</h1>
-			<div className="flex justify-between items-center">
+			<div className="flex justify-between gap-2 items-center">
 				<Select
 					items={dataSurvey ?? []}
 					label="Questionário"
 					placeholder="Selecione um questionário"
-					className="max-w-md mb-2"
+					className="md:max-w-md mb-2 max-w-xs"
 					isDisabled={isLoadingSurveys || !!surveysError}
 					onChange={(e) => {
 						const value = e.target.value;

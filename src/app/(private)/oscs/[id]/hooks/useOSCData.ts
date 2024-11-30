@@ -1,8 +1,8 @@
 import { getData } from "@/lib/functions.api";
-import type { OSC, OSCSocial } from "@prisma/client";
+import type { OSC, OSCAddress, OSCSocial } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 
-export type DataGetOSC = OSC & { oscSocials: OSCSocial[] };
+export type DataGetOSC = OSC & { oscSocials: OSCSocial[]; address: OSCAddress };
 
 const useOSCData = (id: string | "new") => {
 	const { data: dataGetOSC, isLoading: loadingGet } = useQuery({
@@ -11,7 +11,7 @@ const useOSCData = (id: string | "new") => {
 				url: "osc",
 				id: Number.parseInt(id, 10),
 				signal,
-				query: "include.oscSocials=true",
+				query: "include.oscSocials=true&&include.address=true",
 			}),
 		queryKey: ["osc-get-by-id", id],
 		enabled: id !== "new",

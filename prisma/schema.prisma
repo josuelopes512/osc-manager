@@ -51,13 +51,29 @@ model OSCSocial {
   @@map("osc_socials")
 }
 
+model OSCAddress {
+  id           Int    @id @default(autoincrement())
+  zipCode      String
+  street       String
+  number       String
+  neighborhood String
+  city         String
+  state        String
+
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt()
+  OSC       OSC[]
+}
+
 model OSC {
-  id       Int     @id @default(autoincrement())
-  name     String
-  location String? @default("")
+  id   Int    @id @default(autoincrement())
+  name String
 
   oscSocials OSCSocial[] @relation("OSCToOSCSocial")
   project    Project[]
+
+  address   OSCAddress? @relation(fields: [addressId], references: [id], onDelete: Cascade)
+  addressId Int?
 
   createdAt    DateTime       @default(now())
   updateAt     DateTime       @updatedAt()
@@ -118,7 +134,7 @@ model Project {
   oscId       Int
   semesterId  Int
 
-  osc      OSC       @relation(fields: [oscId], references: [id])
+  osc      OSC       @relation(fields: [oscId], references: [id], onDelete: Cascade)
   semester Semester  @relation(fields: [semesterId], references: [id])
   students Student[]
 
@@ -161,7 +177,7 @@ model Question {
   surveyId Int
   survey   Survey @relation(fields: [surveyId], references: [id], onDelete: Cascade)
 
-  SurveyResponse SurveyResponse[]
+  surveyResponse SurveyResponse[]
 
   createdAt DateTime @default(now())
   updateAt  DateTime @updatedAt()
