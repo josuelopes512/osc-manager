@@ -28,6 +28,9 @@ export async function POST(request: Request) {
 						data: data.oscSocials?.create,
 					},
 				},
+				address: {
+					create: data.address,
+				},
 			},
 		});
 		return NextResponse.json(osc);

@@ -1,4 +1,4 @@
-import type { OSCSocial } from "@prisma/client";
+import type { OSCAddress, OSCSocial } from "@prisma/client";
 
 export interface POSTOSCDTO {
 	name: string;
@@ -6,4 +6,5 @@ export interface POSTOSCDTO {
 	oscSocials: {
 		create: Omit<OSCSocial, "id" | "oscId">[];
 	};
+	address?: OSCAddress;
 }

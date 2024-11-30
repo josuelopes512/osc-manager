@@ -18,7 +18,7 @@ import { toast } from "react-toastify";
 import type { OSCFormProps } from "./types";
 
 import type { POSTOSCDTO } from "@/app/api/osc/dto/post";
-import type { OSC } from "@prisma/client";
+import type { OSC, OSCAddress } from "@prisma/client";
 import { FaTrash } from "react-icons/fa6";
 import { useOSCData } from "./hooks/useOSCData";
 import { useSocialPlatforms } from "./hooks/useSocialPlatforms";
@@ -77,6 +77,7 @@ const OSCEdit = () => {
 
 		const parseData = {
 			name: data.name,
+			address: data.address,
 			oscSocials: {
 				create: newOscSocials.map((a) => ({
 					socialPlatformId: Number(a.socialPlatformId),
@@ -91,6 +92,7 @@ const OSCEdit = () => {
 			},
 		} as POSTOSCDTO & {
 			oscSocials: { create: any[]; update: any[]; delete: number[] };
+			address: OSCAddress;
 		};
 
 		if (id === "new") {
@@ -126,6 +128,7 @@ const OSCEdit = () => {
 	useEffect(() => {
 		if (dataGetOSC && id !== "new") {
 			setValue("name", dataGetOSC.name);
+			setValue("address", dataGetOSC.address);
 			setValue(
 				"oscSocials",
 				dataGetOSC.oscSocials.map((a) => ({

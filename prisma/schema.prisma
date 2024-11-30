@@ -72,7 +72,7 @@ model OSC {
   oscSocials OSCSocial[] @relation("OSCToOSCSocial")
   project    Project[]
 
-  address   OSCAddress? @relation(fields: [addressId], references: [id])
+  address   OSCAddress? @relation(fields: [addressId], references: [id], onDelete: Cascade)
   addressId Int?
 
   createdAt    DateTime       @default(now())
@@ -134,7 +134,7 @@ model Project {
   oscId       Int
   semesterId  Int
 
-  osc      OSC       @relation(fields: [oscId], references: [id])
+  osc      OSC       @relation(fields: [oscId], references: [id], onDelete: Cascade)
   semester Semester  @relation(fields: [semesterId], references: [id])
   students Student[]
 
