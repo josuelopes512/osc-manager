@@ -1,7 +1,7 @@
 import type { ColumnProps } from "@/components/table/types";
-import type { OSC } from "@prisma/client";
+import type { OSC, OSCAddress } from "@prisma/client";
 
-export const columnsOSCs: ColumnProps<OSC>[] = [
+export const columnsOSCs: ColumnProps<OSC & { address: OSCAddress }>[] = [
 	{
 		uid: "name",
 		label: "Nome",
@@ -9,9 +9,34 @@ export const columnsOSCs: ColumnProps<OSC>[] = [
 		filterable: true,
 	},
 	{
-		uid: "location",
-		label: "Localização",
+		uid: "address.street" as any,
+		label: "Logradouro",
 		sortable: true,
 		filterable: true,
+		renderCell: (item) => {
+			if (!item.address) return "-";
+			return `${item.address?.street ?? ""}, ${item.address?.number ?? ""}`;
+		},
+	},
+	{
+		uid: "address.city" as any,
+		label: "Cidade",
+		sortable: true,
+		filterable: true,
+		renderCell: (item) => {
+			if (!item.address) return "-";
+			return `${item.address?.city ?? ""}`;
+		},
+	},
+
+	{
+		uid: "address.state" as any,
+		label: "Estado",
+		sortable: true,
+		filterable: true,
+		renderCell: (item) => {
+			if (!item.address) return "-";
+			return `${item.address?.state ?? ""}`;
+		},
 	},
 ];

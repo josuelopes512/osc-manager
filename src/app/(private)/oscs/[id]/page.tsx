@@ -22,6 +22,8 @@ import type { OSC } from "@prisma/client";
 import { FaTrash } from "react-icons/fa6";
 import { useOSCData } from "./hooks/useOSCData";
 import { useSocialPlatforms } from "./hooks/useSocialPlatforms";
+import { getCEP } from "@/lib/utils";
+import { maskCEP } from "@/lib/masks";
 
 const OSCEdit = () => {
 	const { id } = useParams<{ id: string | "new" }>();
@@ -41,7 +43,12 @@ const OSCEdit = () => {
 		mutationKey: ["osc-put"],
 	});
 
-	const { handleSubmit, setValue, control, reset, getValues } = useForm<
+	const { mutateAsync: mutateGetCEP, isPending: loadingCEP } = useMutation({
+		mutationFn: async (val: string) => getCEP(val),
+		mutationKey: ["cep-get"],
+	});
+
+	const { handleSubmit, setValue, control, reset } = useForm<
 		OSCFormProps,
 		"oscs"
 	>();
@@ -70,7 +77,6 @@ const OSCEdit = () => {
 
 		const parseData = {
 			name: data.name,
-			location: data.location,
 			oscSocials: {
 				create: newOscSocials.map((a) => ({
 					socialPlatformId: Number(a.socialPlatformId),
@@ -120,7 +126,6 @@ const OSCEdit = () => {
 	useEffect(() => {
 		if (dataGetOSC && id !== "new") {
 			setValue("name", dataGetOSC.name);
-			setValue("location", dataGetOSC.location);
 			setValue(
 				"oscSocials",
 				dataGetOSC.oscSocials.map((a) => ({
@@ -168,18 +173,134 @@ const OSCEdit = () => {
 				)}
 			/>
 			<Controller
-				name="location"
+				name={"address.zipCode"}
 				control={control}
 				defaultValue=""
 				render={({ field, fieldState: { error } }) => (
 					<Skeleton className="rounded-md" isLoaded={!loading}>
 						<Input
-							label="Endereço/Localização"
+							label="CEP"
+							id={field.name}
+							type="text"
+							onChange={(val) => {
+								field.onChange(maskCEP(val.target.value));
+								if (val.target.value.length === 9) {
+									mutateGetCEP(val.target.value).then((data) => {
+										setValue("address.city", data.localidade);
+										setValue("address.state", data.uf);
+										setValue("address.street", data.logradouro);
+										setValue("address.number", data.complemento);
+										setValue("address.neighborhood", data.bairro);
+									});
+								}
+							}}
+							name={field.name}
+							value={field.value}
+							variant="bordered"
+							color="primary"
+							isInvalid={!!error}
+							errorMessage={error?.message}
+						/>
+					</Skeleton>
+				)}
+			/>
+			<Controller
+				name="address.street"
+				control={control}
+				defaultValue=""
+				render={({ field, fieldState: { error } }) => (
+					<Skeleton className="rounded-md" isLoaded={!loading}>
+						<Input
+							label="Logradouro"
 							id={field.name}
 							type="text"
 							onChange={field.onChange}
 							name={field.name}
-							value={field.value ?? ""}
+							value={field.value}
+							variant="bordered"
+							color="primary"
+							isInvalid={!!error}
+							errorMessage={error?.message}
+						/>
+					</Skeleton>
+				)}
+			/>
+			<Controller
+				name="address.number"
+				control={control}
+				defaultValue=""
+				render={({ field, fieldState: { error } }) => (
+					<Skeleton className="rounded-md" isLoaded={!loading}>
+						<Input
+							label="Número"
+							id={field.name}
+							type="text"
+							onChange={field.onChange}
+							name={field.name}
+							value={field.value}
+							variant="bordered"
+							color="primary"
+							isInvalid={!!error}
+							errorMessage={error?.message}
+						/>
+					</Skeleton>
+				)}
+			/>
+			<Controller
+				name="address.neighborhood"
+				control={control}
+				defaultValue=""
+				render={({ field, fieldState: { error } }) => (
+					<Skeleton className="rounded-md" isLoaded={!loading}>
+						<Input
+							label="Bairro"
+							id={field.name}
+							type="text"
+							onChange={field.onChange}
+							name={field.name}
+							value={field.value}
+							variant="bordered"
+							color="primary"
+							isInvalid={!!error}
+							errorMessage={error?.message}
+						/>
+					</Skeleton>
+				)}
+			/>
+			<Controller
+				name="address.city"
+				control={control}
+				defaultValue=""
+				render={({ field, fieldState: { error } }) => (
+					<Skeleton className="rounded-md" isLoaded={!loading}>
+						<Input
+							label="Cidade"
+							id={field.name}
+							type="text"
+							onChange={field.onChange}
+							name={field.name}
+							value={field.value}
+							variant="bordered"
+							color="primary"
+							isInvalid={!!error}
+							errorMessage={error?.message}
+						/>
+					</Skeleton>
+				)}
+			/>
+			<Controller
+				name="address.state"
+				control={control}
+				defaultValue=""
+				render={({ field, fieldState: { error } }) => (
+					<Skeleton className="rounded-md" isLoaded={!loading}>
+						<Input
+							label="Estado"
+							id={field.name}
+							type="text"
+							onChange={field.onChange}
+							name={field.name}
+							value={field.value}
 							variant="bordered"
 							color="primary"
 							isInvalid={!!error}
