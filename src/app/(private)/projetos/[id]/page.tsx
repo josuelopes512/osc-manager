@@ -286,12 +286,6 @@ const ProjectEdit = () => {
 							isMultiple
 							isInvalid={!!error}
 							errorMessage={error?.message}
-							// labelChipRenderer={(item) => (
-							// 	<div className="flex gap-4">
-							// 		<span className="font-bold">{item.name}</span>
-							// 		<span className="text-sm italic">({item.course.name})</span>
-							// 	</div>
-							// )}
 							itemRenderer={(item) => (
 								<div className="flex gap-4">
 									<span className="font-bold">{item.name}</span>

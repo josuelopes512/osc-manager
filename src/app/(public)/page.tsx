@@ -119,7 +119,7 @@ export default function LandingPage() {
 							<p>Gerencie projetos para OSCs</p>
 						</div>
 						<div className="flex space-x-4">
-							<a href="/" className="hover:text-purple-400">
+							{/* <a href="/" className="hover:text-purple-400">
 								Sobre
 							</a>
 							<a href="/" className="hover:text-purple-400">
@@ -130,7 +130,7 @@ export default function LandingPage() {
 							</a>
 							<a href="/" className="hover:text-purple-400">
 								Contato
-							</a>
+							</a> */}
 						</div>
 					</div>
 					<div className="mt-8 text-center text-sm">
