@@ -4,125 +4,475 @@ import { type NextRequest, NextResponse } from "next/server";
 const prisma = new PrismaClient();
 
 export async function GET(req: NextRequest) {
-  try {
-    const type = req.nextUrl.searchParams.get("type");
+	try {
+		const type = req.nextUrl.searchParams.get("type");
 
-    let data;
-    switch (type) {
-      case "students":
-        data = await prisma.student.findMany({
-          select: {
-            id: true,
-            name: true,
-            matriculation: true,
-            email: true,
-            whatsapp: true,
-            courseId: true,
-            oscId: true,
-            projectId: true,
-          },
-        });
-        break;
+		let data;
+		switch (type) {
+			case "courses":
+				data = await prisma.course.findMany({
+					select: {
+						name: true,
+					},
+				});
+				break;
 
-      case "courses":
-        data = await prisma.course.findMany({
-          select: {
-            id: true,
-            name: true,
-            description: true,
-          },
-        });
-        break;
+			case "students":
+				data = await prisma.student.findMany({
+					select: {
+						name: true,
+						matriculation: true,
+						email: true,
+						whatsapp: true,
+						course: {
+							select: {
+								name: true,
+							}
+						},
+					},
+				});
+				break;
 
-      case "enrollments":
-        data = await prisma.enrollment.findMany({
-          select: {
-            id: true,
-            studentId: true,
-            courseId: true,
-            enrollmentDate: true,
-          },
-        });
-        break;
+			case "oscs":
+				data = await prisma.oSC.findMany({
+					select: {
+						name: true,
+						location: true,
+						oscSocials: {
+							select: {
+								link: true,
+								socialPlatform: {
+									select: {
+										name: true
+									}
+								}
+							}
+						},
+					},
+				});
+				break;
 
-      default:
-        return NextResponse.json(
-          { error: "Tipo de dado inválido. Use 'students', 'courses' ou 'enrollments'." },
-          { status: 400 }
-        );
-    }
+			case "projects":
+				data = await prisma.project.findMany({
+					select: {
+						name: true,
+						description: true,
+						link: true,
+						osc: {
+							select: {
+								name: true,
+								location: true,
+								oscSocials: {
+									select: {
+										link: true,
+										socialPlatform: {
+											select: {
+												name: true
+											}
+										}
+									}
+								},
+							}
+						},
+						semester: {
+							select: {
+								name: true
+							}
+						},
+						students: {
+							select: {
+								name: true,
+								matriculation: true,
+								email: true,
+								whatsapp: true,
+								course: {
+									select: {
+										name: true,
+									}
+								},
+							}
+						}
+					},
+				});
+				break;
 
-    return NextResponse.json(data);
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: "Erro ao exportar dados." }, { status: 500 });
-  }
+			case "surveys":
+				data = await prisma.survey.findMany({
+					select: {
+						name: true,
+						description: true,
+						questions: {
+							select: {
+								name: true,
+								order: true,
+								required: true,
+								type: true,
+								multipleChoice: {
+									select: {
+										choice: true,
+										other: true,
+										order: true
+									}
+								},
+								checkBox: {
+									select: {
+										option: true,
+										other: true,
+										order: true
+									}
+								}
+							}
+						}
+					},
+				});
+				break;
+
+			default:
+				return NextResponse.json(
+					{ error: "Tipo de dado inválido. Use 'students', 'courses', 'surveys', 'oscs' ou 'projects'." },
+					{ status: 400 }
+				);
+		}
+
+		return NextResponse.json(data);
+	} catch (error) {
+		console.error(error);
+		return NextResponse.json({ error: "Erro ao exportar dados." }, { status: 500 });
+	}
 }
 
 export async function POST(req: NextRequest) {
-  try {
-    const type = req.nextUrl.searchParams.get("type");
-    const data = await req.json();
+	try {
+		const type = req.nextUrl.searchParams.get("type");
+		const data = await req.json();
 
-    if (!Array.isArray(data)) {
-      return NextResponse.json(
-        { error: "O corpo da requisição deve ser um array de objetos." },
-        { status: 400 }
-      );
-    }
+		if (!Array.isArray(data)) {
+			return NextResponse.json(
+				{ error: "O corpo da requisição deve ser um array de objetos." },
+				{ status: 400 }
+			);
+		}
 
-    let createdCount;
+		const upsertHandlers: Record<string, (item: any) => Promise<void>> = {
+			students: async (student) => {
+				try {
+					console.log(`Processando estudante: ${JSON.stringify(student, null, 2)}`);
 
-    switch (type) {
-      case "students":
-        createdCount = await prisma.student.createMany({
-          data: data.map((student) => ({
-            name: student.name,
-            matriculation: student.matriculation,
-            email: student.email,
-            whatsapp: student.whatsapp,
-            courseId: student.courseId,
-            oscId: student.oscId,
-            projectId: student.projectId,
-          })),
-          skipDuplicates: true,
-        });
-        break;
+					// Verifica se o curso foi fornecido
+					if (!student.course || !student.course.name || typeof student.course.name !== 'string') {
+						throw new Error(
+							`O curso é obrigatório para o estudante "${student.name}". Dados recebidos: ${JSON.stringify(student)}`
+						);
+					}
 
-      case "courses":
-        createdCount = await prisma.course.createMany({
-          data: data.map((course) => ({
-            name: course.name,
-            description: course.description,
-          })),
-          skipDuplicates: true,
-        });
-        break;
+					const courseName = student.course.name.trim();
 
-    //   case "enrollments":
-    //     createdCount = await prisma.enrollment.createMany({
-    //       data: data.map((enrollment) => ({
-    //         studentId: enrollment.studentId,
-    //         courseId: enrollment.courseId,
-    //         enrollmentDate: new Date(enrollment.enrollmentDate),
-    //       })),
-    //       skipDuplicates: true,
-    //     });
-    //     break;
+					const course = await (async () => {
+						console.log(`Buscando ou criando curso com o nome: "${courseName}"`);
+						let existingCourse = await prisma.course.findFirst({
+							where: { name: courseName },
+						});
 
-      default:
-        return NextResponse.json(
-          { error: "Tipo de dado inválido. Use 'students', 'courses' ou 'enrollments'." },
-          { status: 400 }
-        );
-    }
+						if (!existingCourse) {
+							console.log(`Curso não encontrado. Criando curso: "${courseName}"`);
+							existingCourse = await prisma.course.create({
+								data: { name: courseName },
+							});
+						} else {
+							console.log(`Curso encontrado: ${existingCourse.name}`);
+						}
 
-    return NextResponse.json({ success: true, count: createdCount.count });
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json(
-      { error: "Falha ao importar dados.", details: error },
-      { status: 500 }
-    );
-  }
+						return existingCourse;
+					})();
+
+					const existingStudent = await prisma.student.findFirst({
+						where: { name: student.name.trim() },
+					});
+
+					if (existingStudent) {
+						console.log(`Atualizando estudante existente: ${existingStudent.name}`);
+						await prisma.student.update({
+							where: { id: existingStudent.id },
+							data: {
+								matriculation: student.matriculation || null,
+								email: student.email || null,
+								whatsapp: student.whatsapp || null,
+								course: { connect: { id: course.id } },
+							},
+						});
+					} else {
+						console.log(`Criando novo estudante: ${student.name}`);
+						await prisma.student.create({
+							data: {
+								name: student.name.trim(),
+								matriculation: student.matriculation || null,
+								email: student.email || null,
+								whatsapp: student.whatsapp || null,
+								course: { connect: { id: course.id } },
+							},
+						});
+					}
+				} catch (error) {
+					if (error instanceof Error) {
+						console.error(
+							`Erro no processamento do estudante: ${error.message}`
+						);
+						throw new Error(
+							`Erro ao processar o estudante "${student.name}": ${error.message}`
+						);
+					} else {
+						console.error("Erro desconhecido ao processar o estudante.", error);
+						throw new Error(`Erro desconhecido ao processar o estudante "${student.name}".`);
+					}
+				}
+			},
+			courses: async (course) => {
+				let existingCourse = await prisma.course.findFirst({
+					where: { name: course.name },
+				});
+
+				if (existingCourse) {
+					await prisma.course.update({
+						where: { id: existingCourse.id },
+						data: course,
+					});
+				} else {
+					await prisma.course.create({
+						data: course,
+					});
+				}
+			},
+			oscs: async (osc) => {
+				let existingOsc = await prisma.oSC.findFirst({
+					where: { name: osc.name },
+				});
+
+				if (existingOsc) {
+					await prisma.oSC.update({
+						where: { id: existingOsc.id },
+						data: { location: osc.location },
+					});
+				} else {
+					await prisma.oSC.create({
+						data: {
+							name: osc.name,
+							location: osc.location,
+						},
+					});
+				}
+			},
+			projects: async (project) => {
+				try {
+					console.log(`Processando projeto: ${JSON.stringify(project, null, 2)}`);
+
+					// Processa o OSC
+					const osc = await (async () => {
+						const existingOsc = await prisma.oSC.findFirst({
+							where: { name: project.osc.name },
+						});
+
+						if (existingOsc) {
+							console.log(`OSC encontrado: ${existingOsc.name}`);
+							return existingOsc;
+						}
+
+						console.log(`Criando OSC: ${project.osc.name}`);
+						return await prisma.oSC.create({
+							data: {
+								name: project.osc.name,
+								location: project.osc.location || "",
+								oscSocials: {
+									create: project.osc.oscSocials.map((social: any) => ({
+										...social,
+									})),
+								},
+							},
+						});
+					})();
+
+					// Processa o Semestre (opcional)
+					const semester = project.semester?.name
+						? await (async () => {
+							const existingSemester = await prisma.semester.findFirst({
+								where: { name: project.semester.name },
+							});
+
+							if (existingSemester) {
+								console.log(`Semestre encontrado: ${existingSemester.name}`);
+								return existingSemester;
+							}
+
+							console.log(`Criando semestre: ${project.semester.name}`);
+							return await prisma.semester.create({
+								data: { name: project.semester.name },
+							});
+						})()
+						: null;
+
+					// Processa o Projeto
+					const existingProject = await prisma.project.findFirst({
+						where: { name: project.name },
+					});
+
+					if (existingProject) {
+						console.log(`Atualizando projeto existente: ${existingProject.name}`);
+						await prisma.project.update({
+							where: { id: existingProject.id },
+							data: {
+								description: project.description || null,
+								link: project.link || null,
+								osc: { connect: { id: osc.id } },
+								semester: semester ? { connect: { id: semester.id } } : undefined,
+							},
+						});
+					} else {
+						console.log(`Criando novo projeto: ${project.name}`);				
+						const projectData: any = {
+							name: project.name,
+							description: project.description || null,
+							link: project.link || null,
+							osc: { connect: { id: osc.id } }
+						};
+
+						if (project.semester?.id) {
+							projectData.semester = { connect: { id: project.semester.id } };
+						}
+
+						await prisma.project.create({
+							data: projectData,
+						});
+					}
+
+					// Processa os Estudantes
+					await Promise.all(
+						project.students.map(async (student: any) => {
+							if (!student.course || !student.course.name) {
+								throw new Error(
+									`O curso é obrigatório para o estudante "${student.name}".`
+								);
+							}
+
+							const course = await (async () => {
+								const existingCourse = await prisma.course.findFirst({
+									where: { name: student.course.name },
+								});
+
+								if (existingCourse) {
+									console.log(`Curso encontrado: ${existingCourse.name}`);
+									return existingCourse;
+								}
+
+								console.log(`Criando curso: ${student.course.name}`);
+								return await prisma.course.create({
+									data: { name: student.course.name },
+								});
+							})();
+
+							const existingStudent = await prisma.student.findFirst({
+								where: { name: student.name },
+							});
+
+							if (existingStudent) {
+								console.log(`Atualizando estudante: ${existingStudent.name}`);
+								await prisma.student.update({
+									where: { id: existingStudent.id },
+									data: {
+										name: student.name,
+										matriculation: student.matriculation || null,
+										email: student.email || null,
+										whatsapp: student.whatsapp || null,
+										course: { connect: { id: course.id } },
+									},
+								});
+							} else {
+								console.log(`Criando estudante: ${student.name}`);
+								await prisma.student.create({
+									data: {
+										name: student.name,
+										matriculation: student.matriculation || null,
+										email: student.email || null,
+										whatsapp: student.whatsapp || null,
+										course: { connect: { id: course.id } },
+									},
+								});
+							}
+						})
+					);
+
+					console.log(`Processamento do projeto "${project.name}" concluído.`);
+				} catch (error) {
+					if (error instanceof Error) {
+						console.error(
+							`Erro no processamento do projeto: ${error.message}`
+						);
+						throw new Error(
+							`Erro ao processar o projeto "${project.name}": ${error.message}`
+						);
+					} else {
+						console.error("Erro desconhecido ao processar o projeto.", error);
+						throw new Error(`Erro desconhecido ao processar o projeto "${project.name}".`);
+					}
+				}
+			},
+			surveys: async (survey) => {
+				let existingSurvey = await prisma.survey.findFirst({
+					where: { name: survey.name },
+				});
+
+				if (existingSurvey) {
+					await prisma.survey.update({
+						where: { id: existingSurvey.id },
+						data: { description: survey.description },
+					});
+				} else {
+					existingSurvey = await prisma.survey.create({
+						data: { name: survey.name, description: survey.description },
+					});
+				}
+
+				await Promise.all(
+					survey.questions.map(async (question: any) => {
+						let existingQuestion = await prisma.question.findFirst({
+							where: { name: question.name },
+						});
+
+						if (existingQuestion) {
+							await prisma.question.update({
+								where: { id: existingQuestion.id },
+								data: { ...question },
+							});
+						} else {
+							await prisma.question.create({
+								data: { ...question, surveyId: existingSurvey.id },
+							});
+						}
+					})
+				);
+			},
+		};
+
+		if (type != null && !upsertHandlers[type]) {
+			return NextResponse.json(
+				{
+					error: "Tipo de dado inválido. Use 'students', 'courses', 'oscs', 'projects' ou 'surveys'.",
+				},
+				{ status: 400 }
+			);
+		}
+
+		if (type != null) {
+			await Promise.all(data.map(upsertHandlers[type]));
+		}
+
+		return NextResponse.json({ success: true });
+	} catch (error) {
+		console.error(error);
+
+		if (error instanceof Error) {
+			return NextResponse.json({ error: "Falha ao processar dados.", details: error.message }, { status: 500 });
+		}
+		else {
+			return NextResponse.json({ error: error }, { status: 500 });
+		}
+	}
 }

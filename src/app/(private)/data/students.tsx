@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 
 export default function StudentsPage() {
   const [file, setFile] = useState<File | null>(null);
-  const [dataType, setDataType] = useState<string>();
+  const [dataType, setDataType] = useState<string>("students");
 
   const handleExport = async () => {
     try {
