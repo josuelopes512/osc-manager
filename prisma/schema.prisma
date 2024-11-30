@@ -72,12 +72,10 @@ model Student {
   email         String?
   whatsapp      String?
   courseId      Int?
-  oscId         Int?
   projectId     Int?
 
   course  Course?   @relation(fields: [courseId], references: [id])
   project Project?  @relation(fields: [projectId], references: [id])
-  osc     OSC?      @relation(fields: [oscId], references: [id])
 
   createdAt DateTime @default(now())
   updateAt  DateTime @updatedAt()
