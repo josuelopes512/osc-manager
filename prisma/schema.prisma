@@ -59,8 +59,8 @@ model OSC {
   oscSocials OSCSocial[] @relation("OSCToOSCSocial")
   project    Project[]
 
-  createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt()
+  createdAt    DateTime       @default(now())
+  updateAt     DateTime       @updatedAt()
 
   @@map("oscs")
 }
@@ -77,8 +77,8 @@ model Student {
   course  Course?   @relation(fields: [courseId], references: [id])
   project Project?  @relation(fields: [projectId], references: [id])
 
-  createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt()
+  createdAt    DateTime       @default(now())
+  updateAt     DateTime       @updatedAt()
 
   @@map("students")
 }
@@ -190,7 +190,7 @@ model SurveyAnswer {
   id Int @id @default(autoincrement())
 
   surveyId Int
-  survey   Survey @relation(fields: [surveyId], references: [id], onDelete: Cascade)
+  survey   Survey @relation(fields: [surveyId], references: [id])
 
   responses SurveyResponse[]
 
@@ -204,12 +204,12 @@ model SurveyResponse {
   id Int @id @default(autoincrement())
 
   questionId Int
-  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  question   Question @relation(fields: [questionId], references: [id])
 
   answer String
   other  String?
 
-  surveyAnswer   SurveyAnswer? @relation(fields: [surveyAnswerId], references: [id])
+  surveyAnswer   SurveyAnswer? @relation(fields: [surveyAnswerId], references: [id], onDelete: Cascade)
   surveyAnswerId Int?
 }
 

@@ -5,13 +5,22 @@ import { surveyAnswerService } from "./service";
 export async function POST(request: Request) {
 	try {
 		const data = (await request.json()) as POSTSurveyAnswerDTO;
-		console.log(data.responses.create);
 
 		const survey = await surveyAnswerService.create({
 			data: {
 				survey: {
 					connect: { id: data.surveyId },
 				},
+				// osc: data.oscId
+				// 	? {
+				// 			connect: { id: data.oscId },
+				// 		}
+				// 	: undefined,
+				// student: data.studentId
+				// 	? {
+				// 			connect: { id: data.studentId },
+				// 		}
+				// 	: undefined,
 				responses: {
 					createMany: {
 						data: data.responses.create.map((response) => ({

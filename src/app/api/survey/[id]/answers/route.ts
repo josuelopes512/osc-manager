@@ -4,9 +4,11 @@ import { getQuery } from "@/lib/query";
 import type {
 	CheckBox,
 	MultipleChoice,
+	OSC,
 	Question,
 	QuestionType,
 	SurveyAnswer,
+	SurveyResponse,
 } from "@prisma/client";
 import { type NextRequest, NextResponse } from "next/server";
 
@@ -15,6 +17,15 @@ type Params = {
 };
 
 export type SurveAnswersDashboard = {
+	surveysAnswers: (SurveyAnswer & {
+		// osc: {
+		// 	name: string;
+		// };
+		// student: {
+		// 	name: string;
+		// };
+		responses: (SurveyResponse & { question: Question })[];
+	})[];
 	questions: {
 		question: string;
 		type: QuestionType;
@@ -53,8 +64,24 @@ export async function GET(
 						question: true,
 					},
 				},
+				// osc: {
+				// 	select: {
+				// 		name: true,
+				// 	},
+				// },
+				// student: {
+				// 	select: {
+				// 		name: true,
+				// 	},
+				// },
 			},
 		})) as (SurveyAnswer & {
+			// osc: {
+			// 	name: string;
+			// };
+			// student: {
+			// 	name: string;
+			// };
 			responses: {
 				question: Question;
 				answer: string;
@@ -89,6 +116,7 @@ export async function GET(
 
 		const surveyAnswersDashboard: SurveAnswersDashboard = {
 			questions: [],
+			surveysAnswers: [],
 		};
 
 		for (const quest of questions) {
@@ -131,7 +159,30 @@ export async function GET(
 			});
 		}
 
-		return NextResponse.json(surveyAnswersDashboard);
+		surveyAnswersDashboard.surveysAnswers = surveyWithoutShortAnswer.map(
+			(survey) => ({
+				...survey,
+				// osc: survey.osc as OSC,
+				// student: survey.student as OSC,
+				responses: survey.responses as (SurveyResponse & {
+					question: Question;
+				})[],
+			}),
+		);
+
+		// check if all answers.values are 0
+		if (
+			surveyAnswersDashboard.questions.every((quest) =>
+				quest.answers.values.every((value) => value === 0),
+			)
+		) {
+			surveyAnswersDashboard.questions = [];
+		}
+
+		return NextResponse.json({
+			questions: surveyAnswersDashboard.questions,
+			surveysAnswers: surveys,
+		});
 	} catch (error) {
 		return NextResponse.json(
 			{ msg: "Falha ao buscar respostas", error },
