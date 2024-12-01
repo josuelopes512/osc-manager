@@ -6,6 +6,8 @@ import {
 	semesters,
 	socialMediaPlatforms,
 	surveyAnswers,
+	surveys,
+	users,
 } from "./constants";
 
 interface Student {

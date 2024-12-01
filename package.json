@@ -5,6 +5,7 @@
 	"scripts": {
 		"dev": "next dev -p 3005 --turbo",
 		"build": "next build",
+		"reset": "npx prisma migrate reset",
 		"start": "next start",
 		"lint": "next lint",
 		"prisma_studio:dev": "dotenv -e .env -- prisma studio",
