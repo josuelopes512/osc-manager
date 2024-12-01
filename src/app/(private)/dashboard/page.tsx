@@ -85,12 +85,12 @@ export default function Home() {
 				const response = surveyAnswer.responses.find(
 					(res) => res.question.name === question.question,
 				);
-				if (response?.question.type === "CheckBox") {
+				if (response?.question.type === "CHECK_BOX") {
 					const parsedAnswer = JSON.parse(response?.answer);
 					if (parsedAnswer?.includes("Outro")) return response?.other;
 					return parsedAnswer.join("/ ");
 				}
-				if (response?.question.type === "MultipleChoice") {
+				if (response?.question.type === "MULTIPLE_CHOICE") {
 					if (response?.answer === "Outro") return response?.other;
 				}
 				return response?.answer ?? ""; // Caso não haja resposta

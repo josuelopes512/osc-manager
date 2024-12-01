@@ -49,17 +49,21 @@ async function upsertData(
  * Utilizes the provided upsertData utility function to handle bulk operations.
  */
 async function seedSocials() {
-	await upsertData(
-		"social media platforms",
-		socialMediaPlatforms,
-		async (social) => {
-			await prisma.socialPlatform.upsert({
-				create: social,
-				update: social,
-				where: { id: social.id },
-			});
-		},
-	);
+	try {
+		await upsertData(
+			"social media platforms",
+			socialMediaPlatforms,
+			async (social) => {
+				await prisma.socialPlatform.upsert({
+					create: social,
+					update: social,
+					where: { id: social.id },
+				});
+			},
+		);
+	} catch (error) {
+		console.error("Error seeding social media platforms:", error);
+	}
 }
 
 /**
@@ -67,37 +71,49 @@ async function seedSocials() {
  * Utilizes the provided upsertData utility function to handle bulk operations.
  */
 async function seedCourses() {
-	await upsertData("courses", courses, async (course) => {
-		await prisma.course.upsert({
-			create: course,
-			update: course,
-			where: { id: course.id },
+	try {
+		await upsertData("courses", courses, async (course) => {
+			await prisma.course.upsert({
+				create: course,
+				update: course,
+				where: { id: course.id },
+			});
 		});
-	});
+	} catch (error) {
+		console.error("Error seeding courses:", error);
+	}
 }
 
-// async function seedUsers() {
-// 	await upsertData("users", users, async (user) => {
-// 		await prisma.user.upsert({
-// 			create: user,
-// 			update: user,
-// 			where: { id: user.id },
-// 		});
-// 	});
-// }
+async function seedUsers() {
+	try {
+		await upsertData("users", users, async (user) => {
+			await prisma.user.upsert({
+				create: user,
+				update: user,
+				where: { id: user.id },
+			});
+		});
+	} catch (error) {
+		console.error("Error seeding users:", error);
+	}
+}
 
 /**
  * Seeds the database with semesters data by upserting each semester.
  * Utilizes the provided upsertData utility function to handle bulk operations.
  */
 async function seedSemesters() {
-	await upsertData("semesters", semesters, async (semester) => {
-		await prisma.semester.upsert({
-			create: semester,
-			update: semester,
-			where: { id: semester.id },
+	try {
+		await upsertData("semesters", semesters, async (semester) => {
+			await prisma.semester.upsert({
+				create: semester,
+				update: semester,
+				where: { id: semester.id },
+			});
 		});
-	});
+	} catch (error) {
+		console.error("Error seeding semesters:", error);
+	}
 }
 
 /**
@@ -107,44 +123,48 @@ async function seedSemesters() {
  * The function creates all associated students and oscs if they do not exist.
  */
 const seedProjects = async () => {
-	await upsertData("projects", projects, async (project) => {
-		await prisma.project.upsert({
-			create: {
-				...project,
-				osc: { create: { name: project.osc.name } },
-				students: {
-					createMany: {
-						data: (project.students as Student[]).map((student) => ({
-							name: student.name,
-							whatsapp: student.whatsapp,
-							courseId: 1,
-						})),
+	try {
+		await upsertData("projects", projects, async (project) => {
+			await prisma.project.upsert({
+				create: {
+					...project,
+					osc: { create: { name: project.osc.name } },
+					students: {
+						createMany: {
+							data: (project.students as Student[]).map((student) => ({
+								name: student.name,
+								whatsapp: student.whatsapp,
+								courseId: 1,
+							})),
+						},
 					},
-				},
-				semester: {
-					connect: { name: "2024.2" },
-				},
-				id: undefined,
-			},
-			update: {
-				...project,
-				osc: { create: { name: project.osc.name } },
-				students: {
-					createMany: {
-						data: (project.students as Student[]).map((student) => ({
-							name: student.name,
-							courseId: 1,
-						})),
+					semester: {
+						connect: { name: "2024.2" },
 					},
+					id: undefined,
 				},
-				semester: {
-					connect: { name: "2024.2" },
+				update: {
+					...project,
+					osc: { create: { name: project.osc.name } },
+					students: {
+						createMany: {
+							data: (project.students as Student[]).map((student) => ({
+								name: student.name,
+								courseId: 1,
+							})),
+						},
+					},
+					semester: {
+						connect: { name: "2024.2" },
+					},
+					id: undefined,
 				},
-				id: undefined,
-			},
-			where: { id: project.id },
+				where: { id: project.id },
+			});
 		});
-	});
+	} catch (error) {
+		console.error("Error seeding projects:", error);
+	}
 };
 
 // Seeds the database with survey data by upserting surveys and creating associated questions.
@@ -153,43 +173,52 @@ const seedProjects = async () => {
 // options, which are also created and sorted by order. The function utilizes the upsertData utility
 // to handle bulk operations efficiently.
 async function seedSurveys() {
-	await upsertData("surveys", surveys, async (survey) => {
-		await prisma.survey.upsert({
-			create: { ...survey, questions: undefined },
-			update: { ...survey, questions: undefined },
-			where: { id: survey.id },
-		});
+	try {
+		await upsertData("surveys", surveys, async (survey) => {
+			await prisma.survey.upsert({
+				create: { ...survey, questions: undefined },
+				update: { ...survey, questions: undefined },
+				where: { id: survey.id },
+			});
 
-		await Promise.all(
-			survey.questions.create
-				.sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0))
-				.map(async (question: any) => {
-					await prisma.question.create({
-						data: {
-							...question,
-							surveyId: survey.id,
-							order: question.order,
-							multipleChoice: {
-								create: question.multipleChoice
-									?.sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0))
-									.map((choice: any) => ({
-										...choice,
-										choice: choice.choice ?? "",
-									})),
+			await Promise.all(
+				survey.questions.create
+					.sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0))
+					.map(async (question: any) => {
+						await prisma.question.create({
+							data: {
+								...question,
+								surveyId: survey.id,
+								order: question.order,
+								type: question.type,
+								multipleChoice: {
+									create: question.multipleChoice
+									? question.multipleChoice
+									        ?.sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0))
+											.map((choice: any) => ({
+												choice: choice?.choice ?? "",
+												other: choice?.other ?? "",
+												order: choice?.order ?? 0,
+											}))
+										: [],
+								},
+								checkBox: {
+									create: question.checkBox
+										?.sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0))
+										.map((option: any) => ({
+											option: option?.option ?? "",
+											other: option?.other ?? "",
+											order: option?.order ?? 0,
+										})),
+								},
 							},
-							checkBox: {
-								create: question.checkBox
-									?.sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0))
-									.map((option: any) => ({
-										...option,
-										option: option.option ?? "",
-									})),
-							},
-						},
-					});
-				}),
-		);
-	});
+						});
+					}),
+			);
+		});
+	} catch (error) {
+		console.error("Error seeding surveys:", error);
+	}
 }
 
 /**
@@ -211,7 +240,7 @@ async function seed() {
 		console.log("Starting the seeding process...");
 		await seedSocials();
 		await seedCourses();
-		// await seedUsers();
+		await seedUsers();
 		await seedSemesters();
 		await seedSurveys();
 		await seedProjects();

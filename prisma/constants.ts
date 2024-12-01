@@ -1,3 +1,5 @@
+import { QuestionType } from "@prisma/client";
+
 export const courses = [
 	{ id: 1, name: "Administração" },
 	{ id: 2, name: "Análise e Desenvolvimento de Sistemas" },
@@ -250,7 +252,7 @@ const surveyAluno = {
 			{
 				name: "Por quanto tempo você esteve envolvido em trabalhos acadêmicos com OSCs?",
 				order: 0,
-				type: "MultipleChoice",
+				type: QuestionType.MULTIPLE_CHOICE,
 				required: true,
 				multipleChoice: [
 					{ choice: "Menos de 6 meses", order: 1 },
@@ -262,7 +264,7 @@ const surveyAluno = {
 			{
 				name: "Quantos trabalhos acadêmicos em parceria com OSCs você já participou?",
 				order: 1,
-				type: "MultipleChoice",
+				type: QuestionType.MULTIPLE_CHOICE,
 				required: true,
 				multipleChoice: [
 					{ choice: "1", order: 1 },
@@ -274,7 +276,7 @@ const surveyAluno = {
 			{
 				name: "Como foi a experiência de receber trabalhos acadêmicos de alunos?",
 				order: 2,
-				type: "MultipleChoice",
+				type: QuestionType.MULTIPLE_CHOICE,
 				required: true,
 				multipleChoice: [
 					{ choice: "Muito satisfatória", order: 1 },
@@ -287,7 +289,7 @@ const surveyAluno = {
 			{
 				name: "Por quanto tempo você esteve envolvido em trabalhos acadêmicos com OSCs?",
 				order: 3,
-				type: "MultipleChoice",
+				type: QuestionType.MULTIPLE_CHOICE,
 				required: true,
 				multipleChoice: [
 					{ choice: "Menos de 6 meses", order: 1 },
@@ -299,7 +301,7 @@ const surveyAluno = {
 			{
 				name: "Quantos trabalhos acadêmicos em parceria com OSCs você já participou?",
 				order: 4,
-				type: "MultipleChoice",
+				type: QuestionType.MULTIPLE_CHOICE,
 				required: true,
 				multipleChoice: [
 					{ choice: "1", order: 1 },
@@ -311,7 +313,7 @@ const surveyAluno = {
 			{
 				name: "Quais foram as principais dificuldades que você enfrentou na execução do trabalho acadêmico com a OSC?",
 				order: 5,
-				type: "CheckBox",
+				type: QuestionType.CHECK_BOX,
 				required: true,
 				checkBox: [
 					{ option: "Falta de clareza nas expectativas da OSC", order: 1 },
@@ -332,20 +334,20 @@ const surveyAluno = {
 			{
 				name: "Como você descreveria sua experiência geral de trabalho com a OSC?",
 				order: 6,
-				type: "MultipleChoice",
+				type: QuestionType.MULTIPLE_CHOICE,
 				required: true,
 				multipleChoice: [
-					{ choice: "Muito positiva", order: 1 },
-					{ choice: "Positiva", order: 2 },
-					{ choice: "Neutra", order: 3 },
-					{ choice: "Negativa", order: 4 },
-					{ choice: "Muito negativa", order: 5 },
+					{ option: "Muito positiva", order: 0 },
+					{ option: "Positiva", order: 1 },
+					{ option: "Neutra", order: 2 },
+					{ option: "Negativa", order: 3 },
+					{ option: "Muito negativa", order: 4 },
 				],
 			},
 			{
 				name: "Em que medida você acredita que o trabalho acadêmico contribuiu para o seu aprendizado prático?",
 				order: 7,
-				type: "MultipleChoice",
+				type: QuestionType.MULTIPLE_CHOICE,
 				required: true,
 				multipleChoice: [
 					{ choice: "Contribuiu muito", order: 1 },
@@ -357,7 +359,7 @@ const surveyAluno = {
 			{
 				name: "Você sentiu que o trabalho final atendeu às expectativas da OSC?",
 				order: 8,
-				type: "MultipleChoice",
+				type: QuestionType.MULTIPLE_CHOICE,
 				required: true,
 				multipleChoice: [
 					{ choice: "Sim, completamente", order: 1 },
@@ -369,7 +371,7 @@ const surveyAluno = {
 			{
 				name: "Quais mudanças você sugeriria para melhorar a organização desses trabalhos?",
 				order: 9,
-				type: "ShortAnswer",
+				type: QuestionType.SHORT_ANSWER,
 				required: true,
 			},
 		],
@@ -386,7 +388,7 @@ const surveysRepresentantes = {
 			{
 				name: "Por quanto tempo você esteve envolvido em trabalhos acadêmicos com OSCs?",
 				order: 0,
-				type: "MultipleChoice",
+				type: QuestionType.MULTIPLE_CHOICE,
 				required: true,
 				multipleChoice: [
 					{ choice: "Menos de 6 meses", order: 1 },
@@ -398,7 +400,7 @@ const surveysRepresentantes = {
 			{
 				name: "Quantos trabalhos acadêmicos em parceria com OSCs você já participou?",
 				order: 1,
-				type: "MultipleChoice",
+				type: QuestionType.MULTIPLE_CHOICE,
 				required: true,
 				multipleChoice: [
 					{ choice: "1", order: 1 },
@@ -410,7 +412,7 @@ const surveysRepresentantes = {
 			{
 				name: "Como você organiza a execução de trabalhos acadêmicos em parceria com OSCs?",
 				order: 2,
-				type: "MultipleChoice",
+				type: QuestionType.MULTIPLE_CHOICE,
 				required: true,
 				multipleChoice: [
 					{
@@ -427,7 +429,7 @@ const surveysRepresentantes = {
 			{
 				name: "Quais são os maiores desafios que você observa na realização desses trabalhos?",
 				order: 3,
-				type: "CheckBox",
+				type: QuestionType.CHECK_BOX,
 				required: true,
 				checkBox: [
 					{
@@ -450,7 +452,7 @@ const surveysRepresentantes = {
 			{
 				name: "Você acredita que os trabalhos acadêmicos realizados atendem às demandas das OSCs?",
 				order: 4,
-				type: "MultipleChoice",
+				type: QuestionType.MULTIPLE_CHOICE,
 				required: true,
 				multipleChoice: [
 					{ choice: "Sim, plenamente", order: 1 },
@@ -462,7 +464,7 @@ const surveysRepresentantes = {
 			{
 				name: "Como você avalia a contribuição dos trabalhos acadêmicos para a formação prática dos alunos?",
 				order: 5,
-				type: "MultipleChoice",
+				type: QuestionType.MULTIPLE_CHOICE,
 				required: true,
 				multipleChoice: [
 					{ choice: "Contribuição significativa", order: 1 },
@@ -474,7 +476,7 @@ const surveysRepresentantes = {
 			{
 				name: "Que mudanças ou melhorias você sugeriria para organizar melhor esses trabalhos e maximizar seus resultados?",
 				order: 6,
-				type: "ShortAnswer",
+				type: QuestionType.SHORT_ANSWER,
 				required: true,
 			},
 		],
@@ -491,7 +493,7 @@ const surveysProfessores = {
 			{
 				name: "Por quanto tempo você esteve envolvido em trabalhos acadêmicos com OSCs?",
 				order: 0,
-				type: "MultipleChoice",
+				type: QuestionType.MULTIPLE_CHOICE,
 				required: true,
 				multipleChoice: [
 					{ choice: "Menos de 6 meses", order: 1 },
@@ -503,7 +505,7 @@ const surveysProfessores = {
 			{
 				name: "Quantos trabalhos acadêmicos em parceria com OSCs você já participou?",
 				order: 1,
-				type: "MultipleChoice",
+				type: QuestionType.MULTIPLE_CHOICE,
 				required: true,
 				multipleChoice: [
 					{ choice: "1", order: 1 },
@@ -515,7 +517,7 @@ const surveysProfessores = {
 			{
 				name: "Como foi a experiência de receber trabalhos acadêmicos de alunos?",
 				order: 2,
-				type: "MultipleChoice",
+				type: QuestionType.MULTIPLE_CHOICE,
 				required: true,
 				multipleChoice: [
 					{ choice: "Muito satisfatória", order: 1 },
@@ -528,7 +530,7 @@ const surveysProfessores = {
 			{
 				name: "Os resultados entregues pelos alunos atenderam às necessidades e expectativas da sua organização?",
 				order: 3,
-				type: "MultipleChoice",
+				type: QuestionType.MULTIPLE_CHOICE,
 				required: true,
 				multipleChoice: [
 					{ choice: "Sim, completamente", order: 1 },
@@ -540,13 +542,13 @@ const surveysProfessores = {
 			{
 				name: "Quais foram os principais desafios ao trabalhar com alunos em projetos acadêmicos?",
 				order: 4,
-				type: "CheckBox",
+				type: QuestionType.CHECK_BOX,
 				required: true,
 			},
 			{
 				name: "Qual foi o impacto prático dos trabalhos acadêmicos na OSC?",
 				order: 5,
-				type: "MultipleChoice",
+				type: QuestionType.MULTIPLE_CHOICE,
 				required: true,
 				multipleChoice: [
 					{ choice: "Impacto significativo", order: 1 },
@@ -558,7 +560,7 @@ const surveysProfessores = {
 			{
 				name: "Que melhorias poderiam ser implementadas para otimizar a colaboração com instituições de ensino?",
 				order: 6,
-				type: "ShortAnswer",
+				type: QuestionType.SHORT_ANSWER,
 				required: true,
 			},
 		],

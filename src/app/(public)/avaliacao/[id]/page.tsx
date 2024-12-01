@@ -217,7 +217,7 @@ const SurveyPage = () => {
 				const multipleChoice = watch(`questions.${index}.multipleChoice`);
 				return (
 					<div key={question.id} className="flex flex-col gap-2">
-						{question.type === "ShortAnswer" && (
+						{question.type === "SHORT_ANSWER" && (
 							<div className="bg-content1 p-4 rounded-lg">
 								<Controller
 									name={`questions.${index}.name`}
@@ -256,7 +256,7 @@ const SurveyPage = () => {
 							type="hidden"
 							value={question.id}
 						/>
-						{question.type === "CheckBox" && (
+						{question.type === "CHECK_BOX" && (
 							<div className="relative flex flex-col gap-2 bg-content1 p-4 rounded-lg">
 								<Controller
 									key={question.id}
@@ -322,7 +322,7 @@ const SurveyPage = () => {
 								)}
 							</div>
 						)}
-						{question.type === "MultipleChoice" && (
+						{question.type === "MULTIPLE_CHOICE" && (
 							<div className="relative flex flex-col gap-2 bg-content1 p-4 rounded-lg">
 								<Controller
 									key={question.id}

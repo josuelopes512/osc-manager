@@ -5,6 +5,8 @@
 	"scripts": {
 		"dev": "next dev -p 3005 --turbo",
 		"build": "next build",
+		"migrate:dev": "npx prisma migrate dev",
+		"migrate:prod": "npx prisma migrate deploy",
 		"reset": "npx prisma migrate reset",
 		"start": "next start",
 		"lint": "next lint",
