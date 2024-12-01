@@ -129,15 +129,17 @@ const seedProjects = async () => {
 				create: {
 					...project,
 					osc: { create: { name: project.osc.name } },
-					students: {
+					students:  project?.students
+					? {
 						createMany: {
-							data: (project.students as Student[]).map((student) => ({
-								name: student.name,
-								whatsapp: student.whatsapp,
-								courseId: 1,
-							})),
+						  data: (project.students as Student[]).map((student) => ({
+							name: student.name,
+							whatsapp: student.whatsapp,
+							courseId: 1,
+						  })),
 						},
-					},
+					  }
+					: {},
 					semester: {
 						connect: { name: "2024.2" },
 					},
@@ -146,14 +148,16 @@ const seedProjects = async () => {
 				update: {
 					...project,
 					osc: { create: { name: project.osc.name } },
-					students: {
+					students: project?.students
+					? {
 						createMany: {
 							data: (project.students as Student[]).map((student) => ({
 								name: student.name,
 								courseId: 1,
 							})),
 						},
-					},
+					}
+					: {},
 					semester: {
 						connect: { name: "2024.2" },
 					},
