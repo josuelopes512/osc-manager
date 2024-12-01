@@ -1,8 +1,8 @@
 import { userService } from "@/app/api/user/service";
 import type { Account } from "next-auth";
 import { NextResponse } from "next/server";
-import { users } from "../../../../../prisma/contants";
 import { accountService } from "../../account/service";
+import { users } from "../../../../../prisma/constants";
 // import { userApprovalService } from "../../userApproval/service";
 
 export async function POST(req: Request) {
