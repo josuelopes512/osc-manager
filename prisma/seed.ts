@@ -5,8 +5,6 @@ import {
 	projects,
 	semesters,
 	socialMediaPlatforms,
-	surveyAnswers,
-	surveys,
 	users,
 } from "./constants";
 
