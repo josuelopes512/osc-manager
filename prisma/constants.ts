@@ -1,5 +1,3 @@
-import { QuestionType } from "@prisma/client";
-
 export const courses = [
 	{ id: 1, name: "Administração" },
 	{ id: 2, name: "Análise e Desenvolvimento de Sistemas" },
@@ -482,7 +480,7 @@ const surveysRepresentantes = {
 			{
 				name: "Você acredita que os trabalhos acadêmicos realizados atendem às demandas das OSCs?",
 				order: 4,
-				type: QuestionType.MULTIPLE_CHOICE,
+				type: "MULTIPLE_CHOICE",
 				required: true,
 				multipleChoice: [
 					{ choice: "Sim, plenamente", order: 1 },
