@@ -10,8 +10,8 @@ import {
 	Input,
 	Radio,
 	RadioGroup,
-	Select,
-	SelectItem,
+	// Select,
+	// SelectItem,
 	Skeleton,
 } from "@nextui-org/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -19,7 +19,7 @@ import { useParams } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import type { SurveyAnswerFormProps } from "../types";
-import { useState } from "react";
+// import { useState } from "react";
 // import type { Course, OSC, Student } from "@prisma/client";
 
 const SurveyPage = () => {

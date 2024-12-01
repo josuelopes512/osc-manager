@@ -3,6 +3,7 @@ import type { Account } from "next-auth";
 import { NextResponse } from "next/server";
 import { users } from "../../../../../prisma/constants";
 import { accountService } from "../../account/service";
+import { prisma } from "../../prisma/prisma.config";
 // import { userApprovalService } from "../../userApproval/service";
 
 export async function POST(req: Request) {
@@ -61,8 +62,23 @@ export async function POST(req: Request) {
 		}
 
 		if (!account) {
-			account = await accountService.create({
-				data: {
+			account = await prisma.account.upsert({
+				where: {
+					provider_providerAccountId: {
+						provider: accountBody.provider,
+						providerAccountId: accountBody.providerAccountId,
+					},
+				},
+				update: {
+					refresh_token: accountBody.refresh_token,
+					access_token: accountBody.access_token,
+					expires_at: accountBody.expires_at,
+					id_token: accountBody.id_token,
+					token_type: accountBody.token_type,
+					scope: accountBody.scope,
+					session_state: String(accountBody.session_state),
+				},
+				create: {
 					provider: accountBody.provider,
 					providerAccountId: accountBody.providerAccountId,
 					type: accountBody.type,
@@ -75,17 +91,18 @@ export async function POST(req: Request) {
 					session_state: String(accountBody.session_state),
 					user: {
 						connectOrCreate: {
+							where: { email: accountBody.userData.email },
 							create: {
 								id: String(accountBody.userData.id),
 								email: accountBody.userData.email,
 								name: accountBody.userData.name,
 								approved: userInList?.approved || false,
 							},
-							where: { id: String(accountBody.userData.id) },
 						},
 					},
 				},
 			});
+			
 		}
 
 		if (user.approved === false) {
