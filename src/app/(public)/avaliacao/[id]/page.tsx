@@ -20,8 +20,7 @@ import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import type { SurveyAnswerFormProps } from "../types";
 import { useState } from "react";
-import { Combobox } from "@/components/ui/combobox";
-import type { Course, OSC, Student } from "@prisma/client";
+// import type { Course, OSC, Student } from "@prisma/client";
 
 const SurveyPage = () => {
 	const { id } = useParams<{ id: string | "new" }>();
@@ -39,28 +38,28 @@ const SurveyPage = () => {
 			}),
 	});
 
-	const { data: dataGetStudent, isLoading: loadingGetStudent } = useQuery({
-		queryFn: ({ signal }) =>
-			getData<(Student & { course: Course })[]>({
-				url: "student",
-				signal,
-				query: "include.course=true",
-			}),
-		queryKey: ["student-get"],
-		refetchOnMount: false,
-		refetchOnReconnect: false,
-	});
+	// const { data: dataGetStudent, isLoading: loadingGetStudent } = useQuery({
+	// 	queryFn: ({ signal }) =>
+	// 		getData<(Student & { course: Course })[]>({
+	// 			url: "student",
+	// 			signal,
+	// 			query: "include.course=true",
+	// 		}),
+	// 	queryKey: ["student-get"],
+	// 	refetchOnMount: false,
+	// 	refetchOnReconnect: false,
+	// });
 
-	const { data: dataGetOSC, isLoading: loadingGetOSC } = useQuery({
-		queryFn: ({ signal }) =>
-			getData<OSC[]>({
-				url: "osc",
-				signal,
-			}),
-		queryKey: ["osc-get"],
-		refetchOnMount: false,
-		refetchOnReconnect: false,
-	});
+	// const { data: dataGetOSC, isLoading: loadingGetOSC } = useQuery({
+	// 	queryFn: ({ signal }) =>
+	// 		getData<OSC[]>({
+	// 			url: "osc",
+	// 			signal,
+	// 		}),
+	// 	queryKey: ["osc-get"],
+	// 	refetchOnMount: false,
+	// 	refetchOnReconnect: false,
+	// });
 
 	const { mutateAsync: submitSurvey, isPending: submitting } = useMutation({
 		mutationFn: async (val: PostData<POSTSurveyAnswerDTO>) =>
@@ -70,7 +69,7 @@ const SurveyPage = () => {
 	const { register, handleSubmit, control, watch, setValue } =
 		useForm<SurveyAnswerFormProps>();
 
-	const [roleId, setRoleId] = useState("");
+	// const [roleId, setRoleId] = useState("");
 
 	const onSubmit = (data: SurveyAnswerFormProps) => {
 		const parsedData = {
@@ -120,7 +119,7 @@ const SurveyPage = () => {
 			<h1 className="text-2xl font-bold">{surveyData?.name}</h1>
 			<span className="text-foreground-500">{surveyData?.description}</span>
 
-			<Select
+			{/* <Select
 				label="Cargo"
 				labelPlacement="outside"
 				selectedKeys={roleId ? [roleId] : new Set([])}
@@ -151,7 +150,7 @@ const SurveyPage = () => {
 						{item.label}
 					</SelectItem>
 				)}
-			</Select>
+			</Select> */}
 			{/* {roleId === "student" && (
 				<Controller
 					name="studentId"

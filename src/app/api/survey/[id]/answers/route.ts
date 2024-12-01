@@ -138,7 +138,7 @@ export async function GET(
 				}
 			}
 
-			if (quest.type === "CHECK_BOX") {
+			else if (quest.type === "CHECK_BOX") {
 				for (const option of quest.checkBox) {
 					answers.labels.push(option.option);
 					const count = surveyWithoutShortAnswer

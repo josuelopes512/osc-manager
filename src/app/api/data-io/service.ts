@@ -306,61 +306,58 @@ export const upsertHandlers: Record<string, (item: any) => Promise<void>> = {
                 });
             }
 
-            // Processa os Estudantes
-            await Promise.all(
-                project.students.map(async (student: any) => {
-                    if (!student.course || !student.course.name) {
-                        throw new Error(
-                            `O curso é obrigatório para o estudante "${student.name}".`
-                        );
-                    }
+            for (const student of project.students){
+                if (!student.course || !student.course.name) {
+                    throw new Error(
+                        `O curso é obrigatório para o estudante "${student.name}".`
+                    );
+                }
 
-                    const course = await (async () => {
-                        const existingCourse = await prisma.course.findFirst({
-                            where: { name: student.course.name },
-                        });
-
-                        if (existingCourse) {
-                            console.log(`Curso encontrado: ${existingCourse.name}`);
-                            return existingCourse;
-                        }
-
-                        console.log(`Criando curso: ${student.course.name}`);
-                        return await prisma.course.create({
-                            data: { name: student.course.name },
-                        });
-                    })();
-
-                    const existingStudent = await prisma.student.findFirst({
-                        where: { name: student.name },
+                const course = await (async () => {
+                    const existingCourse = await prisma.course.findFirst({
+                        where: { name: student.course.name },
                     });
 
-                    if (existingStudent) {
-                        console.log(`Atualizando estudante: ${existingStudent.name}`);
-                        await prisma.student.update({
-                            where: { id: existingStudent.id },
-                            data: {
-                                name: student.name,
-                                matriculation: student.matriculation || null,
-                                email: student.email || null,
-                                whatsapp: student.whatsapp || null,
-                                course: { connect: { id: course.id } },
-                            },
-                        });
-                    } else {
-                        console.log(`Criando estudante: ${student.name}`);
-                        await prisma.student.create({
-                            data: {
-                                name: student.name,
-                                matriculation: student.matriculation || null,
-                                email: student.email || null,
-                                whatsapp: student.whatsapp || null,
-                                course: { connect: { id: course.id } },
-                            },
-                        });
+                    if (existingCourse) {
+                        console.log(`Curso encontrado: ${existingCourse.name}`);
+                        return existingCourse;
                     }
-                })
-            );
+
+                    console.log(`Criando curso: ${student.course.name}`);
+                    return await prisma.course.create({
+                        data: { name: student.course.name },
+                    });
+                })();
+
+                const existingStudent = await prisma.student.findFirst({
+                    where: { name: student.name },
+                });
+
+                if (existingStudent) {
+                    console.log(`Atualizando estudante: ${existingStudent.name}`);
+                    await prisma.student.update({
+                        where: { id: existingStudent.id },
+                        data: {
+                            name: student.name,
+                            matriculation: student.matriculation || null,
+                            email: student.email || null,
+                            whatsapp: student.whatsapp || null,
+                            course: { connect: { id: course.id } },
+                        },
+                    });
+                } else {
+                    console.log(`Criando estudante: ${student.name}`);
+                    await prisma.student.create({
+                        data: {
+                            name: student.name,
+                            matriculation: student.matriculation || null,
+                            email: student.email || null,
+                            whatsapp: student.whatsapp || null,
+                            course: { connect: { id: course.id } },
+                        },
+                    });
+                }
+            }
 
             console.log(`Processamento do projeto "${project.name}" concluído.`);
         } catch (error) {
@@ -402,11 +399,60 @@ export const upsertHandlers: Record<string, (item: any) => Promise<void>> = {
                 if (existingQuestion) {
                     await prisma.question.update({
                         where: { id: existingQuestion.id },
-                        data: { ...question },
+                        data: { 
+                            ...question,
+                            order: question.order,
+								type: question.type,
+								multipleChoice: {
+									create: question.multipleChoice
+									? question.multipleChoice
+									        ?.sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0))
+											.map((choice: any) => ({
+												choice: choice?.choice ?? "",
+												other: choice?.other ?? "",
+												order: choice?.order ?? 0,
+											}))
+										: [],
+								},
+								checkBox: {
+									create: question.checkBox
+										?.sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0))
+										.map((option: any) => ({
+											option: option?.option ?? "",
+											other: option?.other ?? "",
+											order: option?.order ?? 0,
+										})),
+								},
+                         },
                     });
                 } else {
                     await prisma.question.create({
-                        data: { ...question, surveyId: existingSurvey.id },
+                        data: { 
+                            ...question, 
+                            surveyId: existingSurvey.id, 
+                            order: question.order,
+                            type: question.type,
+                            multipleChoice: {
+                                create: question.multipleChoice
+                                ? question.multipleChoice
+                                        ?.sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0))
+                                        .map((choice: any) => ({
+                                            choice: choice?.choice ?? "",
+                                            other: choice?.other ?? "",
+                                            order: choice?.order ?? 0,
+                                        }))
+                                    : [],
+                            },
+                            checkBox: {
+                                create: question.checkBox
+                                    ?.sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0))
+                                    .map((option: any) => ({
+                                        option: option?.option ?? "",
+                                        other: option?.other ?? "",
+                                        order: option?.order ?? 0,
+                                    })),
+                            },
+                        },
                     });
                 }
             })
