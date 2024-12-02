@@ -152,7 +152,7 @@ export function getMenuList(pathname: string): Group[] {
 					submenus: [
 						{
 							href: "/data",
-							label: "Importar/Exportar dados",
+							label: "Dados JSON",
 							Icon: RiSurveyFill,
 						}
 					],
