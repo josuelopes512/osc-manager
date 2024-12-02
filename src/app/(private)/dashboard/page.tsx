@@ -140,31 +140,6 @@ export default function Home() {
 		a.remove();
 	};
 
-	// 	questions: [
-	// 		{
-	// 			question: "Qual é o seu papel no processo de colaboração com OSCs?",
-	// 			answers: {
-	// 				labels: ["Aluno", "Representante de OSC", "Professor"],
-	// 				values: [50, 30, 20], // Respostas simuladas
-	// 			},
-	// 		},
-	// 		{
-	// 			question:
-	// 				"Como você descreveria sua experiência geral de trabalho com a OSC?",
-	// 			answers: {
-	// 				labels: [
-	// 					"Muito positiva",
-	// 					"Positiva",
-	// 					"Neutra",
-	// 					"Negativa",
-	// 					"Muito negativa",
-	// 				],
-	// 				values: [40, 35, 15, 5, 5],
-	// 			},
-	// 		},
-	// 	],
-	// };
-
 	const isGoogleForms = process.env.NEXT_PUBLIC_GRAPH_GOOGLE_FORMS === "true";
 
 	return (

@@ -441,8 +441,8 @@ const surveysRepresentantes = {
 					{
 						option: "Prazos incompatíveis com as necessidades da OSC",
 						order: 1
-			},
-			{
+					},
+					{
 						option: "Dificuldade na comunicação entre OSC e alunos",
 						order: 2
 					},
