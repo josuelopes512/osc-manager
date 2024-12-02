@@ -14,15 +14,6 @@ interface Student {
 	courseId?: string;
 }
 
-interface Project {
-	id: string;
-	name: string;
-	description?: string;
-	link?: string;
-	osc: { name: string };
-	students: Student[];
-}
-
 /**
  * Asynchronously upserts data for a specific entity.
  *

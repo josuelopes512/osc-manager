@@ -46,5 +46,3 @@ bun.lockb
 .vs/VSWorkspaceState.json
 .vs/osc-manager/v17/.wsuo
 .vs/osc-manager/v17/DocumentLayout.json
-prisma/migrations/*
-prisma/migrations/migration_lock.toml

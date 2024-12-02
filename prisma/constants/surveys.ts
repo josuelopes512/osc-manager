@@ -78,7 +78,7 @@ const surveyDefault = {
 				],
 			}
 		],
-	},
+			},
 };
 
 const surveyAluno = {
@@ -217,8 +217,8 @@ const surveysRepresentantes = {
 					{
 						option: "Dificuldade na comunicação entre OSC e alunos",
 						order: 2
-					},
-					{
+			},
+			{
 						option: "Resultados teóricos que não são aplicáveis",
 						order: 3
 					},
