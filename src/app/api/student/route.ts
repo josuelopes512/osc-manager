@@ -10,6 +10,7 @@ export async function GET(req: NextRequest) {
 		const students = await studentService.find(query);
 		return NextResponse.json(students);
 	} catch (error) {
+		console.log("error", error);
 		return NextResponse.json(
 			{ msg: "Falha ao buscar alunos", error },
 			{ status: 500 },

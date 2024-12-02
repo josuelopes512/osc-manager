@@ -10,6 +10,7 @@ export async function GET(req: NextRequest) {
 		const oscs = await oscService.find(query);
 		return NextResponse.json(oscs);
 	} catch (error) {
+		console.log("error", error);
 		return NextResponse.json(
 			{ error, msg: "Falha ao buscar OSCs" },
 			{ status: 500 },

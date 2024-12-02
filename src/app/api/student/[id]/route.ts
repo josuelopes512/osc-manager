@@ -30,6 +30,7 @@ export async function GET(
 		});
 		return NextResponse.json(students);
 	} catch (error) {
+		console.log("error", error);
 		return NextResponse.json(
 			{ msg: "Falha ao buscar alunos", error },
 			{ status: 500 },
