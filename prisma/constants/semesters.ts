@@ -28,3 +28,4 @@ export const semesters = [
 	{ id: 27, name: "2034.1" },
 	{ id: 28, name: "2034.2" },
 ];
+

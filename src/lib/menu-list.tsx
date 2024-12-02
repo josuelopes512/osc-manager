@@ -27,7 +27,7 @@ type Group = {
 };
 
 export function getMenuList(pathname: string): Group[] {
-	return [
+	let menuList = [
 		{
 			groupLabel: "Painel",
 			menus: [
@@ -140,4 +140,26 @@ export function getMenuList(pathname: string): Group[] {
 			],
 		},
 	];
+
+	if (process.env?.NEXT_PUBLIC_USE_IMPORT_DATA === "true"){
+		menuList.push({
+			groupLabel: "Importar/Exportar",
+			menus: [
+				{
+					href: "/data",
+					label: "Importar/Exportar",
+					icon: RiSurveyFill,
+					submenus: [
+						{
+							href: "/data",
+							label: "Dados JSON",
+							Icon: RiSurveyFill,
+						}
+					],
+				},
+			]
+		});
+	}
+
+	return menuList;
 }

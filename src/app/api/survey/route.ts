@@ -20,6 +20,7 @@ export async function GET(req: NextRequest) {
 export async function POST(request: Request) {
 	try {
 		const data = (await request.json()) as POSTSurveyDTO;
+
 		const survey = await surveyService.create({
 			data: {
 				...data,
@@ -27,35 +28,44 @@ export async function POST(request: Request) {
 			},
 		});
 
-		await Promise.all(
-			data.questions.create
-				.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-				.map(async (question) => {
-					await questionService.create({
-						data: {
-							...question,
-							surveyId: survey.id,
-							order: question.order,
-							multipleChoice: {
-								create: question.multipleChoice
-									?.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-									.map((choice) => ({
-										...choice,
-										choice: choice.choice ?? "",
-									})),
-							},
-							checkBox: {
-								create: question.checkBox
-									?.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-									.map((option) => ({
-										...option,
-										option: option.option ?? "",
-									})),
-							},
-						},
-					});
-				}),
+		const sortedQuestions = data.questions.create.sort(
+			(a, b) => (a.order ?? 0) - (b.order ?? 0)
 		);
+
+		for (const question of sortedQuestions) {
+			await questionService.create({
+				data: {
+					...question,
+					surveyId: survey.id,
+					order: question.order,
+					multipleChoice: {
+						create: Array.isArray(question?.multipleChoice)
+							? question.multipleChoice
+								.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+								.map((choice) => ({
+									...choice,
+									choice: choice?.choice ?? "",
+									other: choice?.other ?? "",
+									order: choice?.order ?? 0,
+								}))
+							: [],
+					},
+					checkBox: {
+						create: Array.isArray(question?.checkBox)
+							? question.checkBox
+								.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+								.map((option) => ({
+									...option,
+									option: option?.option ?? "",
+									other: option?.other ?? "",
+									order: option?.order ?? 0,
+								}))
+							: [],
+					},
+				},
+			});
+		}
+
 		return NextResponse.json(survey);
 	} catch (error) {
 		console.log(error);

@@ -12,16 +12,22 @@ model User {
   name          String?
   email         String    @unique
   image         String?
-  emailVerified Boolean?  @default(false)
+  emailVerified Boolean   @default(false)
   approved      Boolean   @default(false)
+  role          Role      @default(USER)
   accounts      Account[]
   sessions      Session[]
 
   createdAt DateTime  @default(now())
-  updateAt  DateTime  @updatedAt()
+  updatedAt DateTime  @updatedAt() @default(now())
   deletedAt DateTime?
 
   @@map("users")
+}
+
+enum Role {
+  USER
+  ADMIN
 }
 
 model SocialPlatform {
@@ -30,8 +36,9 @@ model SocialPlatform {
 
   oscSocials OSCSocial[]
 
-  createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt()
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt() @default(now())
+  deletedAt DateTime?
 
   @@map("social_platforms")
 }
@@ -39,14 +46,15 @@ model SocialPlatform {
 model OSCSocial {
   id               Int    @id @default(autoincrement())
   oscId            Int
-  socialPlatformId Int
+  socialPlatformId Int?
   link             String
 
-  osc            OSC            @relation("OSCToOSCSocial", fields: [oscId], references: [id], onDelete: Cascade)
-  socialPlatform SocialPlatform @relation(fields: [socialPlatformId], references: [id], onDelete: Cascade)
+  osc            OSC             @relation("OSCToOSCSocial", fields: [oscId], references: [id], onDelete: Cascade)
+  socialPlatform SocialPlatform? @relation(fields: [socialPlatformId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt()
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt() @default(now())
+  deletedAt DateTime?
 
   @@map("osc_socials")
 }
@@ -62,43 +70,44 @@ model OSCAddress {
 
   createdAt DateTime @default(now())
   updateAt  DateTime @updatedAt()
+  deletedAt DateTime?
   OSC       OSC[]
 }
 
 model OSC {
-  id   Int    @id @default(autoincrement())
-  name String
+  id       Int    @id @default(autoincrement())
+  name     String
+  location String @default("")
 
   oscSocials OSCSocial[] @relation("OSCToOSCSocial")
-  project    Project[]
+  projects   Project[]
+  OSCAddress OSCAddress[]
 
-  address   OSCAddress? @relation(fields: [addressId], references: [id], onDelete: Cascade)
-  addressId Int?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt() @default(now())
+  deletedAt DateTime?
 
-  createdAt    DateTime       @default(now())
-  updateAt     DateTime       @updatedAt()
-  SurveyAnswer SurveyAnswer[]
-
+  @@index([name])
   @@map("oscs")
 }
 
 model Student {
   id            Int     @id @default(autoincrement())
   name          String
-  matriculation String?
+  matriculation String?  @unique
   email         String?
   whatsapp      String?
-  courseId      Int
-  oscId         Int?
+  courseId      Int?
   projectId     Int?
 
-  course  Course   @relation(fields: [courseId], references: [id])
+  course  Course?  @relation(fields: [courseId], references: [id])
   project Project? @relation(fields: [projectId], references: [id])
 
-  createdAt    DateTime       @default(now())
-  updateAt     DateTime       @updatedAt()
-  SurveyAnswer SurveyAnswer[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt() @default(now())
+  deletedAt DateTime?
 
+  @@index([name])
   @@map("students")
 }
 
@@ -108,21 +117,24 @@ model Semester {
 
   projects Project[]
 
-  createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt()
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt() @default(now())
+  deletedAt DateTime?
 
   @@map("semesters")
 }
 
 model Course {
   id   Int    @id @default(autoincrement())
-  name String
+  name String @unique
 
   students Student[]
 
-  createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt()
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt() @default(now())
+  deletedAt DateTime?
 
+  @@index([name])
   @@map("courses")
 }
 
@@ -132,15 +144,17 @@ model Project {
   description String?
   link        String?
   oscId       Int
-  semesterId  Int
+  semesterId  Int?
 
-  osc      OSC       @relation(fields: [oscId], references: [id], onDelete: Cascade)
-  semester Semester  @relation(fields: [semesterId], references: [id])
+  osc      OSC       @relation(fields: [oscId], references: [id])
+  semester Semester? @relation(fields: [semesterId], references: [id])
   students Student[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt() @default(now())
+  deletedAt DateTime?
 
+  @@index([name])
   @@map("projects")
 }
 
@@ -152,16 +166,17 @@ model Survey {
   questions     Question[]
   surveyAnswers SurveyAnswer[]
 
-  createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt()
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt() @default(now())
+  deletedAt DateTime?
 
   @@map("surveys")
 }
 
 enum QuestionType {
-  MultipleChoice
-  CheckBox
-  ShortAnswer
+  MULTIPLE_CHOICE
+  CHECK_BOX
+  SHORT_ANSWER
 }
 
 model Question {
@@ -179,8 +194,9 @@ model Question {
 
   surveyResponse SurveyResponse[]
 
-  createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt()
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt() @default(now())
+  deletedAt DateTime?
 
   @@map("questions")
 }
@@ -193,16 +209,20 @@ model MultipleChoice {
 
   question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
   questionId Int
+
+  deletedAt DateTime?
 }
 
 model CheckBox {
-  id     Int     @id @default(autoincrement())
-  option String // Array of options
-  other  String?
-  order  Int     @default(0)
+  id      Int     @id @default(autoincrement())
+  option  String
+  other   String?
+  order   Int     @default(0)
 
   question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
   questionId Int
+
+  deletedAt DateTime?
 }
 
 model SurveyAnswer {
@@ -211,16 +231,11 @@ model SurveyAnswer {
   surveyId Int
   survey   Survey @relation(fields: [surveyId], references: [id])
 
-  studentId Int?
-  student   Student? @relation(fields: [studentId], references: [id])
-
-  oscId Int?
-  osc   OSC? @relation(fields: [oscId], references: [id])
-
   responses SurveyResponse[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt() @default(now())
+  deletedAt DateTime?
 
   @@map("survey_answers")
 }
@@ -236,6 +251,8 @@ model SurveyResponse {
 
   surveyAnswer   SurveyAnswer? @relation(fields: [surveyAnswerId], references: [id], onDelete: Cascade)
   surveyAnswerId Int?
+
+  deletedAt DateTime?
 }
 
 model Account {
@@ -252,7 +269,8 @@ model Account {
   id_token          String? @db.Text
   session_state     String?
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  deletedAt DateTime?
 
   @@unique([provider, providerAccountId])
   @@map("accounts")
@@ -266,6 +284,7 @@ model Session {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  deletedAt DateTime?
   @@map("sessions")
 }
 
@@ -274,6 +293,7 @@ model VerificationToken {
   token      String
   expires    DateTime
 
+  deletedAt DateTime?
   @@unique([identifier, token])
   @@map("verificationtokens")
 }

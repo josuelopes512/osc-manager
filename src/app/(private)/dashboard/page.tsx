@@ -65,8 +65,8 @@ export default function Home() {
 		const questionHeaders = surveyAnswers.questions.map((q) => q.question);
 		const headers = [
 			"data",
-			"Nome da Instituição",
-			"Nome do Aluno",
+			// "Nome da Instituição",
+			// "Nome do Aluno",
 			...questionHeaders,
 		];
 
@@ -76,8 +76,8 @@ export default function Home() {
 				data: format(surveyAnswer.createdAt, "dd/MM/yyyy HH:mm", {
 					locale: ptBR,
 				}),
-				"Nome da Instituição": surveyAnswer.osc?.name ?? "",
-				"Nome do Aluno": surveyAnswer.student?.name ?? "",
+				// "Nome da Instituição": surveyAnswer.osc?.name ?? "",
+				// "Nome do Aluno": surveyAnswer.student?.name ?? "",
 			};
 
 			// Preencher respostas das perguntas
@@ -85,12 +85,12 @@ export default function Home() {
 				const response = surveyAnswer.responses.find(
 					(res) => res.question.name === question.question,
 				);
-				if (response?.question.type === "CheckBox") {
+				if (response?.question.type === "CHECK_BOX") {
 					const parsedAnswer = JSON.parse(response?.answer);
 					if (parsedAnswer?.includes("Outro")) return response?.other;
 					return parsedAnswer.join("/ ");
 				}
-				if (response?.question.type === "MultipleChoice") {
+				if (response?.question.type === "MULTIPLE_CHOICE") {
 					if (response?.answer === "Outro") return response?.other;
 				}
 				return response?.answer ?? ""; // Caso não haja resposta

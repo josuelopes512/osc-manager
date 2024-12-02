@@ -9,6 +9,6 @@ export type SurveyAnswerFormProps = Survey & {
 		checkBox: string[];
 		checkBoxOther: string;
 	}[];
-	studentId: string;
-	oscId: string;
+	// studentId: string;
+	// oscId: string;
 };

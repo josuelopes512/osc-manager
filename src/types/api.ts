@@ -34,3 +34,4 @@ export interface DefaultAPI {
 	createdAt: string;
 	updateAt: string;
 }
+
