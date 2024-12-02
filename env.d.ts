@@ -6,5 +6,6 @@ namespace NodeJS {
 		GOOGLE_CLIENT_ID: string;
 		GOOGLE_CLIENT_SECRET: string;
 		NEXT_PUBLIC_GRAPH_GOOGLE_FORMS: string;
+		NEXT_PUBLIC_USE_IMPORT_DATA: string;
 	}
 }

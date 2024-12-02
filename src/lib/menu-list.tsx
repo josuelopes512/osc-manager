@@ -141,7 +141,7 @@ export function getMenuList(pathname: string): Group[] {
 		},
 	];
 
-	if (process.env?.NEXT_PUBLIC_USE_IMPORT_DATA === "true"){
+	if (process.env.NEXT_PUBLIC_USE_IMPORT_DATA === "true"){
 		menuList.push({
 			groupLabel: "Importar/Exportar",
 			menus: [
