@@ -10,8 +10,8 @@ export default function FieldArrayMultipleChoice({
 	control,
 	name,
 }: NestedFieldArrayProps<
-	Question & { multipleChoice: Partial<MultipleChoice>[] },
-	"multipleChoice"
+	Question & { MultipleChoice: Partial<MultipleChoice>[] },
+	"MultipleChoice"
 >) {
 	const { fields, append, remove, insert } = useFieldArray({
 		control,

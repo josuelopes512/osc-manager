@@ -31,7 +31,7 @@ const SurveyCharts = ({
 }: {
 	surveyData: SurveAnswersDashboard["questions"][number];
 }) => {
-	const [isPie, setIsPie] = useState(surveyData.type === "MULTIPLE_CHOICE");
+	const [isPie, setIsPie] = useState(surveyData.type === "MultipleChoice");
 
 	const data = {
 		labels: surveyData.answers.labels,

@@ -9,8 +9,8 @@ export default function FieldArrayCheckBox({
 	control,
 	name,
 }: NestedFieldArrayProps<
-	Question & { checkBox: Partial<CheckBox>[] },
-	"checkBox"
+	Question & { CheckBox: Partial<CheckBox>[] },
+	"CheckBox"
 >) {
 	const { fields, append, remove, insert } = useFieldArray({
 		control,

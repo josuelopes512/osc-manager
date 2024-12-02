@@ -18,12 +18,12 @@ type Params = {
 
 export type SurveAnswersDashboard = {
 	surveysAnswers: (SurveyAnswer & {
-		// osc: {
-		// 	name: string;
-		// };
-		// student: {
-		// 	name: string;
-		// };
+		osc: {
+			name: string;
+		};
+		student: {
+			name: string;
+		};
 		responses: (SurveyResponse & { question: Question })[];
 	})[];
 	questions: {
@@ -54,7 +54,6 @@ export async function GET(
 			);
 
 		const surveys = (await surveyAnswerService.find({
-			...query,
 			where: {
 				surveyId: id,
 			},
@@ -64,24 +63,25 @@ export async function GET(
 						question: true,
 					},
 				},
-				// osc: {
-				// 	select: {
-				// 		name: true,
-				// 	},
-				// },
-				// student: {
-				// 	select: {
-				// 		name: true,
-				// 	},
-				// },
+				osc: {
+					select: {
+						name: true,
+					},
+				},
+				student: {
+					select: {
+						name: true,
+					},
+				},
 			},
+			...query,
 		})) as (SurveyAnswer & {
-			// osc: {
-			// 	name: string;
-			// };
-			// student: {
-			// 	name: string;
-			// };
+			osc: {
+				name: string;
+			};
+			student: {
+				name: string;
+			};
 			responses: {
 				question: Question;
 				answer: string;
@@ -91,7 +91,7 @@ export async function GET(
 		const questions = (await questionService.find({
 			where: {
 				surveyId: id,
-				type: { not: "SHORT_ANSWER" },
+				type: { not: "ShortAnswer" },
 			},
 			include: {
 				multipleChoice: true,
@@ -109,7 +109,7 @@ export async function GET(
 			.map((survey) => ({
 				...survey,
 				responses: survey.responses.filter(
-					({ question }) => question.type !== "SHORT_ANSWER",
+					({ question }) => question.type !== "ShortAnswer",
 				),
 			}))
 			.filter(({ responses }) => responses.length > 0);
@@ -125,7 +125,7 @@ export async function GET(
 				labels: [] as string[],
 				values: [] as number[],
 			};
-			if (quest.type === "MULTIPLE_CHOICE") {
+			if (quest.type === "MultipleChoice") {
 				for (const choice of quest.multipleChoice) {
 					answers.labels.push(choice.choice);
 					const count = surveyWithoutShortAnswer
@@ -138,7 +138,7 @@ export async function GET(
 				}
 			}
 
-			else if (quest.type === "CHECK_BOX") {
+			if (quest.type === "CheckBox") {
 				for (const option of quest.checkBox) {
 					answers.labels.push(option.option);
 					const count = surveyWithoutShortAnswer
@@ -162,8 +162,8 @@ export async function GET(
 		surveyAnswersDashboard.surveysAnswers = surveyWithoutShortAnswer.map(
 			(survey) => ({
 				...survey,
-				// osc: survey.osc as OSC,
-				// student: survey.student as OSC,
+				osc: survey.osc as OSC,
+				student: survey.student as OSC,
 				responses: survey.responses as (SurveyResponse & {
 					question: Question;
 				})[],
@@ -184,6 +184,7 @@ export async function GET(
 			surveysAnswers: surveys,
 		});
 	} catch (error) {
+		console.log(error);
 		return NextResponse.json(
 			{ msg: "Falha ao buscar respostas", error },
 			{ status: 500 },

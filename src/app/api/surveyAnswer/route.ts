@@ -11,16 +11,16 @@ export async function POST(request: Request) {
 				survey: {
 					connect: { id: data.surveyId },
 				},
-				// osc: data.oscId
-				// 	? {
-				// 			connect: { id: data.oscId },
-				// 		}
-				// 	: undefined,
-				// student: data.studentId
-				// 	? {
-				// 			connect: { id: data.studentId },
-				// 		}
-				// 	: undefined,
+				osc: data.oscId
+					? {
+							connect: { id: data.oscId },
+						}
+					: undefined,
+				student: data.studentId
+					? {
+							connect: { id: data.studentId },
+						}
+					: undefined,
 				responses: {
 					createMany: {
 						data: data.responses.create.map((response) => ({

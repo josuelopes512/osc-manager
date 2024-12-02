@@ -85,15 +85,15 @@ const SurveyEdit = () => {
 
 		data.questions = data.questions.map((question) => {
 			switch (question.type) {
-				case "SHORT_ANSWER":
+				case "ShortAnswer":
 					return {
 						...question,
 						multipleChoice: undefined,
 						checkBox: undefined,
 					};
-				case "MULTIPLE_CHOICE":
+				case "MultipleChoice":
 					return { ...question, checkBox: undefined };
-				case "CHECK_BOX":
+				case "CheckBox":
 					return { ...question, multipleChoice: undefined };
 				default:
 					return question;
@@ -161,7 +161,7 @@ const SurveyEdit = () => {
 		appendQuestions({
 			name: "",
 			order: 1,
-			type: "SHORT_ANSWER",
+			type: "ShortAnswer",
 			required: false,
 			multipleChoice: [{ choice: "", order: 1 }],
 			checkBox: [{ option: "", order: 1 }],
@@ -253,7 +253,7 @@ const SurveyEdit = () => {
 								name={`questions.${indexQuestions}.type`}
 								control={control}
 								rules={{ required: "Campo obrigatório" }}
-								defaultValue="SHORT_ANSWER"
+								defaultValue="ShortAnswer"
 								render={({ field, fieldState: { error } }) => (
 									<Skeleton
 										className="rounded-md col-span-4 md:col-span-2 lg:col-span-1"
@@ -272,15 +272,15 @@ const SurveyEdit = () => {
 											errorMessage={error?.message}
 											items={[
 												{
-													key: "SHORT_ANSWER",
+													key: "ShortAnswer",
 													textValue: "Texto",
 												},
 												{
-													key: "MULTIPLE_CHOICE",
+													key: "MultipleChoice",
 													textValue: "Multipla escolha",
 												},
 												{
-													key: "CHECK_BOX",
+													key: "CheckBox",
 													textValue: "Caixa de seleção",
 												},
 											]}
@@ -290,11 +290,11 @@ const SurveyEdit = () => {
 														key={item.key}
 														className="flex items-center mt-1 gap-2"
 													>
-														{item.key === "SHORT_ANSWER" && <IoText size={20} />}
-														{item.key === "MULTIPLE_CHOICE" && (
+														{item.key === "ShortAnswer" && <IoText size={20} />}
+														{item.key === "MultipleChoice" && (
 															<FaRegDotCircle size={20} />
 														)}
-														{item.key === "CHECK_BOX" && (
+														{item.key === "CheckBox" && (
 															<FaCheckSquare size={20} />
 														)}
 														<span>{item.textValue}</span>
@@ -311,11 +311,11 @@ const SurveyEdit = () => {
 													}}
 													textValue={item.textValue}
 												>
-													{item.key === "SHORT_ANSWER" && <IoText size={20} />}
-													{item.key === "MULTIPLE_CHOICE" && (
+													{item.key === "ShortAnswer" && <IoText size={20} />}
+													{item.key === "MultipleChoice" && (
 														<FaRegDotCircle size={20} />
 													)}
-													{item.key === "CHECK_BOX" && (
+													{item.key === "CheckBox" && (
 														<FaCheckSquare size={20} />
 													)}
 													{item.textValue}
@@ -368,13 +368,13 @@ const SurveyEdit = () => {
 									</Switch>
 								)}
 							/>
-							{type === "MULTIPLE_CHOICE" && (
+							{type === "MultipleChoice" && (
 								<FieldArrayMultipleChoice
 									control={control as any}
 									name={`questions.${indexQuestions}.multipleChoice` as any}
 								/>
 							)}
-							{type === "CHECK_BOX" && (
+							{type === "CheckBox" && (
 								<FieldArrayCheckBox
 									control={control as any}
 									name={`questions.${indexQuestions}.checkBox` as any}
@@ -393,7 +393,7 @@ const SurveyEdit = () => {
 					appendQuestions({
 						name: "",
 						order: questionsFields?.length,
-						type: "SHORT_ANSWER",
+						type: "ShortAnswer",
 						multipleChoice: [{ choice: "", order: 1 }],
 						checkBox: [{ option: "", order: 1 }],
 					});

@@ -46,8 +46,8 @@ async function seedSocials() {
 			socialMediaPlatforms,
 			async (social) => {
 				await prisma.socialPlatform.upsert({
-					create: social,
-					update: social,
+					create: { ...social, id: undefined },
+					update: { ...social, id: undefined },
 					where: { id: social.id },
 				});
 			},
@@ -65,8 +65,8 @@ async function seedCourses() {
 	try {
 		await upsertData("courses", courses, async (course) => {
 			await prisma.course.upsert({
-				create: course,
-				update: course,
+				create: { ...course, id: undefined },
+				update: { ...course, id: undefined },
 				where: { id: course.id },
 			});
 		});
@@ -97,8 +97,8 @@ async function seedSemesters() {
 	try {
 		await upsertData("semesters", semesters, async (semester) => {
 			await prisma.semester.upsert({
-				create: semester,
-				update: semester,
+				create: { ...semester, id: undefined },
+				update: { ...semester, id: undefined },
 				where: { id: semester.id },
 			});
 		});
@@ -120,17 +120,17 @@ const seedProjects = async () => {
 				create: {
 					...project,
 					osc: { create: { name: project.osc.name } },
-					students:  project?.students
-					? {
-						createMany: {
-						  data: (project?.students as Student[]).map((student) => ({
-							name: student.name,
-							whatsapp: student.whatsapp,
-							courseId: 1,
-						  })),
-						},
-					  }
-					: {},
+					students: project?.students
+						? {
+								createMany: {
+									data: (project?.students as Student[]).map((student) => ({
+										name: student.name,
+										whatsapp: student.whatsapp,
+										courseId: 1,
+									})),
+								},
+							}
+						: {},
 					semester: {
 						connect: { name: "2024.2" },
 					},
@@ -140,15 +140,15 @@ const seedProjects = async () => {
 					...project,
 					osc: { create: { name: project.osc.name } },
 					students: project?.students
-					? {
-						createMany: {
-							data: (project.students as Student[]).map((student) => ({
-								name: student.name,
-								courseId: 1,
-							})),
-						},
-					}
-					: {},
+						? {
+								createMany: {
+									data: (project.students as Student[]).map((student) => ({
+										name: student.name,
+										courseId: 1,
+									})),
+								},
+							}
+						: {},
 					semester: {
 						connect: { name: "2024.2" },
 					},
@@ -171,8 +171,8 @@ async function seedSurveys() {
 	try {
 		await upsertData("surveys", surveys, async (survey) => {
 			await prisma.survey.upsert({
-				create: { ...survey, questions: undefined },
-				update: { ...survey, questions: undefined },
+				create: { ...survey, questions: undefined, id: undefined },
+				update: { ...survey, questions: undefined, id: undefined },
 				where: { id: survey.id },
 			});
 
@@ -183,27 +183,23 @@ async function seedSurveys() {
 						await prisma.question.create({
 							data: {
 								...question,
+								id: undefined,
 								surveyId: survey.id,
 								order: question.order,
-								type: question.type,
 								multipleChoice: {
 									create: question.multipleChoice
-									? question.multipleChoice
-									        ?.sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0))
-											.map((choice: any) => ({
-												choice: choice?.choice ?? "",
-												other: choice?.other ?? "",
-												order: choice?.order ?? 0,
-											}))
-										: [],
+										?.sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0))
+										.map((choice: any) => ({
+											...choice,
+											choice: choice.choice ?? "",
+										})),
 								},
 								checkBox: {
 									create: question.checkBox
 										?.sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0))
 										.map((option: any) => ({
-											option: option?.option ?? "",
-											other: option?.other ?? "",
-											order: option?.order ?? 0,
+											...option,
+											option: option.option ?? "",
 										})),
 								},
 							},

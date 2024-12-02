@@ -8,17 +8,18 @@ import { useState } from "react";
 import type { SurveAnswersDashboard } from "@/app/api/survey/[id]/answers/route";
 import Loading from "@/components/loading";
 import { FaExclamationTriangle, FaFileExcel } from "react-icons/fa";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
+import { handleExportToCSV } from "./functions";
+import type { OSC, OSCAddress } from "@prisma/client";
 
 export default function Home() {
-	const [selectedSurveyId, setSelectedSurveyId] = useState<number | null>(null);
+	const [selectedSurveyId, setSelectedSurveyId] = useState("");
+	const [selectedOscId, setSelectedOscId] = useState("");
 
 	const {
 		data: dataSurvey,
 		isLoading: isLoadingSurveys,
 		error: surveysError,
-	} = useQuery<{ id: number; description: string; name: string }[], Error>({
+	} = useQuery({
 		queryKey: ["survey-list"],
 		queryFn: ({ signal }) =>
 			getData<{ id: number; description: string; name: string }[]>({
@@ -28,15 +29,30 @@ export default function Home() {
 	});
 
 	const {
+		data: oscs,
+		isLoading: isLoadingOscs,
+		error: oscError,
+	} = useQuery({
+		queryKey: ["osc-get"],
+		queryFn: ({ signal }) =>
+			getData<(OSC & { address: OSCAddress })[]>({
+				url: "/osc",
+				signal,
+				query: "include.address=true",
+			}),
+	});
+
+	const {
 		data: surveyAnswers,
 		isLoading: isLoadingAnswers,
 		error: answersError,
 	} = useQuery<SurveAnswersDashboard>({
-		queryKey: ["survey-answers", selectedSurveyId],
+		queryKey: ["survey-answers", selectedSurveyId, selectedOscId],
 		queryFn: ({ signal }) =>
 			getData<SurveAnswersDashboard>({
 				url: `/survey/${selectedSurveyId}/answers`,
 				signal,
+				query: selectedOscId ? `where.oscId=${selectedOscId}` : undefined,
 			}),
 		enabled: !!selectedSurveyId,
 	});
@@ -56,116 +72,12 @@ export default function Home() {
 		);
 	}
 
-	const handleExportToCSV = () => {
-		if (!surveyAnswers || !surveyAnswers.questions.length) {
-			return;
-		}
-
-		// Criar os cabeçalhos
-		const questionHeaders = surveyAnswers.questions.map((q) => q.question);
-		const headers = [
-			"data",
-			// "Nome da Instituição",
-			// "Nome do Aluno",
-			...questionHeaders,
-		];
-
-		// Mapear os dados para as colunas apropriadas
-		const data = surveyAnswers.surveysAnswers.map((surveyAnswer) => {
-			const baseData = {
-				data: format(surveyAnswer.createdAt, "dd/MM/yyyy HH:mm", {
-					locale: ptBR,
-				}),
-				// "Nome da Instituição": surveyAnswer.osc?.name ?? "",
-				// "Nome do Aluno": surveyAnswer.student?.name ?? "",
-			};
-
-			// Preencher respostas das perguntas
-			const answers = surveyAnswers.questions.map((question) => {
-				const response = surveyAnswer.responses.find(
-					(res) => res.question.name === question.question,
-				);
-				if (response?.question.type === "CHECK_BOX") {
-					const parsedAnswer = JSON.parse(response?.answer);
-					if (parsedAnswer?.includes("Outro")) return response?.other;
-					return parsedAnswer.join("/ ");
-				}
-				if (response?.question.type === "MULTIPLE_CHOICE") {
-					if (response?.answer === "Outro") return response?.other;
-				}
-				return response?.answer ?? ""; // Caso não haja resposta
-			});
-
-			return {
-				...baseData,
-				...Object.fromEntries(questionHeaders.map((q, i) => [q, answers[i]])),
-			};
-		});
-
-		// Função para encapsular valores com aspas quando necessário
-		const escapeCSVValue = (value: string) => {
-			if (
-				typeof value === "string" &&
-				(value.includes(",") || value.includes('"'))
-			) {
-				return `"${value.replace(/"/g, '""')}"`; // Escapar aspas duplas dentro do valor
-			}
-			return value;
-		};
-
-		// Converter os dados em formato CSV
-		const csvData = [
-			headers
-				.map(escapeCSVValue)
-				.join(","), // Cabeçalhos
-			...data.map((surveyAnswer) =>
-				headers
-					.map((header) =>
-						escapeCSVValue(
-							surveyAnswer[header as keyof typeof surveyAnswer] ?? "",
-						),
-					)
-					.join(","),
-			),
-		].join("\n");
-
-		// Criar o arquivo CSV
-		const blob = new Blob([csvData], { type: "text/csv" });
-		const url = URL.createObjectURL(blob);
-
-		const a = document.createElement("a");
-		a.href = url;
-		a.download = `survey-answers-${selectedSurveyId}.csv`;
-		a.click();
-		a.remove();
-	};
-
 	const isGoogleForms = process.env.NEXT_PUBLIC_GRAPH_GOOGLE_FORMS === "true";
 
 	return (
 		<div className="flex flex-col justify-between w-full">
-			<h1 className="text-3xl font-bold mt-2 mb-4">Dashboard</h1>
 			<div className="flex justify-between gap-2 items-center">
-				<Select
-					items={dataSurvey ?? []}
-					label="Questionário"
-					placeholder="Selecione um questionário"
-					className="md:max-w-md mb-2 max-w-xs"
-					isDisabled={isLoadingSurveys || !!surveysError}
-					onChange={(e) => {
-						const value = e.target.value;
-						setSelectedSurveyId(Number(value));
-						if (isGoogleForms) {
-							setSelectedSurveyId(null);
-						}
-					}}
-				>
-					{(survey) => (
-						<SelectItem key={survey.id} value={survey.id}>
-							{survey.name}
-						</SelectItem>
-					)}
-				</Select>
+				<h1 className="text-3xl font-bold mt-2 mb-4">Dashboard</h1>
 				{!!surveyAnswers?.questions?.length && (
 					<Tooltip
 						content="Exportar em Excel"
@@ -178,7 +90,7 @@ export default function Home() {
 							className="rounded-full"
 							onPress={() => {
 								// exportar para excel
-								handleExportToCSV();
+								handleExportToCSV(surveyAnswers, selectedSurveyId);
 							}}
 							title="Exportar"
 						>
@@ -186,6 +98,47 @@ export default function Home() {
 						</Button>
 					</Tooltip>
 				)}
+			</div>
+			<div className="flex justify-between gap-2 items-center">
+				<Select
+					items={dataSurvey ?? []}
+					label="Questionário"
+					placeholder="Selecione um questionário"
+					className="md:max-w-md mb-2 max-w-xs"
+					isDisabled={isLoadingSurveys || !!surveysError}
+					onChange={(e) => {
+						const value = e.target.value;
+						setSelectedSurveyId(value);
+						if (isGoogleForms) {
+							setSelectedSurveyId("");
+						}
+					}}
+					selectedKeys={selectedSurveyId ? [selectedSurveyId] : []}
+				>
+					{(survey) => (
+						<SelectItem key={survey.id} value={survey.id}>
+							{survey.name}
+						</SelectItem>
+					)}
+				</Select>
+				<Select
+					items={oscs ?? []}
+					label="OSC"
+					placeholder="Selecione um questionário"
+					className="md:max-w-md mb-2 max-w-xs"
+					isDisabled={isLoadingOscs || !!oscError}
+					onChange={(e) => {
+						const value = e.target.value;
+						setSelectedOscId(value);
+					}}
+					selectedKeys={selectedOscId ? [selectedOscId] : []}
+				>
+					{(osc) => (
+						<SelectItem key={osc.id} value={osc.id}>
+							{osc.name}
+						</SelectItem>
+					)}
+				</Select>
 			</div>
 
 			{!isGoogleForms && surveyAnswers && (
@@ -199,7 +152,7 @@ export default function Home() {
 				<div className="w-full flex items-center justify-center">
 					<div className="flex items-center justify-center p-4 text-red-700 bg-red-100 border border-red-400 rounded-lg w-fit">
 						<FaExclamationTriangle className="mr-2" />
-						<span>Este questionário ainda nao possui respostas</span>
+						<span>Este questionário ainda não possui respostas</span>
 					</div>
 				</div>
 			)}

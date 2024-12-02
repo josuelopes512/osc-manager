@@ -6,7 +6,7 @@ type SurveyAnswerResponse = {
 
 export type POSTSurveyAnswerDTO = {
 	surveyId: number;
-	// oscId: number;
-	// studentId: number;
+	oscId: number;
+	studentId: number;
 	responses: { create: SurveyAnswerResponse[] };
 };

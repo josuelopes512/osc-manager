@@ -49,14 +49,11 @@ export async function PUT(
 			where: { id },
 			data: {
 				name: data.name,
-				// address: data.address
-				// 	? {
-				// 			update: {
-				// 				data: data.address,
-				// 				where: { id: data.address?.id },
-				// 			},
-				// 		}
-				// 	: undefined,
+				address: !data.address?.id
+					? {
+							create: data.address,
+						}
+					: { update: data.address },
 				oscSocials: {
 					create: data.oscSocials?.create,
 					update: data.oscSocials?.update?.map((social) => ({

@@ -20,6 +20,7 @@ export async function POST(request: Request) {
 		const course = await courseService.create({ data });
 		return NextResponse.json(course);
 	} catch (error) {
+		console.log(error);
 		return NextResponse.json(
 			{ error, msg: "Falha ao criar curso" },
 			{ status: 500 },

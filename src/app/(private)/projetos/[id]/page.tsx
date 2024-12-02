@@ -33,7 +33,9 @@ const ProjectEdit = () => {
 				url: "project",
 				id: Number.parseInt(id, 10),
 				signal,
-				query: "include.osc=true&&include.students=true&&include.semester=true",
+				query:
+					"include.osc=true&&include.students=true" +
+					"&&include.semester.orderBy.name=asc",
 			}),
 		queryKey: ["project-get-by-id", id],
 		enabled: id !== "new",
@@ -66,6 +68,7 @@ const ProjectEdit = () => {
 			getData<Semester[]>({
 				url: "semester",
 				signal,
+				query: "orderBy.name=asc",
 			}),
 		queryKey: ["semester-get"],
 		refetchOnMount: false,
@@ -79,7 +82,7 @@ const ProjectEdit = () => {
 				signal,
 				query: "include.course=true",
 			}),
-		queryKey: ["student-get"],
+		queryKey: ["student-get-projetos"],
 		refetchOnMount: false,
 		refetchOnReconnect: false,
 	});

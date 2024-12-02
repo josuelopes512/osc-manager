@@ -1,10 +1,11 @@
-import GraduationCapPlus from "@/assets/icons/GraduationCapPlus";
+import BsFillHousesFillPlus from "@/assets/icons/BsFillHousesFillPlus";
+import FaClipboardCheckPlus from "@/assets/icons/FaClipboardCheckPlus";
 import RiSurveyFillPlus from "@/assets/icons/RiSurveyFillPlus";
-import { BsFillHouseAddFill, BsFillHousesFill } from "react-icons/bs";
-import { FaUserCog } from "react-icons/fa";
+import { BsFillHousesFill } from "react-icons/bs";
+import { FaClipboardCheck, FaUserCog } from "react-icons/fa";
 import { FaGraduationCap, FaUserPlus, FaUsers } from "react-icons/fa6";
-import { MdOutlineAddTask, MdSpaceDashboard, MdTaskAlt } from "react-icons/md";
-import { RiSurveyFill } from "react-icons/ri";
+import { MdSpaceDashboard } from "react-icons/md";
+import { RiExportFill, RiImportFill, RiSurveyFill } from "react-icons/ri";
 
 export type Submenu = {
 	href: string;
@@ -27,7 +28,7 @@ type Group = {
 };
 
 export function getMenuList(pathname: string): Group[] {
-	let menuList = [
+	const menuList = [
 		{
 			groupLabel: "Painel",
 			menus: [
@@ -45,17 +46,17 @@ export function getMenuList(pathname: string): Group[] {
 				{
 					href: "",
 					label: "Projetos",
-					icon: MdTaskAlt,
+					icon: FaClipboardCheck,
 					submenus: [
 						{
 							href: "/projetos",
 							label: "Todos projetos",
-							Icon: MdTaskAlt,
+							Icon: FaClipboardCheck,
 						},
 						{
 							href: "/projetos/new",
 							label: "Adicionar projeto",
-							Icon: MdOutlineAddTask,
+							Icon: FaClipboardCheckPlus,
 						},
 					],
 				},
@@ -72,7 +73,7 @@ export function getMenuList(pathname: string): Group[] {
 						{
 							href: "/oscs/new",
 							label: "Adicionar OSC",
-							Icon: BsFillHouseAddFill,
+							Icon: BsFillHousesFillPlus,
 						},
 					],
 				},
@@ -141,23 +142,21 @@ export function getMenuList(pathname: string): Group[] {
 		},
 	];
 
-	if (process.env.NEXT_PUBLIC_USE_IMPORT_DATA === "true"){
+	if (process.env.NEXT_PUBLIC_USE_IMPORT_DATA === "true") {
 		menuList.push({
 			groupLabel: "Importar/Exportar",
 			menus: [
 				{
-					href: "/data",
-					label: "Importar/Exportar",
-					icon: RiSurveyFill,
-					submenus: [
-						{
-							href: "/data",
-							label: "Dados JSON",
-							Icon: RiSurveyFill,
-						}
-					],
+					href: "/data/importar",
+					label: "Importar",
+					icon: RiImportFill,
 				},
-			]
+				{
+					href: "/data/exportar",
+					label: "Exportar",
+					icon: RiExportFill,
+				},
+			],
 		});
 	}
 

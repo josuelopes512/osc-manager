@@ -10,8 +10,8 @@ import {
 	Input,
 	Radio,
 	RadioGroup,
-	// Select,
-	// SelectItem,
+	Select,
+	SelectItem,
 	Skeleton,
 } from "@nextui-org/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -19,8 +19,9 @@ import { useParams } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import type { SurveyAnswerFormProps } from "../types";
-// import { useState } from "react";
-// import type { Course, OSC, Student } from "@prisma/client";
+import { useState } from "react";
+import { Combobox } from "@/components/ui/combobox";
+import type { Course, OSC, Student } from "@prisma/client";
 
 const SurveyPage = () => {
 	const { id } = useParams<{ id: string | "new" }>();
@@ -38,28 +39,28 @@ const SurveyPage = () => {
 			}),
 	});
 
-	// const { data: dataGetStudent, isLoading: loadingGetStudent } = useQuery({
-	// 	queryFn: ({ signal }) =>
-	// 		getData<(Student & { course: Course })[]>({
-	// 			url: "student",
-	// 			signal,
-	// 			query: "include.course=true",
-	// 		}),
-	// 	queryKey: ["student-get"],
-	// 	refetchOnMount: false,
-	// 	refetchOnReconnect: false,
-	// });
+	const { data: dataGetStudent, isLoading: loadingGetStudent } = useQuery({
+		queryFn: ({ signal }) =>
+			getData<(Student & { course: Course })[]>({
+				url: "student",
+				signal,
+				query: "include.course=true",
+			}),
+		queryKey: ["student-get"],
+		refetchOnMount: false,
+		refetchOnReconnect: false,
+	});
 
-	// const { data: dataGetOSC, isLoading: loadingGetOSC } = useQuery({
-	// 	queryFn: ({ signal }) =>
-	// 		getData<OSC[]>({
-	// 			url: "osc",
-	// 			signal,
-	// 		}),
-	// 	queryKey: ["osc-get"],
-	// 	refetchOnMount: false,
-	// 	refetchOnReconnect: false,
-	// });
+	const { data: dataGetOSC, isLoading: loadingGetOSC } = useQuery({
+		queryFn: ({ signal }) =>
+			getData<OSC[]>({
+				url: "osc",
+				signal,
+			}),
+		queryKey: ["osc-get"],
+		refetchOnMount: false,
+		refetchOnReconnect: false,
+	});
 
 	const { mutateAsync: submitSurvey, isPending: submitting } = useMutation({
 		mutationFn: async (val: PostData<POSTSurveyAnswerDTO>) =>
@@ -69,13 +70,13 @@ const SurveyPage = () => {
 	const { register, handleSubmit, control, watch, setValue } =
 		useForm<SurveyAnswerFormProps>();
 
-	// const [roleId, setRoleId] = useState("");
+	const [roleId, setRoleId] = useState("");
 
 	const onSubmit = (data: SurveyAnswerFormProps) => {
 		const parsedData = {
 			surveyId: Number(id),
-			// studentId: Number(data.studentId),
-			// oscId: Number(data.oscId),
+			studentId: Number(data.studentId),
+			oscId: Number(data.oscId),
 			responses: {
 				create: data.questions
 					.filter((q: SurveyAnswerFormProps["questions"][number]) => {
@@ -119,15 +120,15 @@ const SurveyPage = () => {
 			<h1 className="text-2xl font-bold">{surveyData?.name}</h1>
 			<span className="text-foreground-500">{surveyData?.description}</span>
 
-			{/* <Select
+			<Select
 				label="Cargo"
 				labelPlacement="outside"
 				selectedKeys={roleId ? [roleId] : new Set([])}
 				className="max-w-xs"
 				onChange={(e) => {
 					setRoleId(e.target.value);
-					// setValue("studentId", "");
-					// setValue("oscId", "");
+					setValue("studentId", "");
+					setValue("oscId", "");
 				}}
 				items={[
 					{
@@ -140,7 +141,7 @@ const SurveyPage = () => {
 					},
 
 					{
-						label: "Representante",
+						label: "Representante da instituição",
 						value: "representative",
 					},
 				]}
@@ -150,8 +151,8 @@ const SurveyPage = () => {
 						{item.label}
 					</SelectItem>
 				)}
-			</Select> */}
-			{/* {roleId === "student" && (
+			</Select>
+			{roleId === "student" && (
 				<Controller
 					name="studentId"
 					control={control}
@@ -167,7 +168,6 @@ const SurveyPage = () => {
 								filterKey={["name"]}
 								textValueKey="name"
 								isRequired
-								isMultiple
 								isInvalid={!!error}
 								errorMessage={error?.message}
 								itemRenderer={(item) => (
@@ -181,42 +181,41 @@ const SurveyPage = () => {
 					)}
 				/>
 			)}
-			{roleId === "president" ||
-				(roleId === "representative" && (
-					<Controller
-						name="oscId"
-						control={control}
-						rules={{ required: "Campo obrigatório" }}
-						render={({ field, fieldState: { error } }) => (
-							<Skeleton
-								className="min-h-14 rounded-md [&>div]:min-h-14"
-								isLoaded={!loadingGetOSC}
-							>
-								<Combobox
-									id={field.name}
-									data={dataGetOSC ?? []}
-									value={field.value}
-									onChange={field.onChange}
-									label="OSC"
-									filterKey={["name"]}
-									textValueKey="name"
-									isRequired
-									isInvalid={!!error}
-									errorMessage={error?.message}
-									itemRenderer={(item) => (
-										<span className="font-bold">{item.name}</span>
-									)}
-								/>
-							</Skeleton>
-						)}
-					/>
-				))} */}
+			{(roleId === "president" || roleId === "representative") && (
+				<Controller
+					name="oscId"
+					control={control}
+					rules={{ required: "Campo obrigatório" }}
+					render={({ field, fieldState: { error } }) => (
+						<Skeleton
+							className="min-h-14 rounded-md [&>div]:min-h-14"
+							isLoaded={!loadingGetOSC}
+						>
+							<Combobox
+								id={field.name}
+								data={dataGetOSC ?? []}
+								value={field.value}
+								onChange={field.onChange}
+								label="OSC"
+								filterKey={["name"]}
+								textValueKey="name"
+								isRequired
+								isInvalid={!!error}
+								errorMessage={error?.message}
+								itemRenderer={(item) => (
+									<span className="font-bold">{item.name}</span>
+								)}
+							/>
+						</Skeleton>
+					)}
+				/>
+			)}
 			{surveyData?.questions.map((question, index) => {
-				const checkbox = watch(`questions.${index}.checkBox`);
+				const checkBox = watch(`questions.${index}.checkBox`);
 				const multipleChoice = watch(`questions.${index}.multipleChoice`);
 				return (
 					<div key={question.id} className="flex flex-col gap-2">
-						{question.type === "SHORT_ANSWER" && (
+						{question.type === "ShortAnswer" && (
 							<div className="bg-content1 p-4 rounded-lg">
 								<Controller
 									name={`questions.${index}.name`}
@@ -255,7 +254,7 @@ const SurveyPage = () => {
 							type="hidden"
 							value={question.id}
 						/>
-						{question.type === "CHECK_BOX" && (
+						{question.type === "CheckBox" && (
 							<div className="relative flex flex-col gap-2 bg-content1 p-4 rounded-lg">
 								<Controller
 									key={question.id}
@@ -291,7 +290,7 @@ const SurveyPage = () => {
 										</CheckboxGroup>
 									)}
 								/>
-								{checkbox?.includes("Outro") && (
+								{checkBox?.includes("Outro") && (
 									<Controller
 										name={`questions.${index}.checkBoxOther`}
 										control={control}
@@ -321,7 +320,7 @@ const SurveyPage = () => {
 								)}
 							</div>
 						)}
-						{question.type === "MULTIPLE_CHOICE" && (
+						{question.type === "MultipleChoice" && (
 							<div className="relative flex flex-col gap-2 bg-content1 p-4 rounded-lg">
 								<Controller
 									key={question.id}

@@ -32,6 +32,8 @@ export async function POST(request: Request) {
 		});
 		return NextResponse.json(student);
 	} catch (error) {
+		console.log(error);
+
 		return NextResponse.json(
 			{ msg: "Falha ao criar aluno", error },
 			{ status: 500 },

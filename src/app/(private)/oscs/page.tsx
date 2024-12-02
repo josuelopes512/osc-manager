@@ -29,6 +29,7 @@ export default function OSCList() {
 			getData<(OSC & { address: OSCAddress })[]>({
 				url: "/osc",
 				signal,
+				query: "include.address=true",
 			}),
 	});
 

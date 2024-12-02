@@ -29,7 +29,7 @@ export async function POST(request: Request) {
 		});
 
 		const sortedQuestions = data.questions.create.sort(
-			(a, b) => (a.order ?? 0) - (b.order ?? 0)
+			(a, b) => (a.order ?? 0) - (b.order ?? 0),
 		);
 
 		for (const question of sortedQuestions) {
@@ -41,25 +41,25 @@ export async function POST(request: Request) {
 					multipleChoice: {
 						create: Array.isArray(question?.multipleChoice)
 							? question.multipleChoice
-								.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-								.map((choice) => ({
-									...choice,
-									choice: choice?.choice ?? "",
-									other: choice?.other ?? "",
-									order: choice?.order ?? 0,
-								}))
+									.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+									.map((choice) => ({
+										...choice,
+										choice: choice?.choice ?? "",
+										other: choice?.other ?? "",
+										order: choice?.order ?? 0,
+									}))
 							: [],
 					},
 					checkBox: {
 						create: Array.isArray(question?.checkBox)
 							? question.checkBox
-								.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-								.map((option) => ({
-									...option,
-									option: option?.option ?? "",
-									other: option?.other ?? "",
-									order: option?.order ?? 0,
-								}))
+									.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+									.map((option) => ({
+										...option,
+										option: option?.option ?? "",
+										other: option?.other ?? "",
+										order: option?.order ?? 0,
+									}))
 							: [],
 					},
 				},
