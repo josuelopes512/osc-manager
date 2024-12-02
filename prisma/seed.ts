@@ -1,12 +1,12 @@
 import { prisma } from "@/app/api/prisma/prisma.config";
 import {
+	surveys,
 	courses,
 	projects,
 	semesters,
 	socialMediaPlatforms,
-	surveys,
 	users,
-} from "./constants";
+} from "./constants/index";
 
 interface Student {
 	name: string;
@@ -30,10 +30,10 @@ interface Project {
  * @param data - An array of data items to be upserted.
  * @param upsertHandler - A handler function that performs the upsert operation for each item.
  */
-async function upsertData(
+async function upsertData<T>(
 	entityName: string,
-	data: any[],
-	upsertHandler: (item: any) => Promise<void>,
+	data: T[],
+	upsertHandler: (item: T) => Promise<void>,
 ) {
 	console.log(`Seeding ${entityName} (${data.length} records)...`);
 	await Promise.all(
@@ -132,7 +132,7 @@ const seedProjects = async () => {
 					students:  project?.students
 					? {
 						createMany: {
-						  data: (project.students as Student[]).map((student) => ({
+						  data: (project?.students as Student[]).map((student) => ({
 							name: student.name,
 							whatsapp: student.whatsapp,
 							courseId: 1,
@@ -225,6 +225,63 @@ async function seedSurveys() {
 	}
 }
 
+// async function seedSurveyAnswers() {
+// 	const surveyAnswersWithoutUknownOSC = surveyAnswers.filter(
+// 		(answer) => !answer.osc.startsWith("#"),
+// 	);
+
+// 	const oscs = await prisma.oSC.findMany({
+// 		where: {
+// 			name: { in: surveyAnswersWithoutUknownOSC.map((answer) => answer.osc) },
+// 		},
+// 	});
+
+// 	const finalSurveyAnswers = surveyAnswersWithoutUknownOSC.map((answer) => ({
+// 		...answer,
+// 		osc: oscs.find((osc) => osc.name === answer.osc),
+// 	}));
+
+// 	await upsertData(
+// 		"surveyAnswers",
+// 		finalSurveyAnswers,
+// 		async (surveyAnswer) => {
+// 			await prisma.surveyAnswer.upsert({
+// 				create: {
+// 					osc: { connect: { id: surveyAnswer?.osc?.id } },
+// 					responses: {
+// 						createMany: {
+// 							data: surveyAnswer.responses.create
+// 								?.sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0))
+// 								.map((response: any) => ({
+// 									questionId: response.questionId,
+// 									answer: response.answer ?? "",
+// 								})),
+// 						},
+// 					},
+// 					id: undefined,
+// 				},
+// 				update: {
+// 					...surveyAnswer,
+// 					osc: { create: { name: surveyAnswer.osc.name } },
+// 					students: {
+// 						createMany: {
+// 							data: (surveyAnswer.students as Student[]).map((student) => ({
+// 								name: student.name,
+// 								courseId: 1,
+// 							})),
+// 						},
+// 					},
+// 					semester: {
+// 						connect: { name: "2024.2" },
+// 					},
+// 					id: undefined,
+// 				},
+// 				where: { id: surveyAnswer.id },
+// 			});
+// 		},
+// 	);
+// }
+
 /**
  * Seeds the database with initial data.
  *
@@ -243,11 +300,11 @@ async function seed() {
 	try {
 		console.log("Starting the seeding process...");
 		await seedSocials();
-		await seedCourses();
-		await seedUsers();
 		await seedSemesters();
-		await seedSurveys();
+		await seedCourses();
 		await seedProjects();
+		await seedUsers();
+		await seedSurveys();
 	} catch (e) {
 		console.error(e);
 		process.exit(1);

@@ -47,5 +47,4 @@ bun.lockb
 .vs/osc-manager/v17/.wsuo
 .vs/osc-manager/v17/DocumentLayout.json
 prisma/migrations/*
-prisma/migrations/20241130172234_refact_db/migration.sql
 prisma/migrations/migration_lock.toml

@@ -49,7 +49,14 @@ export async function PUT(
 			where: { id },
 			data: {
 				name: data.name,
-				location: data.location,
+				// address: data.address
+				// 	? {
+				// 			update: {
+				// 				data: data.address,
+				// 				where: { id: data.address?.id },
+				// 			},
+				// 		}
+				// 	: undefined,
 				oscSocials: {
 					create: data.oscSocials?.create,
 					update: data.oscSocials?.update?.map((social) => ({
@@ -85,8 +92,9 @@ export async function DELETE(
 		const id = Number(context.params.id);
 
 		await oscService.deleteOne(id);
-		return NextResponse.json({ message: "OSC deletado com sucesso" });
+		return NextResponse.json({ message: "OSC deletada com sucesso" });
 	} catch (error) {
+		console.log(error);
 		return NextResponse.json(
 			{ msg: "Falha ao deletar OSC", error },
 			{ status: 500 },

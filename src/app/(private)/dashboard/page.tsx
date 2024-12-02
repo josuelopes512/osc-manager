@@ -145,12 +145,12 @@ export default function Home() {
 	return (
 		<div className="flex flex-col justify-between w-full">
 			<h1 className="text-3xl font-bold mt-2 mb-4">Dashboard</h1>
-			<div className="flex justify-between items-center">
+			<div className="flex justify-between gap-2 items-center">
 				<Select
 					items={dataSurvey ?? []}
 					label="Questionário"
 					placeholder="Selecione um questionário"
-					className="max-w-md mb-2"
+					className="md:max-w-md mb-2 max-w-xs"
 					isDisabled={isLoadingSurveys || !!surveysError}
 					onChange={(e) => {
 						const value = e.target.value;

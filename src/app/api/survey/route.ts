@@ -21,7 +21,6 @@ export async function POST(request: Request) {
 	try {
 		const data = (await request.json()) as POSTSurveyDTO;
 
-		console.log("data", data);
 		const survey = await surveyService.create({
 			data: {
 				...data,

@@ -1,10 +1,13 @@
-import { NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import type { POSTOSCDTO } from "./dto/post";
 import { oscService } from "./service";
+import { getQuery } from "@/lib/query";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
 	try {
-		const oscs = await oscService.find({});
+		const query = getQuery(req);
+
+		const oscs = await oscService.find(query);
 		return NextResponse.json(oscs);
 	} catch (error) {
 		return NextResponse.json(
@@ -25,6 +28,9 @@ export async function POST(request: Request) {
 						data: data.oscSocials?.create,
 					},
 				},
+				// address: {
+				// 	create: data.address,
+				// },
 			},
 		});
 		return NextResponse.json(osc);

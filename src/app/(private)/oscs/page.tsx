@@ -14,7 +14,7 @@ import {
 	Tooltip,
 	useDisclosure,
 } from "@nextui-org/react";
-import type { OSC } from "@prisma/client";
+import type { OSC, OSCAddress } from "@prisma/client";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -26,10 +26,10 @@ export default function OSCList() {
 	const { data, isLoading, refetch } = useQuery({
 		queryKey: ["osc-get"],
 		queryFn: ({ signal }) =>
-			getData<OSC[]>({
+			getData<(OSC & { address: OSCAddress })[]>({
 				url: "/osc",
 				signal,
-				query: "include.oscSocials=true",
+				query: "include.address=true",
 			}),
 	});
 
@@ -58,7 +58,7 @@ export default function OSCList() {
 			});
 	};
 
-	const finalColumns: ColumnProps<OSC>[] = [
+	const finalColumns: ColumnProps<OSC & { address: OSCAddress }>[] = [
 		...columnsOSCs,
 		{
 			uid: "actions",
