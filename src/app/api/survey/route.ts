@@ -20,6 +20,8 @@ export async function GET(req: NextRequest) {
 export async function POST(request: Request) {
 	try {
 		const data = (await request.json()) as POSTSurveyDTO;
+
+		console.log("data", data);
 		const survey = await surveyService.create({
 			data: {
 				...data,
@@ -43,7 +45,7 @@ export async function POST(request: Request) {
 								.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
 								.map((choice) => ({
 									...choice,
-									choice: choice.choice ?? "",
+									choice: choice?.choice ?? "",
 									other: choice?.other ?? "",
 									order: choice?.order ?? 0,
 								}))
@@ -55,7 +57,7 @@ export async function POST(request: Request) {
 								.sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
 								.map((option) => ({
 									...option,
-									option: option.option ?? "",
+									option: option?.option ?? "",
 									other: option?.other ?? "",
 									order: option?.order ?? 0,
 								}))
