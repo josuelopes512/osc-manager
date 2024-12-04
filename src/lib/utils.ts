@@ -35,9 +35,9 @@ export interface CEPProps {
 	siafi: string;
 }
 
-export const getCEP = async (cep: string): Promise<CEPProps> => {
-	const { data } = await axios.get<CEPProps>(
-		`https://viacep.com.br/ws/${cep}/json/`,
-	);
-	return data;
+export const getCEP = async (cep: string): Promise<CEPProps | null> => {
+	if (!cep) return null;
+	const { data } = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
+	if (data.erro) return null;
+	return data as CEPProps | null;
 };

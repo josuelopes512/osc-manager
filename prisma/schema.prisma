@@ -60,13 +60,14 @@ model OSCSocial {
 }
 
 model OSCAddress {
-  id           Int    @id @default(autoincrement())
-  zipCode      String
-  street       String
-  number       String
-  neighborhood String
-  city         String
-  state        String
+  id           Int     @id @default(autoincrement())
+  zipCode      String?
+  street       String?
+  number       String?
+  complement   String?
+  neighborhood String?
+  city         String?
+  state        String?
 
   createdAt DateTime @default(now())
   updateAt  DateTime @updatedAt()

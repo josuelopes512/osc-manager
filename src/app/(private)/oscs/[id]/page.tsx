@@ -189,16 +189,18 @@ const OSCEdit = () => {
 								field.onChange(maskCEP(val.target.value));
 								if (val.target.value.length === 9) {
 									mutateGetCEP(val.target.value).then((data) => {
-										setValue("address.city", data.localidade);
-										setValue("address.state", data.uf);
-										setValue("address.street", data.logradouro);
-										setValue("address.number", data.complemento);
-										setValue("address.neighborhood", data.bairro);
+										if (data) {
+											setValue("address.city", data.localidade);
+											setValue("address.state", data.uf);
+											setValue("address.street", data.logradouro);
+											setValue("address.number", data.complemento);
+											setValue("address.neighborhood", data.bairro);
+										}
 									});
 								}
 							}}
 							name={field.name}
-							value={field.value}
+							value={field.value ?? ""}
 							variant="bordered"
 							color="primary"
 							isInvalid={!!error}
@@ -219,7 +221,7 @@ const OSCEdit = () => {
 							type="text"
 							onChange={field.onChange}
 							name={field.name}
-							value={field.value}
+							value={field.value ?? ""}
 							variant="bordered"
 							color="primary"
 							isInvalid={!!error}
@@ -240,7 +242,7 @@ const OSCEdit = () => {
 							type="text"
 							onChange={field.onChange}
 							name={field.name}
-							value={field.value}
+							value={field.value ?? ""}
 							variant="bordered"
 							color="primary"
 							isInvalid={!!error}
@@ -261,7 +263,7 @@ const OSCEdit = () => {
 							type="text"
 							onChange={field.onChange}
 							name={field.name}
-							value={field.value}
+							value={field.value ?? ""}
 							variant="bordered"
 							color="primary"
 							isInvalid={!!error}
@@ -282,7 +284,7 @@ const OSCEdit = () => {
 							type="text"
 							onChange={field.onChange}
 							name={field.name}
-							value={field.value}
+							value={field.value ?? ""}
 							variant="bordered"
 							color="primary"
 							isInvalid={!!error}
@@ -303,7 +305,7 @@ const OSCEdit = () => {
 							type="text"
 							onChange={field.onChange}
 							name={field.name}
-							value={field.value}
+							value={field.value ?? ""}
 							variant="bordered"
 							color="primary"
 							isInvalid={!!error}

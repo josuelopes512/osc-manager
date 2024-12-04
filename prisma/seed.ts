@@ -6,6 +6,7 @@ import {
 	semesters,
 	socialMediaPlatforms,
 	users,
+	surveyAnswers,
 } from "./constants/index";
 
 interface Student {
@@ -119,7 +120,12 @@ const seedProjects = async () => {
 			await prisma.project.upsert({
 				create: {
 					...project,
-					osc: { create: { name: project.osc.name } },
+					osc: {
+						create: {
+							name: project.osc.name,
+							address: { create: { ...project.osc.address } },
+						},
+					},
 					students: project?.students
 						? {
 								createMany: {
@@ -212,62 +218,71 @@ async function seedSurveys() {
 	}
 }
 
-// async function seedSurveyAnswers() {
-// 	const surveyAnswersWithoutUknownOSC = surveyAnswers.filter(
-// 		(answer) => !answer.osc.startsWith("#"),
-// 	);
+async function seedSurveyAnswers() {
+	const oscs = await prisma.oSC.findMany({
+		where: {
+			name: { in: surveyAnswers.map((answer) => answer.osc) },
+		},
+	});
 
-// 	const oscs = await prisma.oSC.findMany({
-// 		where: {
-// 			name: { in: surveyAnswersWithoutUknownOSC.map((answer) => answer.osc) },
-// 		},
-// 	});
+	const finalSurveyAnswers = surveyAnswers.map((answer) => ({
+		...answer,
+		osc: oscs.find((osc) => osc.name === answer.osc),
+	}));
 
-// 	const finalSurveyAnswers = surveyAnswersWithoutUknownOSC.map((answer) => ({
-// 		...answer,
-// 		osc: oscs.find((osc) => osc.name === answer.osc),
-// 	}));
+	const questions = await prisma.question.findMany({
+		where: {
+			survey: { id: 1 },
+		},
+	});
 
-// 	await upsertData(
-// 		"surveyAnswers",
-// 		finalSurveyAnswers,
-// 		async (surveyAnswer) => {
-// 			await prisma.surveyAnswer.upsert({
-// 				create: {
-// 					osc: { connect: { id: surveyAnswer?.osc?.id } },
-// 					responses: {
-// 						createMany: {
-// 							data: surveyAnswer.responses.create
-// 								?.sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0))
-// 								.map((response: any) => ({
-// 									questionId: response.questionId,
-// 									answer: response.answer ?? "",
-// 								})),
-// 						},
-// 					},
-// 					id: undefined,
-// 				},
-// 				update: {
-// 					...surveyAnswer,
-// 					osc: { create: { name: surveyAnswer.osc.name } },
-// 					students: {
-// 						createMany: {
-// 							data: (surveyAnswer.students as Student[]).map((student) => ({
-// 								name: student.name,
-// 								courseId: 1,
-// 							})),
-// 						},
-// 					},
-// 					semester: {
-// 						connect: { name: "2024.2" },
-// 					},
-// 					id: undefined,
-// 				},
-// 				where: { id: surveyAnswer.id },
-// 			});
-// 		},
-// 	);
-// }
+	await upsertData(
+		"surveyAnswers",
+		finalSurveyAnswers,
+		async (surveyAnswer) => {
+			await prisma.surveyAnswer.upsert({
+				create: {
+					osc: { connect: { id: surveyAnswer?.osc?.id } },
+					responses: {
+						createMany: {
+							data: surveyAnswer.responses.create
+								?.sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0))
+								.map((response: any) => ({
+									questionId:
+										questions.find(
+											(question) => question.name === response.questionName,
+										)?.id ?? 0,
+									answer: response.answer ?? "",
+								})),
+						},
+					},
+					survey: { connect: { id: 1 } },
+					id: undefined,
+				},
+				update: {
+					...surveyAnswer,
+					osc: { connect: { id: surveyAnswer.osc?.id } },
+					responses: {
+						createMany: {
+							data: surveyAnswer.responses.create
+								?.sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0))
+								.map((response: any) => ({
+									questionId:
+										questions.find(
+											(question) => question.name === response.questionName,
+										)?.id ?? 0,
+									answer: response.answer ?? "",
+								})),
+						},
+					},
+					survey: { connect: { id: 1 } },
+					id: undefined,
+				},
+				where: { id: surveyAnswer.id },
+			});
+		},
+	);
+}
 
 /**
  * Seeds the database with initial data.
@@ -292,6 +307,7 @@ async function seed() {
 		await seedProjects();
 		await seedUsers();
 		await seedSurveys();
+		await seedSurveyAnswers();
 	} catch (e) {
 		console.error(e);
 		process.exit(1);

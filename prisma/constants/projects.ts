@@ -1,138 +1,412 @@
 export const projects = [
 	{
 		id: 1,
-		name: "Instituto Vida Videira",
+		name: "AERA Esportes Radicais",
 		osc: {
-			name: "Instituto Vida Videira",
+			name: "AERA Esportes Radicais",
+			address: {
+				zipCode: "61700-000",
+				street: "A. Beira Mar",
+				number: "S/N",
+				complement: null,
+				neighborhood: "Prainha",
+				city: "Aquiraz",
+				state: "CE",
+			},
 		},
-		students: []
+		students: [],
 	},
 	{
 		id: 2,
-		name: "FECARCE",
-		osc: {
-			name: "FECARCE",
-		},
-		students: []
-	},
-	{
-		id: 3,
-		name: "Instituto Maria do Carmo",
-		osc: {
-			name: "Instituto Maria do Carmo",
-		},
-		students: []
-	},
-	{
-		id: 4,
-		name: "Conselho Comunitário do Parque São José- CCPSJ",
-		osc: {
-			name: "CCPSJ",
-		},
-		students: []
-	},
-	{
-		id: 5,
-		name: "Mães da Resistência",
-		osc: {
-			name: "Mães da Resistência",
-		},
-		students: []
-	},
-	{
-		id: 6,
-		name: "Instituto Recomeçando",
-		osc: {
-			name: "Instituto Recomeçando",
-		},
-		students: []
-	},
-	{
-		id: 7,
-		name: "Saboaria Ecológica",
-		osc: {
-			name: "Saboaria Ecológica",
-		},
-		students: []
-	},
-	{
-		id: 8,
-		name: "APDCAI",
-		osc: {
-			name: "APDCAI",
-		},
-		students: []
-	},
-	{
-		id: 9,
-		name: "Caverna de Adulão",
-		osc: {
-			name: "Caverna de Adulão",
-		},
-		students: []
-	},
-	{
-		id: 10,
-		name: "Instituição Lucimario Caetano",
-		osc: {
-			name: "Instituição Lucimario Caetano",
-		},
-		students: []
-	},
-	{
-		id: 11,
-		name: "Lar Beneficente Cisco de Luz",
-		osc: {
-			name: "Lar Beneficente Cisco de Luz",
-		},
-		students: []
-	},
-	{
-		id: 12,
-		name: "Lar Francisco de Assis",
-		osc: {
-			name: "Lar Francisco de Assis",
-		},
-		students: []
-	},
-	{
-		id: 13,
-		name: "Instituto Benjamim Dias",
-		osc: {
-			name: "Instituto Benjamim Dias",
-		},
-		students: []
-	},
-	{
-		id: 14,
-		name: "Aera",
-		osc: {
-			name: "Aera",
-		},
-		students: []
-	},
-	{
-		id: 15,
-		name: "Espaço Cultura e Vida Dorotéias",
-		osc: {
-			name: "Espaço Cultura e Vida Dorotéias",
-		},
-		students: []
-	},
-	{
-		id: 16,
 		name: "Alimentarize",
 		osc: {
 			name: "Alimentarize",
+			address: {
+				zipCode: null,
+				street: null,
+				number: null,
+				complement: null,
+			},
 		},
-		students: []
+		students: [],
+	},
+	{
+		id: 3,
+		name: "APDCAI",
+		osc: {
+			name: "APDCAI",
+			address: {
+				zipCode: "42800-745",
+				street: "Rua Novo Horizonte",
+				number: "100",
+				complement: null,
+				neighborhood: "Jardim Limoeiro",
+				city: "Camaçari",
+				state: "BA",
+			},
+		},
+		students: [],
+	},
+	{
+		id: 4,
+		name: "Caverna de Adulão",
+		osc: {
+			name: "Caverna de Adulão",
+			address: {
+				zipCode: "61880-000",
+				street: "Av Deputado Paulino Rocha, Jabuti",
+				number: "2141",
+				complement: null,
+			},
+		},
+		students: [],
+	},
+	{
+		id: 5,
+		name: "Conselho Comunitário do Parque São José CCPSJ",
+		osc: {
+			name: "Conselho Comunitário do Parque São José CCPSJ",
+			address: {
+				zipCode: "60730-255",
+				street: "Rua Costa Freire",
+				number: "2238",
+				complement: null,
+				neighborhood: "Parque São José",
+				city: "Fortaleza",
+				state: "CE",
+			},
+		},
+		students: [],
+	},
+	{
+		id: 6,
+		name: "Espaço Cultura e Vida Dorotéias",
+		osc: {
+			name: "Espaço Cultura e Vida Dorotéias",
+			address: {
+				zipCode: "60861-212",
+				street: "Avenida Alberto Craveiro",
+				number: "2222",
+				complement: null,
+				neighborhood: "Boa Vista-Castelão",
+				city: "Fortaleza",
+				state: "CE",
+			},
+		},
+		students: [],
+	},
+	{
+		id: 7,
+		name: "FECARCE",
+		osc: {
+			name: "FECARCE",
+			address: {
+				zipCode: "60135-222",
+				street: "Rua Marcondes Pereira",
+				number: "1271",
+				complement: "Lj 03",
+				neighborhood: "Dionisio Torres",
+				city: "Fortaleza",
+				state: "CE",
+			},
+		},
+		students: [],
+	},
+	{
+		id: 8,
+		name: "Instituto Benjamim Dias",
+		osc: {
+			name: "Instituto Benjamim Dias",
+			address: {
+				zipCode: "60521-075",
+				street: "Rua Eurico Medina",
+				number: "1260",
+				complement: null,
+				neighborhood: "Henrique Jorge",
+				city: "Fortaleza",
+				state: "CE",
+			},
+		},
+		students: [],
+	},
+	{
+		id: 9,
+		name: "Instituto Lucimário Caitano",
+		osc: {
+			name: "Instituto Lucimário Caitano",
+			address: {
+				zipCode: "61919-600",
+				street: "Avenida Central",
+				number: "120",
+				complement: null,
+				neighborhood: "Novo Oriente",
+				city: "Maracanaú",
+				state: "CE",
+			},
+		},
+		students: [],
+	},
+	{
+		id: 10,
+		name: "Instituto Maria do Carmo",
+		osc: {
+			name: "Instituto Maria do Carmo",
+			address: {
+				zipCode: "60540-830",
+				street: "ARua Coronel Fabriciano",
+				number: "1820",
+				complement: "Academia Sara",
+			},
+		},
+		students: [],
+	},
+	{
+		id: 11,
+		name: "Instituto Recomeçando",
+		osc: {
+			name: "Instituto Recomeçando",
+			address: {
+				zipCode: "60745-670",
+				street: "Rua Q",
+				number: "295",
+				complement: "Rua Q",
+				neighborhood: "Parque Dois Irmãos",
+				city: "Fortaleza",
+				state: "CE",
+			},
+		},
+		students: [],
+	},
+	{
+		id: 12,
+		name: "Instituto Vida Videira",
+		osc: {
+			name: "Instituto Vida Videira",
+			address: {
+				zipCode: "60833-275",
+				street: "Travessa Vitória Régia",
+				number: "1764",
+				complement: null,
+				neighborhood: "Sapiranga-Coité",
+				city: "Fortaleza",
+				state: "CE",
+			},
+		},
+		students: [],
+	},
+	{
+		id: 13,
+		name: "Lar Beneficente Cisco de Luz",
+		osc: {
+			name: "Lar Beneficente Cisco de Luz",
+			address: {
+				zipCode: "61600-060",
+				street: "Rua Tobias Correia",
+				number: "1404",
+				complement: null,
+				neighborhood: "Centro",
+				city: "Caucaia",
+				state: "CE",
+			},
+		},
+		students: [],
+	},
+	{
+		id: 14,
+		name: "Lar Francisco de Assis",
+		osc: {
+			name: "Lar Francisco de Assis",
+			address: {
+				zipCode: "60810-792",
+				street: "Avenida Rogaciano Leite",
+				number: "1650",
+				complement: null,
+				neighborhood: "Salinas",
+				city: "Fortaleza",
+				state: "CE",
+			},
+		},
+		students: [],
+	},
+	{
+		id: 15,
+		name: "Mães da Resistência",
+		osc: {
+			name: "Mães da Resistência",
+			address: {
+				zipCode: "60040-130",
+				street: "Rua Olívio Câmara",
+				number: "74",
+				complement: null,
+				neighborhood: "José Bonifácio",
+				city: "Fortaleza",
+				state: "CE",
+			},
+		},
+		students: [],
+	},
+	{
+		id: 16,
+		name: "Saboaria Ecológica",
+		osc: {
+			name: "Saboaria Ecológica",
+			address: {
+				zipCode: "61631-016",
+				street: "Rua Felipe Fernandes Neto",
+				number: "505",
+				complement: null,
+				neighborhood: "Parque Leblon",
+				city: "Caucaia",
+				state: "CE",
+			},
+		},
+		students: [],
 	},
 	{
 		id: 17,
-		name: "Mulheres do Brasil",
+		name: "Assoc. Centro de Arte e Cultura Canoa Mulher",
 		osc: {
-			name: "Mulheres do Brasil",
+			name: "Assoc. Centro de Arte e Cultura Canoa Mulher",
+			address: {
+				zipCode: "62800-000",
+				street: "Rua Agapito dos Santos",
+				number: "462",
+				complement: null,
+				neighborhood: "",
+				city: "Aracati",
+				state: "CE",
+			},
 		},
-		students: []
+		students: [],
+	},
+	{
+		id: 18,
+		name: "Associação Menino Jesus",
+		osc: {
+			name: "Associação Menino Jesus",
+			address: {
+				zipCode: null,
+				street: "Sitio lagoa do canto",
+				number: null,
+				complement: null,
+			},
+		},
+		students: [],
+	},
+	{
+		id: 19,
+		name: "Friends of Fiji Foundation",
+		osc: {
+			name: "Friends of Fiji Foundation",
+			address: {
+				zipCode: null,
+				street: "Quênia",
+				number: null,
+				complement: null,
+			},
+		},
+		students: [],
+	},
+	{
+		id: 20,
+		name: "Grupo Mulheres do Brasil - Empregabilidade",
+		osc: {
+			name: "Grupo Mulheres do Brasil - Empregabilidade",
+			address: {
+				zipCode: "60810-195",
+				street: "Rua Desembargador Manuel Sales Andrade",
+				number: "100",
+				complement: "Loja 04",
+				neighborhood: "Guararapes",
+				city: "Fortaleza",
+				state: "CE",
+			},
+		},
+		students: [],
+	},
+	{
+		id: 21,
+		name: "Instituto Intervalo",
+		osc: {
+			name: "Instituto Intervalo",
+			address: {
+				zipCode: "60861-212",
+				street: "Avenida Alberto Craveiro",
+				number: "2222",
+				complement: null,
+				neighborhood: "Boa Vista-Castelão",
+				city: "Fortaleza",
+				state: "CE",
+			},
+		},
+		students: [],
+	},
+	{
+		id: 22,
+		name: "Instituto Queira Bem",
+		osc: {
+			name: "Instituto Queira Bem",
+			address: {
+				zipCode: "60410-162",
+				street: "Rua Antônio Fiuza",
+				number: "358",
+				complement: "Casa 02",
+				neighborhood: "Montese",
+				city: "Fortaleza",
+				state: "CE",
+			},
+		},
+		students: [],
+	},
+	{
+		id: 23,
+		name: "Projeto Comunitário Sorriso da Criança",
+		osc: {
+			name: "Projeto Comunitário Sorriso da Criança",
+			address: {
+				zipCode: "60355-360",
+				street: "Rua do Planalto",
+				number: "167",
+				complement: null,
+				neighborhood: "Presidente Kennedy",
+				city: "Fortaleza",
+				state: "CE",
+			},
+		},
+		students: [],
+	},
+	{
+		id: 24,
+		name: "Conselho Comunitário da Taíba",
+		osc: {
+			name: "Conselho Comunitário da Taíba",
+			address: {
+				zipCode: "62670-000",
+				street: "Antônio Marques",
+				number: "1",
+				complement: "Centro",
+				neighborhood: "Centro",
+				city: "São Gonçalo do Amarante",
+				state: "CE",
+			},
+		},
+		students: [],
+	},
+	{
+		id: 25,
+		name: "Rede Estrela de Iracema",
+		osc: {
+			name: "Rede Estrela de Iracema",
+			address: {
+				zipCode: "60440-140",
+				street: "Rua Pernambuco",
+				number: "1490",
+				complement: null,
+				neighborhood: "Demócrito Rocha",
+				city: "Fortaleza",
+				state: "CE",
+			},
+		},
+		students: [],
 	},
 ];

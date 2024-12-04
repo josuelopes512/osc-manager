@@ -14,8 +14,10 @@ export const columnsOSCs: ColumnProps<OSC & { address: OSCAddress }>[] = [
 		sortable: true,
 		filterable: true,
 		renderCell: (item) => {
-			if (!item.address) return "-";
-			return `${item.address?.street ?? ""}, ${item.address?.number ?? ""}`;
+			const { address } = item;
+			if (!address) return "-";
+			const { street, number } = address;
+			return `${street ?? ""} ${number ? `, ${number}` : ""}`.trim();
 		},
 	},
 	{
@@ -24,8 +26,9 @@ export const columnsOSCs: ColumnProps<OSC & { address: OSCAddress }>[] = [
 		sortable: true,
 		filterable: true,
 		renderCell: (item) => {
-			if (!item.address) return "-";
-			return `${item.address?.city ?? ""}`;
+			const { address } = item;
+			if (!address) return "-";
+			return address ? `${address.city ?? ""}` : "-";
 		},
 	},
 
@@ -35,8 +38,8 @@ export const columnsOSCs: ColumnProps<OSC & { address: OSCAddress }>[] = [
 		sortable: true,
 		filterable: true,
 		renderCell: (item) => {
-			if (!item.address) return "-";
-			return `${item.address?.state ?? ""}`;
+			const { address } = item;
+			return address ? `${address.state ?? ""}` : "-";
 		},
 	},
 ];
