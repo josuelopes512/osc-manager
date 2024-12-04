@@ -67,7 +67,7 @@ const SurveyPage = () => {
 			postData<POSTSurveyAnswerDTO, any>(val),
 	});
 
-	const { register, handleSubmit, control, watch, setValue } =
+	const { register, handleSubmit, control, watch, setValue, reset } =
 		useForm<SurveyAnswerFormProps>();
 
 	const [roleId, setRoleId] = useState("");
@@ -106,6 +106,7 @@ const SurveyPage = () => {
 			data: parsedData,
 		})
 			.then(() => {
+				reset();
 				toast.success("Respostas enviadas com sucesso!");
 			})
 			.catch((error) => {
@@ -124,7 +125,7 @@ const SurveyPage = () => {
 				label="Cargo"
 				labelPlacement="outside"
 				selectedKeys={roleId ? [roleId] : new Set([])}
-				className="max-w-xs"
+				className="max-w-xs mb-4"
 				onChange={(e) => {
 					setRoleId(e.target.value);
 					setValue("studentId", "");
@@ -181,7 +182,7 @@ const SurveyPage = () => {
 					)}
 				/>
 			)}
-			{(roleId === "president" || roleId === "representative") && (
+			{roleId !== "" && (
 				<Controller
 					name="oscId"
 					control={control}
@@ -214,9 +215,20 @@ const SurveyPage = () => {
 				const checkBox = watch(`questions.${index}.checkBox`);
 				const multipleChoice = watch(`questions.${index}.multipleChoice`);
 				return (
-					<div key={question.id} className="flex flex-col gap-2">
+					<div key={question.id} className="h-full">
 						{question.type === "ShortAnswer" && (
-							<div className="bg-content1 p-4 rounded-lg">
+							<div className="bg-content1 p-4 rounded-lg gap-2 flex flex-col">
+								<label
+									htmlFor={question.name}
+									className="text-foreground-700 text-lg "
+								>
+									{question.name}
+									{question.required ? (
+										<span className="text-red-500 m-[.125rem]">*</span>
+									) : (
+										""
+									)}
+								</label>
 								<Controller
 									name={`questions.${index}.name`}
 									control={control}
@@ -227,9 +239,9 @@ const SurveyPage = () => {
 									}}
 									render={({ field, fieldState: { error } }) => (
 										<Input
-											label={question.name}
-											labelPlacement="outside"
-											placeholder="Resposta"
+											// label={question.name}
+											// labelPlacement="outside"
+											// placeholder="Resposta"
 											id={field.name}
 											type="text"
 											onChange={field.onChange}
