@@ -1,57 +1,49 @@
 export const surveyAnswers = [
 	{
 		id: 1,
+		createdAt: "2024-10-03T21:56:00.000Z",
 		osc: "AERA Esportes Radicais",
 		responses: {
 			create: [
 				{
-					questionId: 1,
 					questionName: "Foi realizada reunião prévia com a equipe de alunos?",
 					answer: "Sim",
 				},
 				{
-					questionId: 2,
 					questionName:
 						"Após essa reunião, foi tomada uma decisão clara sobre o problema a ser abordado no projeto?",
 					answer: "Sim",
 				},
 				{
-					questionId: 3,
 					questionName:
 						"A solução proposta foi decidida em conjunto com a Instituição?",
 					answer: "Sim",
 				},
 				{
-					questionId: 4,
 					questionName:
 						"Como você classifica a solução proposta em termos de praticidade e simplicidade de execução ou uso?",
 					answer: "Prática e simples",
 				},
 				{
-					questionId: 5,
 					questionName: "Em qual fase o projeto se encontra atualmente?",
 					answer: "Implementação inicial",
 				},
 				{
-					questionId: 6,
 					questionName:
 						"Como você avalia a troca de experiências entre a equipe da Instituição e a equipe do projeto?",
 					answer: "Boa",
 				},
 				{
-					questionId: 7,
 					questionName:
 						"De um modo geral, como você classifica a sua experiência com o projeto até o momento?",
 					answer: "Satisfatória",
 				},
 				{
-					questionId: 8,
 					questionName:
 						"Quais os aprendizados para a Instituição até o momento?",
 					answer: "Trabalhando juntos para uma melhor solução",
 				},
 				{
-					questionId: 9,
 					questionName:
 						"Comentários adicionais ou sugestões para melhorar o andamento do projeto",
 					answer: "Sem sugestão, estamos caminhando",
@@ -61,58 +53,50 @@ export const surveyAnswers = [
 	},
 	{
 		id: 2,
+		createdAt: "2024-10-03T20:59:00.000Z",
 		osc: "APDCAI",
 		responses: {
 			create: [
 				{
-					questionId: 1,
 					questionName: "Foi realizada reunião prévia com a equipe de alunos?",
 					answer: "Sim",
 				},
 				{
-					questionId: 2,
 					questionName:
 						"Após essa reunião, foi tomada uma decisão clara sobre o problema a ser abordado no projeto?",
 					answer: "Sim",
 				},
 				{
-					questionId: 3,
 					questionName:
 						"A solução proposta foi decidida em conjunto com a Instituição?",
 					answer: "Sim",
 				},
 				{
-					questionId: 4,
 					questionName:
 						"Como você classifica a solução proposta em termos de praticidade e simplicidade de execução ou uso?",
 					answer: "Muito prática e simples",
 				},
 				{
-					questionId: 5,
 					questionName: "Em qual fase o projeto se encontra atualmente?",
 					answer: "Planejamento",
 				},
 				{
-					questionId: 6,
 					questionName:
 						"Como você avalia a troca de experiências entre a equipe da Instituição e a equipe do projeto?",
 					answer: "Boa",
 				},
 				{
-					questionId: 7,
 					questionName:
 						"De um modo geral, como você classifica a sua experiência com o projeto até o momento?",
 					answer: "Satisfatória",
 				},
 				{
-					questionId: 8,
 					questionName:
 						"Quais os aprendizados para a Instituição até o momento?",
 					answer:
 						"Estamos no início de processo mas estamos satisfeito com as possibilidades",
 				},
 				{
-					questionId: 9,
 					questionName:
 						"Comentários adicionais ou sugestões para melhorar o andamento do projeto",
 					answer:
@@ -123,57 +107,49 @@ export const surveyAnswers = [
 	},
 	{
 		id: 3,
+		createdAt: "2024-10-04T15:34:00.000Z",
 		osc: "Associação Menino Jesus",
 		responses: {
 			create: [
 				{
-					questionId: 1,
 					questionName: "Foi realizada reunião prévia com a equipe de alunos?",
 					answer: "Sim",
 				},
 				{
-					questionId: 2,
 					questionName:
 						"Após essa reunião, foi tomada uma decisão clara sobre o problema a ser abordado no projeto?",
 					answer: "Sim",
 				},
 				{
-					questionId: 3,
 					questionName:
 						"A solução proposta foi decidida em conjunto com a Instituição?",
 					answer: "Sim",
 				},
 				{
-					questionId: 4,
 					questionName:
 						"Como você classifica a solução proposta em termos de praticidade e simplicidade de execução ou uso?",
 					answer: "Prática e simples",
 				},
 				{
-					questionId: 5,
 					questionName: "Em qual fase o projeto se encontra atualmente?",
 					answer: "Execução intermediária",
 				},
 				{
-					questionId: 6,
 					questionName:
 						"Como você avalia a troca de experiências entre a equipe da Instituição e a equipe do projeto?",
 					answer: "Excelente",
 				},
 				{
-					questionId: 7,
 					questionName:
 						"De um modo geral, como você classifica a sua experiência com o projeto até o momento?",
 					answer: "Muito satisfatória",
 				},
 				{
-					questionId: 8,
 					questionName:
 						"Quais os aprendizados para a Instituição até o momento?",
 					answer: "Pouco aínda temos muita dificuldade",
 				},
 				{
-					questionId: 9,
 					questionName:
 						"Comentários adicionais ou sugestões para melhorar o andamento do projeto",
 					answer: "Eu acho que a gente tem muito ainda o que aprender",
@@ -183,58 +159,50 @@ export const surveyAnswers = [
 	},
 	{
 		id: 4,
+		createdAt: "2024-10-08T12:17:00.000Z",
 		osc: "Conselho Comunitário do Parque São José CCPSJ",
 		responses: {
 			create: [
 				{
-					questionId: 1,
 					questionName: "Foi realizada reunião prévia com a equipe de alunos?",
 					answer: "Sim",
 				},
 				{
-					questionId: 2,
 					questionName:
 						"Após essa reunião, foi tomada uma decisão clara sobre o problema a ser abordado no projeto?",
 					answer: "Parcialmente",
 				},
 				{
-					questionId: 3,
 					questionName:
 						"A solução proposta foi decidida em conjunto com a Instituição?",
 					answer: "Sim",
 				},
 				{
-					questionId: 4,
 					questionName:
 						"Como você classifica a solução proposta em termos de praticidade e simplicidade de execução ou uso?",
 					answer: "Muito prática e simples",
 				},
 				{
-					questionId: 5,
 					questionName: "Em qual fase o projeto se encontra atualmente?",
 					answer: "Planejamento",
 				},
 				{
-					questionId: 6,
 					questionName:
 						"Como você avalia a troca de experiências entre a equipe da Instituição e a equipe do projeto?",
 					answer: "Excelente",
 				},
 				{
-					questionId: 7,
 					questionName:
 						"De um modo geral, como você classifica a sua experiência com o projeto até o momento?",
 					answer: "Muito satisfatória",
 				},
 				{
-					questionId: 8,
 					questionName:
 						"Quais os aprendizados para a Instituição até o momento?",
 					answer:
 						"A valorização da interação, colaboração e produção de conhecimentos.",
 				},
 				{
-					questionId: 9,
 					questionName:
 						"Comentários adicionais ou sugestões para melhorar o andamento do projeto",
 					answer:
@@ -245,58 +213,50 @@ export const surveyAnswers = [
 	},
 	{
 		id: 5,
+		createdAt: "2024-10-04T15:40:00.000Z",
 		osc: "Assoc. Centro de Arte e Cultura Canoa Mulher",
 		responses: {
 			create: [
 				{
-					questionId: 1,
 					questionName: "Foi realizada reunião prévia com a equipe de alunos?",
 					answer: "Sim",
 				},
 				{
-					questionId: 2,
 					questionName:
 						"Após essa reunião, foi tomada uma decisão clara sobre o problema a ser abordado no projeto?",
 					answer: "Sim",
 				},
 				{
-					questionId: 3,
 					questionName:
 						"A solução proposta foi decidida em conjunto com a Instituição?",
 					answer: "Sim",
 				},
 				{
-					questionId: 4,
 					questionName:
 						"Como você classifica a solução proposta em termos de praticidade e simplicidade de execução ou uso?",
 					answer: "Muito prática e simples",
 				},
 				{
-					questionId: 5,
 					questionName: "Em qual fase o projeto se encontra atualmente?",
 					answer: "Planejamento",
 				},
 				{
-					questionId: 6,
 					questionName:
 						"Como você avalia a troca de experiências entre a equipe da Instituição e a equipe do projeto?",
 					answer: "Excelente",
 				},
 				{
-					questionId: 7,
 					questionName:
 						"De um modo geral, como você classifica a sua experiência com o projeto até o momento?",
 					answer: "Muito satisfatória",
 				},
 				{
-					questionId: 8,
 					questionName:
 						"Quais os aprendizados para a Instituição até o momento?",
 					answer:
 						"Conhecimento na área da gestão financeira e como fazer um projeto e principalmente  saber aquém ajudar ",
 				},
 				{
-					questionId: 9,
 					questionName:
 						"Comentários adicionais ou sugestões para melhorar o andamento do projeto",
 					answer:
@@ -307,58 +267,50 @@ export const surveyAnswers = [
 	},
 	{
 		id: 6,
+		createdAt: "2024-10-23T17:24:00.000Z",
 		osc: "Conselho Comunitário da Taíba",
 		responses: {
 			create: [
 				{
-					questionId: 1,
 					questionName: "Foi realizada reunião prévia com a equipe de alunos?",
 					answer: "Não",
 				},
 				{
-					questionId: 2,
 					questionName:
 						"Após essa reunião, foi tomada uma decisão clara sobre o problema a ser abordado no projeto?",
 					answer: "Não",
 				},
 				{
-					questionId: 3,
 					questionName:
 						"A solução proposta foi decidida em conjunto com a Instituição?",
 					answer: "Não",
 				},
 				{
-					questionId: 4,
 					questionName:
 						"Como você classifica a solução proposta em termos de praticidade e simplicidade de execução ou uso?",
 					answer: "Parcialmente prática/simples",
 				},
 				{
-					questionId: 5,
 					questionName: "Em qual fase o projeto se encontra atualmente?",
 					answer: "Planejamento",
 				},
 				{
-					questionId: 6,
 					questionName:
 						"Como você avalia a troca de experiências entre a equipe da Instituição e a equipe do projeto?",
 					answer: "Boa",
 				},
 				{
-					questionId: 7,
 					questionName:
 						"De um modo geral, como você classifica a sua experiência com o projeto até o momento?",
 					answer: "Neutra",
 				},
 				{
-					questionId: 8,
 					questionName:
 						"Quais os aprendizados para a Instituição até o momento?",
 					answer:
 						"Ainda estamos bem no início do diálogo, mas já podemos sentir que será de grande ganho essa parceria.",
 				},
 				{
-					questionId: 9,
 					questionName:
 						"Comentários adicionais ou sugestões para melhorar o andamento do projeto",
 					answer: "Efetivar nossos encontros para o andamento do projeto.",
@@ -368,58 +320,50 @@ export const surveyAnswers = [
 	},
 	{
 		id: 7,
+		createdAt: "2024-10-04T10:59:00.000Z",
 		osc: "Espaço Cultura e Vida Dorotéias",
 		responses: {
 			create: [
 				{
-					questionId: 1,
 					questionName: "Foi realizada reunião prévia com a equipe de alunos?",
 					answer: "Sim",
 				},
 				{
-					questionId: 2,
 					questionName:
 						"Após essa reunião, foi tomada uma decisão clara sobre o problema a ser abordado no projeto?",
 					answer: "Sim",
 				},
 				{
-					questionId: 3,
 					questionName:
 						"A solução proposta foi decidida em conjunto com a Instituição?",
 					answer: "Sim",
 				},
 				{
-					questionId: 4,
 					questionName:
 						"Como você classifica a solução proposta em termos de praticidade e simplicidade de execução ou uso?",
 					answer: "Parcialmente prática/simples",
 				},
 				{
-					questionId: 5,
 					questionName: "Em qual fase o projeto se encontra atualmente?",
 					answer: "Planejamento",
 				},
 				{
-					questionId: 6,
 					questionName:
 						"Como você avalia a troca de experiências entre a equipe da Instituição e a equipe do projeto?",
 					answer: "Excelente",
 				},
 				{
-					questionId: 7,
 					questionName:
 						"De um modo geral, como você classifica a sua experiência com o projeto até o momento?",
 					answer: "Satisfatória",
 				},
 				{
-					questionId: 8,
 					questionName:
 						"Quais os aprendizados para a Instituição até o momento?",
 					answer:
 						"Nossa instituição recebeu duas visitas, uma com a proposta de nos conhecer e outra para pensar as propostas e a equipe já mediu os ambientes e foi fazendo sugestões, estamos no aguardo do projeto. Bastante animados com a colocações e sugestões postas.",
 				},
 				{
-					questionId: 9,
 					questionName:
 						"Comentários adicionais ou sugestões para melhorar o andamento do projeto",
 					answer:
@@ -430,58 +374,50 @@ export const surveyAnswers = [
 	},
 	{
 		id: 8,
+		createdAt: "2024-10-03T20:59:00.000Z",
 		osc: "FECARCE",
 		responses: {
 			create: [
 				{
-					questionId: 1,
 					questionName: "Foi realizada reunião prévia com a equipe de alunos?",
 					answer: "Sim",
 				},
 				{
-					questionId: 2,
 					questionName:
 						"Após essa reunião, foi tomada uma decisão clara sobre o problema a ser abordado no projeto?",
 					answer: "Parcialmente",
 				},
 				{
-					questionId: 3,
 					questionName:
 						"A solução proposta foi decidida em conjunto com a Instituição?",
 					answer: "Sim",
 				},
 				{
-					questionId: 4,
 					questionName:
 						"Como você classifica a solução proposta em termos de praticidade e simplicidade de execução ou uso?",
 					answer: "Parcialmente prática/simples",
 				},
 				{
-					questionId: 5,
 					questionName: "Em qual fase o projeto se encontra atualmente?",
 					answer: "Planejamento",
 				},
 				{
-					questionId: 6,
 					questionName:
 						"Como você avalia a troca de experiências entre a equipe da Instituição e a equipe do projeto?",
 					answer: "Boa",
 				},
 				{
-					questionId: 7,
 					questionName:
 						"De um modo geral, como você classifica a sua experiência com o projeto até o momento?",
 					answer: "Satisfatória",
 				},
 				{
-					questionId: 8,
 					questionName:
 						"Quais os aprendizados para a Instituição até o momento?",
 					answer:
 						"Ficamos de nós encontrarmos após a feira que aconteceu no centro de eventos (Fenacce) que tomou todo o tempo da equipe da federação. Então, o que planejamos, ficou pendente para darmos continuidade na próxima semana",
 				},
 				{
-					questionId: 9,
 					questionName:
 						"Comentários adicionais ou sugestões para melhorar o andamento do projeto",
 					answer:
@@ -492,58 +428,50 @@ export const surveyAnswers = [
 	},
 	{
 		id: 9,
+		createdAt: "2024-10-08T12:10:00.000Z",
 		osc: "Friends of Fiji Foundation",
 		responses: {
 			create: [
 				{
-					questionId: 1,
 					questionName: "Foi realizada reunião prévia com a equipe de alunos?",
 					answer: "Sim",
 				},
 				{
-					questionId: 2,
 					questionName:
 						"Após essa reunião, foi tomada uma decisão clara sobre o problema a ser abordado no projeto?",
 					answer: "Sim",
 				},
 				{
-					questionId: 3,
 					questionName:
 						"A solução proposta foi decidida em conjunto com a Instituição?",
 					answer: "Sim",
 				},
 				{
-					questionId: 4,
 					questionName:
 						"Como você classifica a solução proposta em termos de praticidade e simplicidade de execução ou uso?",
 					answer: "Prática e simples",
 				},
 				{
-					questionId: 5,
 					questionName: "Em qual fase o projeto se encontra atualmente?",
 					answer: "Planejamento",
 				},
 				{
-					questionId: 6,
 					questionName:
 						"Como você avalia a troca de experiências entre a equipe da Instituição e a equipe do projeto?",
 					answer: "Excelente",
 				},
 				{
-					questionId: 7,
 					questionName:
 						"De um modo geral, como você classifica a sua experiência com o projeto até o momento?",
 					answer: "Muito satisfatória",
 				},
 				{
-					questionId: 8,
 					questionName:
 						"Quais os aprendizados para a Instituição até o momento?",
 					answer:
 						"Comunicação: Houve duas reuniões de diagnóstico, o que sugere que a instituição valoriza a compreensão clara do problema e a comunicação com o cliente (você).\n\nRecursos humanos: Uma equipe de 10 pessoas está envolvida, o que pode indicar um compromisso significativo de recursos para o projeto.\n\nEnvolvimento de alunos: A instituição está incluindo alunos no processo, o que pode trazer ideias inovadoras, mas também pode representar riscos em termos de experiência e profissionalismo.",
 				},
 				{
-					questionId: 9,
 					questionName:
 						"Comentários adicionais ou sugestões para melhorar o andamento do projeto",
 					answer:
@@ -554,58 +482,50 @@ export const surveyAnswers = [
 	},
 	{
 		id: 10,
+		createdAt: "2024-10-08T15:11:00.000Z",
 		osc: "Instituto Lucimário Caitano",
 		responses: {
 			create: [
 				{
-					questionId: 1,
 					questionName: "Foi realizada reunião prévia com a equipe de alunos?",
 					answer: "Sim",
 				},
 				{
-					questionId: 2,
 					questionName:
 						"Após essa reunião, foi tomada uma decisão clara sobre o problema a ser abordado no projeto?",
 					answer: "Sim",
 				},
 				{
-					questionId: 3,
 					questionName:
 						"A solução proposta foi decidida em conjunto com a Instituição?",
 					answer: "Sim",
 				},
 				{
-					questionId: 4,
 					questionName:
 						"Como você classifica a solução proposta em termos de praticidade e simplicidade de execução ou uso?",
 					answer: "Muito prática e simples",
 				},
 				{
-					questionId: 5,
 					questionName: "Em qual fase o projeto se encontra atualmente?",
 					answer: "Planejamento",
 				},
 				{
-					questionId: 6,
 					questionName:
 						"Como você avalia a troca de experiências entre a equipe da Instituição e a equipe do projeto?",
 					answer: "Excelente",
 				},
 				{
-					questionId: 7,
 					questionName:
 						"De um modo geral, como você classifica a sua experiência com o projeto até o momento?",
 					answer: "Satisfatória",
 				},
 				{
-					questionId: 8,
 					questionName:
 						"Quais os aprendizados para a Instituição até o momento?",
 					answer:
 						"APRENDIZADO DE PLANEJAMENTO EM EQUIPE PARA EXECUÇÃO COM PERFEIÇÃO",
 				},
 				{
-					questionId: 9,
 					questionName:
 						"Comentários adicionais ou sugestões para melhorar o andamento do projeto",
 					answer: "NENHUM",
@@ -615,57 +535,49 @@ export const surveyAnswers = [
 	},
 	{
 		id: 11,
+		createdAt: "2024-10-03T22:18:00.000Z",
 		osc: "Instituto Benjamim Dias",
 		responses: {
 			create: [
 				{
-					questionId: 1,
 					questionName: "Foi realizada reunião prévia com a equipe de alunos?",
 					answer: "Sim",
 				},
 				{
-					questionId: 2,
 					questionName:
 						"Após essa reunião, foi tomada uma decisão clara sobre o problema a ser abordado no projeto?",
 					answer: "Parcialmente",
 				},
 				{
-					questionId: 3,
 					questionName:
 						"A solução proposta foi decidida em conjunto com a Instituição?",
 					answer: "Sim",
 				},
 				{
-					questionId: 4,
 					questionName:
 						"Como você classifica a solução proposta em termos de praticidade e simplicidade de execução ou uso?",
 					answer: "Prática e simples",
 				},
 				{
-					questionId: 5,
 					questionName: "Em qual fase o projeto se encontra atualmente?",
 					answer: "Planejamento",
 				},
 				{
-					questionId: 6,
 					questionName:
 						"Como você avalia a troca de experiências entre a equipe da Instituição e a equipe do projeto?",
 					answer: "Regular",
 				},
 				{
-					questionId: 7,
 					questionName:
 						"De um modo geral, como você classifica a sua experiência com o projeto até o momento?",
 					answer: "Neutra",
 				},
 				{
-					questionId: 8,
 					questionName:
 						"Quais os aprendizados para a Instituição até o momento?",
 					answer: "Não tem como analisar, não foi iniciado.",
 				},
 				{
-					questionId: 9,
 					questionName:
 						"Comentários adicionais ou sugestões para melhorar o andamento do projeto",
 					answer:
@@ -676,57 +588,49 @@ export const surveyAnswers = [
 	},
 	{
 		id: 12,
+		createdAt: "2024-10-07T14:49:00.000Z",
 		osc: "Instituto Maria do Carmo",
 		responses: {
 			create: [
 				{
-					questionId: 1,
 					questionName: "Foi realizada reunião prévia com a equipe de alunos?",
 					answer: "Sim",
 				},
 				{
-					questionId: 2,
 					questionName:
 						"Após essa reunião, foi tomada uma decisão clara sobre o problema a ser abordado no projeto?",
 					answer: "Sim",
 				},
 				{
-					questionId: 3,
 					questionName:
 						"A solução proposta foi decidida em conjunto com a Instituição?",
 					answer: "Sim",
 				},
 				{
-					questionId: 4,
 					questionName:
 						"Como você classifica a solução proposta em termos de praticidade e simplicidade de execução ou uso?",
 					answer: "Parcialmente prática/simples",
 				},
 				{
-					questionId: 5,
 					questionName: "Em qual fase o projeto se encontra atualmente?",
 					answer: "Planejamento",
 				},
 				{
-					questionId: 6,
 					questionName:
 						"Como você avalia a troca de experiências entre a equipe da Instituição e a equipe do projeto?",
 					answer: "Boa",
 				},
 				{
-					questionId: 7,
 					questionName:
 						"De um modo geral, como você classifica a sua experiência com o projeto até o momento?",
 					answer: "Neutra",
 				},
 				{
-					questionId: 8,
 					questionName:
 						"Quais os aprendizados para a Instituição até o momento?",
 					answer: "APRENDIZADO EM FASE DE PLANEJAMENTO",
 				},
 				{
-					questionId: 9,
 					questionName:
 						"Comentários adicionais ou sugestões para melhorar o andamento do projeto",
 					answer:
@@ -737,57 +641,49 @@ export const surveyAnswers = [
 	},
 	{
 		id: 13,
+		createdAt: "2024-10-14T15:20:00.000Z",
 		osc: "Instituto Queira Bem",
 		responses: {
 			create: [
 				{
-					questionId: 1,
 					questionName: "Foi realizada reunião prévia com a equipe de alunos?",
 					answer: "Sim",
 				},
 				{
-					questionId: 2,
 					questionName:
 						"Após essa reunião, foi tomada uma decisão clara sobre o problema a ser abordado no projeto?",
 					answer: "Sim",
 				},
 				{
-					questionId: 3,
 					questionName:
 						"A solução proposta foi decidida em conjunto com a Instituição?",
 					answer: "Sim",
 				},
 				{
-					questionId: 4,
 					questionName:
 						"Como você classifica a solução proposta em termos de praticidade e simplicidade de execução ou uso?",
 					answer: "Prática e simples",
 				},
 				{
-					questionId: 5,
 					questionName: "Em qual fase o projeto se encontra atualmente?",
 					answer: "Planejamento",
 				},
 				{
-					questionId: 6,
 					questionName:
 						"Como você avalia a troca de experiências entre a equipe da Instituição e a equipe do projeto?",
 					answer: "Excelente",
 				},
 				{
-					questionId: 7,
 					questionName:
 						"De um modo geral, como você classifica a sua experiência com o projeto até o momento?",
 					answer: "Muito satisfatória",
 				},
 				{
-					questionId: 8,
 					questionName:
 						"Quais os aprendizados para a Instituição até o momento?",
 					answer: "Muito boas.",
 				},
 				{
-					questionId: 9,
 					questionName:
 						"Comentários adicionais ou sugestões para melhorar o andamento do projeto",
 					answer:
@@ -798,58 +694,50 @@ export const surveyAnswers = [
 	},
 	{
 		id: 14,
+		createdAt: "2024-10-04T17:26:00.000Z",
 		osc: "Instituto Recomeçando",
 		responses: {
 			create: [
 				{
-					questionId: 1,
 					questionName: "Foi realizada reunião prévia com a equipe de alunos?",
 					answer: "Sim",
 				},
 				{
-					questionId: 2,
 					questionName:
 						"Após essa reunião, foi tomada uma decisão clara sobre o problema a ser abordado no projeto?",
 					answer: "Sim",
 				},
 				{
-					questionId: 3,
 					questionName:
 						"A solução proposta foi decidida em conjunto com a Instituição?",
 					answer: "Parcialmente",
 				},
 				{
-					questionId: 4,
 					questionName:
 						"Como você classifica a solução proposta em termos de praticidade e simplicidade de execução ou uso?",
 					answer: "Parcialmente prática/simples",
 				},
 				{
-					questionId: 5,
 					questionName: "Em qual fase o projeto se encontra atualmente?",
 					answer: "Planejamento",
 				},
 				{
-					questionId: 6,
 					questionName:
 						"Como você avalia a troca de experiências entre a equipe da Instituição e a equipe do projeto?",
 					answer: "Excelente",
 				},
 				{
-					questionId: 7,
 					questionName:
 						"De um modo geral, como você classifica a sua experiência com o projeto até o momento?",
 					answer: "Muito satisfatória",
 				},
 				{
-					questionId: 8,
 					questionName:
 						"Quais os aprendizados para a Instituição até o momento?",
 					answer:
 						"Como tivemos apenas um encontro, a importância de planejamentos estratégicos.",
 				},
 				{
-					questionId: 9,
 					questionName:
 						"Comentários adicionais ou sugestões para melhorar o andamento do projeto",
 					answer:
@@ -860,58 +748,50 @@ export const surveyAnswers = [
 	},
 	{
 		id: 15,
+		createdAt: "2024-10-14T11:06:00.000Z",
 		osc: "Instituto Vida Videira",
 		responses: {
 			create: [
 				{
-					questionId: 1,
 					questionName: "Foi realizada reunião prévia com a equipe de alunos?",
 					answer: "Sim",
 				},
 				{
-					questionId: 2,
 					questionName:
 						"Após essa reunião, foi tomada uma decisão clara sobre o problema a ser abordado no projeto?",
 					answer: "Sim",
 				},
 				{
-					questionId: 3,
 					questionName:
 						"A solução proposta foi decidida em conjunto com a Instituição?",
 					answer: "Sim",
 				},
 				{
-					questionId: 4,
 					questionName:
 						"Como você classifica a solução proposta em termos de praticidade e simplicidade de execução ou uso?",
 					answer: "Prática e simples",
 				},
 				{
-					questionId: 5,
 					questionName: "Em qual fase o projeto se encontra atualmente?",
 					answer: "Planejamento",
 				},
 				{
-					questionId: 6,
 					questionName:
 						"Como você avalia a troca de experiências entre a equipe da Instituição e a equipe do projeto?",
 					answer: "Boa",
 				},
 				{
-					questionId: 7,
 					questionName:
 						"De um modo geral, como você classifica a sua experiência com o projeto até o momento?",
 					answer: "Neutra",
 				},
 				{
-					questionId: 8,
 					questionName:
 						"Quais os aprendizados para a Instituição até o momento?",
 					answer:
 						"Ainda não foi executado nenhuma fase do projeto. Aguardando nova reunião a pois envio de modelo da planilha que usamos atualmente no ivv",
 				},
 				{
-					questionId: 9,
 					questionName:
 						"Comentários adicionais ou sugestões para melhorar o andamento do projeto",
 					answer:
@@ -922,57 +802,49 @@ export const surveyAnswers = [
 	},
 	{
 		id: 16,
+		createdAt: "2024-10-07T19:19:00.000Z",
 		osc: "Instituto Intervalo",
 		responses: {
 			create: [
 				{
-					questionId: 1,
 					questionName: "Foi realizada reunião prévia com a equipe de alunos?",
 					answer: "Sim",
 				},
 				{
-					questionId: 2,
 					questionName:
 						"Após essa reunião, foi tomada uma decisão clara sobre o problema a ser abordado no projeto?",
 					answer: "Não",
 				},
 				{
-					questionId: 3,
 					questionName:
 						"A solução proposta foi decidida em conjunto com a Instituição?",
 					answer: "Não",
 				},
 				{
-					questionId: 4,
 					questionName:
 						"Como você classifica a solução proposta em termos de praticidade e simplicidade de execução ou uso?",
 					answer: "Parcialmente prática/simples",
 				},
 				{
-					questionId: 5,
 					questionName: "Em qual fase o projeto se encontra atualmente?",
 					answer: "Planejamento",
 				},
 				{
-					questionId: 6,
 					questionName:
 						"Como você avalia a troca de experiências entre a equipe da Instituição e a equipe do projeto?",
 					answer: "Boa",
 				},
 				{
-					questionId: 7,
 					questionName:
 						"De um modo geral, como você classifica a sua experiência com o projeto até o momento?",
 					answer: "Satisfatória",
 				},
 				{
-					questionId: 8,
 					questionName:
 						"Quais os aprendizados para a Instituição até o momento?",
 					answer: "Só tivemos um encontro com os alunos",
 				},
 				{
-					questionId: 9,
 					questionName:
 						"Comentários adicionais ou sugestões para melhorar o andamento do projeto",
 					answer:
@@ -983,57 +855,49 @@ export const surveyAnswers = [
 	},
 	{
 		id: 17,
+		createdAt: "2024-10-05T13:33:00.000Z",
 		osc: "Lar Beneficente Cisco de Luz",
 		responses: {
 			create: [
 				{
-					questionId: 1,
 					questionName: "Foi realizada reunião prévia com a equipe de alunos?",
 					answer: "Sim",
 				},
 				{
-					questionId: 2,
 					questionName:
 						"Após essa reunião, foi tomada uma decisão clara sobre o problema a ser abordado no projeto?",
 					answer: "Sim",
 				},
 				{
-					questionId: 3,
 					questionName:
 						"A solução proposta foi decidida em conjunto com a Instituição?",
 					answer: "Sim",
 				},
 				{
-					questionId: 4,
 					questionName:
 						"Como você classifica a solução proposta em termos de praticidade e simplicidade de execução ou uso?",
 					answer: "Prática e simples",
 				},
 				{
-					questionId: 5,
 					questionName: "Em qual fase o projeto se encontra atualmente?",
 					answer: "Implementação inicial",
 				},
 				{
-					questionId: 6,
 					questionName:
 						"Como você avalia a troca de experiências entre a equipe da Instituição e a equipe do projeto?",
 					answer: "Excelente",
 				},
 				{
-					questionId: 7,
 					questionName:
 						"De um modo geral, como você classifica a sua experiência com o projeto até o momento?",
 					answer: "Muito satisfatória",
 				},
 				{
-					questionId: 8,
 					questionName:
 						"Quais os aprendizados para a Instituição até o momento?",
 					answer: "DA IMPORTANCIA DA MELHORIA DO MARKETING PARA INSTITUIÇÃO.",
 				},
 				{
-					questionId: 9,
 					questionName:
 						"Comentários adicionais ou sugestões para melhorar o andamento do projeto",
 					answer:
@@ -1044,57 +908,49 @@ export const surveyAnswers = [
 	},
 	{
 		id: 18,
+		createdAt: "2024-10-07T13:57:00.000Z",
 		osc: "Lar Francisco de Assis",
 		responses: {
 			create: [
 				{
-					questionId: 1,
 					questionName: "Foi realizada reunião prévia com a equipe de alunos?",
 					answer: "Sim",
 				},
 				{
-					questionId: 2,
 					questionName:
 						"Após essa reunião, foi tomada uma decisão clara sobre o problema a ser abordado no projeto?",
 					answer: "Sim",
 				},
 				{
-					questionId: 3,
 					questionName:
 						"A solução proposta foi decidida em conjunto com a Instituição?",
 					answer: "Sim",
 				},
 				{
-					questionId: 4,
 					questionName:
 						"Como você classifica a solução proposta em termos de praticidade e simplicidade de execução ou uso?",
 					answer: "Prática e simples",
 				},
 				{
-					questionId: 5,
 					questionName: "Em qual fase o projeto se encontra atualmente?",
 					answer: "Planejamento",
 				},
 				{
-					questionId: 6,
 					questionName:
 						"Como você avalia a troca de experiências entre a equipe da Instituição e a equipe do projeto?",
 					answer: "Excelente",
 				},
 				{
-					questionId: 7,
 					questionName:
 						"De um modo geral, como você classifica a sua experiência com o projeto até o momento?",
 					answer: "Muito satisfatória",
 				},
 				{
-					questionId: 8,
 					questionName:
 						"Quais os aprendizados para a Instituição até o momento?",
 					answer: "Melhoria na  captação de recursos financeiros",
 				},
 				{
-					questionId: 9,
 					questionName:
 						"Comentários adicionais ou sugestões para melhorar o andamento do projeto",
 					answer: "A equipe é muito boa e focada no seu propósito",
@@ -1104,57 +960,49 @@ export const surveyAnswers = [
 	},
 	{
 		id: 19,
+		createdAt: "2024-10-08T13:13:00.000Z",
 		osc: "Mães da Resistência",
 		responses: {
 			create: [
 				{
-					questionId: 1,
 					questionName: "Foi realizada reunião prévia com a equipe de alunos?",
 					answer: "Sim",
 				},
 				{
-					questionId: 2,
 					questionName:
 						"Após essa reunião, foi tomada uma decisão clara sobre o problema a ser abordado no projeto?",
 					answer: "Parcialmente",
 				},
 				{
-					questionId: 3,
 					questionName:
 						"A solução proposta foi decidida em conjunto com a Instituição?",
 					answer: "Parcialmente",
 				},
 				{
-					questionId: 4,
 					questionName:
 						"Como você classifica a solução proposta em termos de praticidade e simplicidade de execução ou uso?",
 					answer: "Parcialmente prática/simples",
 				},
 				{
-					questionId: 5,
 					questionName: "Em qual fase o projeto se encontra atualmente?",
 					answer: "Planejamento",
 				},
 				{
-					questionId: 6,
 					questionName:
 						"Como você avalia a troca de experiências entre a equipe da Instituição e a equipe do projeto?",
 					answer: "Regular",
 				},
 				{
-					questionId: 7,
 					questionName:
 						"De um modo geral, como você classifica a sua experiência com o projeto até o momento?",
 					answer: "Neutra",
 				},
 				{
-					questionId: 8,
 					questionName:
 						"Quais os aprendizados para a Instituição até o momento?",
 					answer: "O melhor de todas as parcerias são as trocas.",
 				},
 				{
-					questionId: 9,
 					questionName:
 						"Comentários adicionais ou sugestões para melhorar o andamento do projeto",
 					answer:
@@ -1165,58 +1013,50 @@ export const surveyAnswers = [
 	},
 	{
 		id: 20,
+		createdAt: "2024-10-11T18:13:00.000Z",
 		osc: "Projeto Comunitário Sorriso da Criança",
 		responses: {
 			create: [
 				{
-					questionId: 1,
 					questionName: "Foi realizada reunião prévia com a equipe de alunos?",
 					answer: "Sim",
 				},
 				{
-					questionId: 2,
 					questionName:
 						"Após essa reunião, foi tomada uma decisão clara sobre o problema a ser abordado no projeto?",
 					answer: "Parcialmente",
 				},
 				{
-					questionId: 3,
 					questionName:
 						"A solução proposta foi decidida em conjunto com a Instituição?",
 					answer: "Sim",
 				},
 				{
-					questionId: 4,
 					questionName:
 						"Como você classifica a solução proposta em termos de praticidade e simplicidade de execução ou uso?",
 					answer: "Parcialmente prática/simples",
 				},
 				{
-					questionId: 5,
 					questionName: "Em qual fase o projeto se encontra atualmente?",
 					answer: "Planejamento",
 				},
 				{
-					questionId: 6,
 					questionName:
 						"Como você avalia a troca de experiências entre a equipe da Instituição e a equipe do projeto?",
 					answer: "Boa",
 				},
 				{
-					questionId: 7,
 					questionName:
 						"De um modo geral, como você classifica a sua experiência com o projeto até o momento?",
 					answer: "Satisfatória",
 				},
 				{
-					questionId: 8,
 					questionName:
 						"Quais os aprendizados para a Instituição até o momento?",
 					answer:
 						"Que sempre temos o que aprender, e essa troca com a faculdade é fundamental para termos um olhar externo que possa ver onde não vemos,  ou de outra forma.",
 				},
 				{
-					questionId: 9,
 					questionName:
 						"Comentários adicionais ou sugestões para melhorar o andamento do projeto",
 					answer:
@@ -1227,57 +1067,49 @@ export const surveyAnswers = [
 	},
 	{
 		id: 21,
+		createdAt: "2024-10-07T11:09:00.000Z",
 		osc: "Rede Estrela de Iracema",
 		responses: {
 			create: [
 				{
-					questionId: 1,
 					questionName: "Foi realizada reunião prévia com a equipe de alunos?",
 					answer: "Sim",
 				},
 				{
-					questionId: 2,
 					questionName:
 						"Após essa reunião, foi tomada uma decisão clara sobre o problema a ser abordado no projeto?",
 					answer: "Não",
 				},
 				{
-					questionId: 3,
 					questionName:
 						"A solução proposta foi decidida em conjunto com a Instituição?",
 					answer: "Parcialmente",
 				},
 				{
-					questionId: 4,
 					questionName:
 						"Como você classifica a solução proposta em termos de praticidade e simplicidade de execução ou uso?",
 					answer: "Muito difícil de executar",
 				},
 				{
-					questionId: 5,
 					questionName: "Em qual fase o projeto se encontra atualmente?",
 					answer: "Planejamento",
 				},
 				{
-					questionId: 6,
 					questionName:
 						"Como você avalia a troca de experiências entre a equipe da Instituição e a equipe do projeto?",
 					answer: "Regular",
 				},
 				{
-					questionId: 7,
 					questionName:
 						"De um modo geral, como você classifica a sua experiência com o projeto até o momento?",
 					answer: "Neutra",
 				},
 				{
-					questionId: 8,
 					questionName:
 						"Quais os aprendizados para a Instituição até o momento?",
 					answer: "Nenhuma",
 				},
 				{
-					questionId: 9,
 					questionName:
 						"Comentários adicionais ou sugestões para melhorar o andamento do projeto",
 					answer:
@@ -1288,58 +1120,50 @@ export const surveyAnswers = [
 	},
 	{
 		id: 22,
+		createdAt: "2024-10-03T22:46:00.000Z",
 		osc: "Saboaria Ecológica",
 		responses: {
 			create: [
 				{
-					questionId: 1,
 					questionName: "Foi realizada reunião prévia com a equipe de alunos?",
 					answer: "Sim",
 				},
 				{
-					questionId: 2,
 					questionName:
 						"Após essa reunião, foi tomada uma decisão clara sobre o problema a ser abordado no projeto?",
 					answer: "Sim",
 				},
 				{
-					questionId: 3,
 					questionName:
 						"A solução proposta foi decidida em conjunto com a Instituição?",
 					answer: "Sim",
 				},
 				{
-					questionId: 4,
 					questionName:
 						"Como você classifica a solução proposta em termos de praticidade e simplicidade de execução ou uso?",
 					answer: "Muito prática e simples",
 				},
 				{
-					questionId: 5,
 					questionName: "Em qual fase o projeto se encontra atualmente?",
 					answer: "Implementação inicial",
 				},
 				{
-					questionId: 6,
 					questionName:
 						"Como você avalia a troca de experiências entre a equipe da Instituição e a equipe do projeto?",
 					answer: "Excelente",
 				},
 				{
-					questionId: 7,
 					questionName:
 						"De um modo geral, como você classifica a sua experiência com o projeto até o momento?",
 					answer: "Satisfatória",
 				},
 				{
-					questionId: 8,
 					questionName:
 						"Quais os aprendizados para a Instituição até o momento?",
 					answer:
 						"A importância de ter um grupo atento as necessidades das pessoas da comunidade.",
 				},
 				{
-					questionId: 9,
 					questionName:
 						"Comentários adicionais ou sugestões para melhorar o andamento do projeto",
 					answer: "Na minha percepção está tudo ótimo",

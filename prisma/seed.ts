@@ -1,12 +1,12 @@
 import { prisma } from "@/app/api/prisma/prisma.config";
 import {
-	surveys,
 	courses,
 	projects,
 	semesters,
 	socialMediaPlatforms,
-	users,
 	surveyAnswers,
+	surveys,
+	users,
 } from "./constants/index";
 
 interface Student {
@@ -243,6 +243,7 @@ async function seedSurveyAnswers() {
 			await prisma.surveyAnswer.upsert({
 				create: {
 					osc: { connect: { id: surveyAnswer?.osc?.id } },
+					createdAt: surveyAnswer.createdAt,
 					responses: {
 						createMany: {
 							data: surveyAnswer.responses.create
