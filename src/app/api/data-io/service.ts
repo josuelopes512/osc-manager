@@ -27,7 +27,7 @@ export const fetchHandlers: Record<string, () => Promise<any>> = {
 		return await prisma.oSC.findMany({
 			select: {
 				name: true,
-				location: true,
+				address: true,
 				oscSocials: {
 					select: {
 						link: true,
@@ -50,7 +50,7 @@ export const fetchHandlers: Record<string, () => Promise<any>> = {
 				osc: {
 					select: {
 						name: true,
-						location: true,
+						address: true,
 						oscSocials: {
 							select: {
 								link: true,
@@ -216,13 +216,13 @@ export const upsertHandlers: Record<string, (item: any) => Promise<void>> = {
 		if (existingOsc) {
 			await prisma.oSC.update({
 				where: { id: existingOsc.id },
-				data: { location: osc.location },
+				data: { address: osc.address },
 			});
 		} else {
 			await prisma.oSC.create({
 				data: {
 					name: osc.name,
-					location: osc.location,
+					address: osc.address,
 				},
 			});
 		}
@@ -246,7 +246,7 @@ export const upsertHandlers: Record<string, (item: any) => Promise<void>> = {
 				return await prisma.oSC.create({
 					data: {
 						name: project.osc.name,
-						location: project.osc.location || "",
+						address: project.osc.address || "",
 						oscSocials: {
 							create: project.osc.oscSocials.map((social: any) => ({
 								...social,

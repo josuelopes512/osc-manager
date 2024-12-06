@@ -75,9 +75,8 @@ model OSCAddress {
 }
 
 model OSC {
-  id       Int    @id @default(autoincrement())
-  name     String
-  location String @default("")
+  id   Int    @id @default(autoincrement())
+  name String
 
   oscSocials OSCSocial[] @relation("OSCToOSCSocial")
   projects   Project[]

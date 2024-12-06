@@ -25,7 +25,7 @@ export function InputFile({
 				"border-medium border-default-200 data-[hover=true]:border-default-400",
 				"group-data-[focus=true]:border-default-foreground min-h-10 rounded-medium",
 				"flex-col items-start justify-center gap-0 !duration-150",
-				"transition-colors motion-reduce:transition-none h-14 py-2",
+				"transition-colors motion-reduce:transition-none h-14 py-2 cursor-pointer",
 			)}
 		>
 			<span
@@ -68,15 +68,9 @@ export function InputFile({
 					}}
 					// value={value}
 				/>
-				<Button
-					isIconOnly
-					variant="light"
-					radius="full"
-					size="sm"
-					className={cn("-mr-2", file && "mb-2")}
-				>
-					<FaUpload className="text-xl text-foreground-500" />
-				</Button>
+				<FaUpload
+					className={cn(file && "mb-2", "text-xl text-foreground-500")}
+				/>
 			</div>
 		</label>
 	);
