@@ -14,7 +14,7 @@ export const handleExportToCSV = (
 	const questionHeaders = surveyAnswers.questions.map((q) => q.question);
 	const headers = [
 		"data",
-		// "Nome da Instituição",
+		"Nome da Instituição",
 		// "Nome do Aluno",
 		...questionHeaders,
 	];
@@ -25,7 +25,7 @@ export const handleExportToCSV = (
 			data: format(surveyAnswer.createdAt, "dd/MM/yyyy HH:mm", {
 				locale: ptBR,
 			}),
-			// "Nome da Instituição": surveyAnswer.osc?.name ?? "",
+			"Nome da Instituição": surveyAnswer.osc?.name ?? "",
 			// "Nome do Aluno": surveyAnswer.student?.name ?? "",
 		};
 
