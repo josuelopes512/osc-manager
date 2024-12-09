@@ -99,12 +99,12 @@ export default function Home() {
 					</Tooltip>
 				)}
 			</div>
-			<div className="flex justify-between gap-2 items-center">
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-2 items-center">
 				<Select
 					items={dataSurvey ?? []}
 					label="Questionário"
 					placeholder="Selecione um questionário"
-					className="md:max-w-md mb-2 max-w-xs"
+					className="md:max-w-md mb-2 "
 					isDisabled={isLoadingSurveys || !!surveysError}
 					onChange={(e) => {
 						const value = e.target.value;
@@ -125,7 +125,7 @@ export default function Home() {
 					items={oscs ?? []}
 					label="OSC"
 					placeholder="Selecione um questionário"
-					className="md:max-w-md mb-2 max-w-xs"
+					className="md:max-w-md mb-2 justify-self-end"
 					isDisabled={isLoadingOscs || !!oscError}
 					onChange={(e) => {
 						const value = e.target.value;
