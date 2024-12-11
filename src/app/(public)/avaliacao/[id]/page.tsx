@@ -106,7 +106,8 @@ const SurveyPage = () => {
 			data: parsedData,
 		})
 			.then(() => {
-				reset();
+				window.scrollTo(0, 0);
+				window.location.reload();
 				toast.success("Respostas enviadas com sucesso!");
 			})
 			.catch((error) => {
@@ -122,6 +123,7 @@ const SurveyPage = () => {
 			<span className="text-foreground-500">{surveyData?.description}</span>
 
 			<Select
+				isRequired
 				label="Cargo"
 				labelPlacement="outside"
 				selectedKeys={roleId ? [roleId] : new Set([])}

@@ -232,14 +232,14 @@ model SurveyAnswer {
   id Int @id @default(autoincrement())
 
   surveyId Int
-  survey   Survey @relation(fields: [surveyId], references: [id])
+  survey   Survey @relation(fields: [surveyId], references: [id], onDelete: Cascade)
 
   responses SurveyResponse[]
 
   studentId Int?
   student   Student? @relation(fields: [studentId], references: [id])
-  oscId     Int?
-  osc       OSC?     @relation(fields: [oscId], references: [id])
+  oscId     Int
+  osc       OSC      @relation(fields: [oscId], references: [id])
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now()) @updatedAt()
@@ -252,7 +252,7 @@ model SurveyResponse {
   id Int @id @default(autoincrement())
 
   questionId Int
-  question   Question @relation(fields: [questionId], references: [id])
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
 
   answer String
   other  String?

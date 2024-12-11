@@ -1,10 +1,11 @@
 import type { SurveAnswersDashboard } from "@/app/api/survey/[id]/answers/route";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import * as XLSX from "xlsx";
 
 export const handleExportToCSV = (
 	surveyAnswers: SurveAnswersDashboard,
-	selectedSurveyId: string,
+	surveyName?: string,
 ) => {
 	if (!surveyAnswers || !surveyAnswers.questions.length) {
 		return;
@@ -13,7 +14,7 @@ export const handleExportToCSV = (
 	// Criar os cabeçalhos
 	const questionHeaders = surveyAnswers.questions.map((q) => q.question);
 	const headers = [
-		"data",
+		"Data/Hora",
 		"Nome da Instituição",
 		// "Nome do Aluno",
 		...questionHeaders,
@@ -22,7 +23,7 @@ export const handleExportToCSV = (
 	// Mapear os dados para as colunas apropriadas
 	const data = surveyAnswers.surveysAnswers.map((surveyAnswer) => {
 		const baseData = {
-			data: format(surveyAnswer.createdAt, "dd/MM/yyyy HH:mm", {
+			"Data/Hora": format(surveyAnswer.createdAt, "dd/MM/yyyy HH:mm", {
 				locale: ptBR,
 			}),
 			"Nome da Instituição": surveyAnswer.osc?.name ?? "",
@@ -51,40 +52,35 @@ export const handleExportToCSV = (
 		};
 	});
 
-	// Função para encapsular valores com aspas quando necessário
-	const escapeCSVValue = (value: string) => {
-		if (
-			typeof value === "string" &&
-			(value.includes(",") || value.includes('"'))
-		) {
-			return `"${value.replace(/"/g, '""')}"`; // Escapar aspas duplas dentro do valor
-		}
-		return value;
+	// Criar uma nova planilha
+	const worksheet = XLSX.utils.json_to_sheet(data);
+	const workbook = XLSX.utils.book_new();
+
+	// Definir estilo para cabeçalhos
+	const headerStyle = { font: { bold: true } };
+	headers.forEach((header, index) => {
+		worksheet[`${String.fromCharCode(65 + index)}1`].s = headerStyle; // A1, B1, C1, etc.
+	});
+
+	// Calcular larguras máximas das colunas
+	const getMaxWidth = (data: any[], headers: string[]) => {
+		const widths = headers.map((header) => header.length); // Largura dos cabeçalhos
+		data.forEach((row) => {
+			headers.forEach((header, index) => {
+				const cellValue = String(row[header]); // Garantir que o valor é uma string
+				widths[index] = Math.max(widths[index], cellValue.length);
+			});
+		});
+		return widths.map((width) => ({ wpx: width * 10 })); // Multiplicar por 10 para ajustar a largura
 	};
 
-	// Converter os dados em formato CSV
-	const csvData = [
-		headers
-			.map(escapeCSVValue)
-			.join(","), // Cabeçalhos
-		...data.map((surveyAnswer) =>
-			headers
-				.map((header) =>
-					escapeCSVValue(
-						surveyAnswer[header as keyof typeof surveyAnswer] ?? "",
-					),
-				)
-				.join(","),
-		),
-	].join("\n");
+	// Definir larguras das colunas dinamicamente
+	worksheet["!cols"] = getMaxWidth(data, headers);
 
-	// Criar o arquivo CSV
-	const blob = new Blob([csvData], { type: "text/csv" });
-	const url = URL.createObjectURL(blob);
+	XLSX.utils.book_append_sheet(workbook, worksheet, "Respostas");
 
-	const a = document.createElement("a");
-	a.href = url;
-	a.download = `survey-answers-${selectedSurveyId}.csv`;
-	a.click();
-	a.remove();
+	XLSX.writeFile(
+		workbook,
+		`Relatório${surveyName ? `-${surveyName}` : ""}.xlsx`,
+	);
 };

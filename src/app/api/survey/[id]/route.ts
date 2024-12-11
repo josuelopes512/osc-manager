@@ -114,6 +114,8 @@ export async function DELETE(
 		await surveyService.deleteOne(id);
 		return NextResponse.json({ message: "Questionário deletado com sucesso" });
 	} catch (error) {
+		console.log(error);
+
 		return NextResponse.json(
 			{ msg: "Falha ao deletar questionário", error },
 			{ status: 500 },

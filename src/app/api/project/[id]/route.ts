@@ -30,6 +30,7 @@ export async function GET(
 		});
 		return NextResponse.json(projects);
 	} catch (error) {
+		console.log(error);
 		return NextResponse.json(
 			{ msg: "Falha ao buscar projetos", error },
 			{ status: 500 },

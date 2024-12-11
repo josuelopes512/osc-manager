@@ -110,7 +110,7 @@ const SurveyCharts = ({
 	} as ChartOptions<"pie">;
 
 	return (
-		<div className="max-w-[450px] h-full bg-content2 p-4 rounded-lg">
+		<div className="md:max-w-[450px] max-w-[330px] print:max-w-[330px] h-full bg-content2 p-4 rounded-lg mt-6">
 			<div className="flex justify-between items-center mb-2">
 				<h2>{surveyData.question}</h2>
 				<NextUITooltip
@@ -125,13 +125,26 @@ const SurveyCharts = ({
 						color="default"
 						radius="full"
 						onClick={() => setIsPie(!isPie)}
+						className="print:hidden"
 					>
 						{isPie ? <FaChartBar size={20} /> : <FaChartPie size={20} />}
 					</Button>
 				</NextUITooltip>
 			</div>
-			{isPie && <Pie data={data} options={pieOptions} />}
-			{!isPie && <Bar data={data} options={barOptions} />}
+			{isPie && (
+				<Pie
+					data={data}
+					options={pieOptions}
+					className="print:max-w-[310px] print:max-h-[310px]"
+				/>
+			)}
+			{!isPie && (
+				<Bar
+					data={data}
+					options={barOptions}
+					className="print:max-w-[310px] print:max-h-[310px]"
+				/>
+			)}
 		</div>
 	);
 };

@@ -14,7 +14,36 @@ export const projects = [
 				state: "CE",
 			},
 		},
-		students: [],
+		students: [
+			{
+				name: "Roberto Jucá",
+				whatsapp: "+558596414309",
+			},
+			{
+				name: "Ester Jorge",
+				whatsapp: "+558596896101",
+			},
+			{
+				name: "Jana",
+				whatsapp: "+558592589999",
+			},
+			{
+				name: "Ayla",
+				whatsapp: "",
+			},
+			{
+				name: "Gabriel",
+				whatsapp: "",
+			},
+			{
+				name: "Paulo",
+				whatsapp: "",
+			},
+			{
+				name: "HIARA",
+				whatsapp: "",
+			},
+		],
 	},
 	{
 		id: 2,
@@ -28,7 +57,32 @@ export const projects = [
 				complement: null,
 			},
 		},
-		students: [],
+		students: [
+			{
+				name: "Edson Gabriel",
+				whatsapp: "",
+			},
+			{
+				name: "Gabriel Queiroz",
+				whatsapp: "",
+			},
+			{
+				name: "Hugo Matos",
+				whatsapp: "",
+			},
+			{
+				name: "Armando Farias",
+				whatsapp: "",
+			},
+			{
+				name: "Davi Negreiros",
+				whatsapp: "+558596607722",
+			},
+			{
+				name: "Luciano Castro",
+				whatsapp: "+558599866662",
+			},
+		],
 	},
 	{
 		id: 3,
@@ -45,7 +99,28 @@ export const projects = [
 				state: "BA",
 			},
 		},
-		students: [],
+		students: [
+			{
+				name: "RAISSA LEITE MEDEIROS",
+				whatsapp: "",
+			},
+			{
+				name: "LOREN SOUSA FERREIRA DOS SANTOS",
+				whatsapp: "",
+			},
+			{
+				name: "TIFANNY EMILY ALVES DOS SANTOS",
+				whatsapp: "",
+			},
+			{
+				name: "Marina Vitorino",
+				whatsapp: "+558597157400",
+			},
+			{
+				name: "GABRIELE IRIS ALVES PESSOA",
+				whatsapp: "",
+			},
+		],
 	},
 	{
 		id: 4,
@@ -59,7 +134,28 @@ export const projects = [
 				complement: null,
 			},
 		},
-		students: [],
+		students: [
+			{
+				name: "DANIELLA RIBEIRO DA PAZ",
+				whatsapp: "+558585457115",
+			},
+			{
+				name: "LARYSSA LEE SOUSA MARQUES",
+				whatsapp: "",
+			},
+			{
+				name: "DEBORA DA SILVA PEREIRA",
+				whatsapp: "+558591760584",
+			},
+			{
+				name: "CLAUDENIR DE AQUINO SOUZA",
+				whatsapp: "+558599252464",
+			},
+			{
+				name: "LAYANNE CRUZ CASTELO",
+				whatsapp: "",
+			},
+		],
 	},
 	{
 		id: 5,
@@ -76,7 +172,28 @@ export const projects = [
 				state: "CE",
 			},
 		},
-		students: [],
+		students: [
+			{
+				name: "Beatriz",
+				whatsapp: "+558599482717",
+			},
+			{
+				name: "Ana Luisa",
+				whatsapp: "",
+			},
+			{
+				name: "Venício",
+				whatsapp: "",
+			},
+			{
+				name: "Isabela",
+				whatsapp: "+558592439981",
+			},
+			{
+				name: "Lucas Rocha",
+				whatsapp: "",
+			},
+		],
 	},
 	{
 		id: 6,
@@ -93,7 +210,28 @@ export const projects = [
 				state: "CE",
 			},
 		},
-		students: [],
+		students: [
+			{
+				name: "Aurislany Nunes",
+				whatsapp: "",
+			},
+			{
+				name: "Maria do Socorro Araújo",
+				whatsapp: "",
+			},
+			{
+				name: "Gabriella Sandim",
+				whatsapp: "+558599751955",
+			},
+			{
+				name: "Carlota Fiuza",
+				whatsapp: "",
+			},
+			{
+				name: "Zafia Campelo",
+				whatsapp: "",
+			},
+		],
 	},
 	{
 		id: 7,
@@ -110,7 +248,28 @@ export const projects = [
 				state: "CE",
 			},
 		},
-		students: [],
+		students: [
+			{
+				name: "Bruno Barroso de Castro",
+				whatsapp: "+558596181311",
+			},
+			{
+				name: "Derek Pinheiro Coelho Batista",
+				whatsapp: "+558597509730",
+			},
+			{
+				name: "JOAO VITOR SOUSA SILVA",
+				whatsapp: "",
+			},
+			{
+				name: "Mateus Batista Gomes Sales",
+				whatsapp: "+558597993956",
+			},
+			{
+				name: "Matheus Vicente Benega",
+				whatsapp: "+558598138750",
+			},
+		],
 	},
 	{
 		id: 8,
@@ -127,7 +286,32 @@ export const projects = [
 				state: "CE",
 			},
 		},
-		students: [],
+		students: [
+			{
+				name: "Fernando",
+				whatsapp: "",
+			},
+			{
+				name: "João pedro",
+				whatsapp: "+55 85 8575-7801",
+			},
+			{
+				name: "Débora",
+				whatsapp: "",
+			},
+			{
+				name: "Vitória",
+				whatsapp: "",
+			},
+			{
+				name: "Nicolli",
+				whatsapp: "",
+			},
+			{
+				name: "Erica",
+				whatsapp: "",
+			},
+		],
 	},
 	{
 		id: 9,
@@ -144,7 +328,24 @@ export const projects = [
 				state: "CE",
 			},
 		},
-		students: [],
+		students: [
+			{
+				name: "VICTORIA HOMCI SAMPAIO TAVARES",
+				whatsapp: "+558588705029",
+			},
+			{
+				name: "Yan Amorim",
+				whatsapp: "",
+			},
+			{
+				name: "Andressa Pierre",
+				whatsapp: "+558591105853",
+			},
+			{
+				name: "ERON FERNANDES MEDEIROS",
+				whatsapp: "+558581393708",
+			},
+		],
 	},
 	{
 		id: 10,
@@ -158,7 +359,28 @@ export const projects = [
 				complement: "Academia Sara",
 			},
 		},
-		students: [],
+		students: [
+			{
+				name: "ABNER OLIVEIRA DE MELO",
+				whatsapp: "",
+			},
+			{
+				name: "DEREK PINHEIRO COELHO BATISTA",
+				whatsapp: "+558597509730",
+			},
+			{
+				name: "EDUARDO GARCIA LEITE DE ALMEIDA ARAUJO",
+				whatsapp: "",
+			},
+			{
+				name: "GLEYSSE RIBEIRO DA COSTA",
+				whatsapp: "",
+			},
+			{
+				name: "PEDRO KLEIN DA SILVA RIBEIRO",
+				whatsapp: "",
+			},
+		],
 	},
 	{
 		id: 11,
@@ -175,7 +397,32 @@ export const projects = [
 				state: "CE",
 			},
 		},
-		students: [],
+		students: [
+			{
+				name: "AMANDA DE SOUSA MORAIS",
+				whatsapp: "+558588738173",
+			},
+			{
+				name: "MARIA IZABEL CIDRAO CAVALCANTE MOTA",
+				whatsapp: "",
+			},
+			{
+				name: "Amanda Deise",
+				whatsapp: "+558588738173",
+			},
+			{
+				name: "RAQUEL GOMES DE HOLANDA PIRES",
+				whatsapp: "+558597926902",
+			},
+			{
+				name: "Abraão Andrade",
+				whatsapp: "",
+			},
+			{
+				name: "ELIFAS DA SILVA LEMOS",
+				whatsapp: "",
+			},
+		],
 	},
 	{
 		id: 12,
@@ -192,7 +439,28 @@ export const projects = [
 				state: "CE",
 			},
 		},
-		students: [],
+		students: [
+			{
+				name: "PAULO DA SILVA AMORIM",
+				whatsapp: "",
+			},
+			{
+				name: "JOELSON FREITAS DE OLIVEIRA",
+				whatsapp: "+558597847257",
+			},
+			{
+				name: "ALFREDO ALVES DE MAGALHAES NETO",
+				whatsapp: "+558591480603",
+			},
+			{
+				name: "WASHINGTON BATISTA SILVA",
+				whatsapp: "+558588092350",
+			},
+			{
+				name: "LARISSON DOS SANTOS DE AQUINO",
+				whatsapp: "+558584035278",
+			},
+		],
 	},
 	{
 		id: 13,
@@ -209,7 +477,24 @@ export const projects = [
 				state: "CE",
 			},
 		},
-		students: [],
+		students: [
+			{
+				name: "FRANCISCO WLISSIS RIBEIRO DE SOUZA",
+				whatsapp: "",
+			},
+			{
+				name: "LORENA ROCHA BRITO",
+				whatsapp: "",
+			},
+			{
+				name: "MARIANA GONCALVES GULDEN GRAVATA",
+				whatsapp: "",
+			},
+			{
+				name: "Anderson Almeida",
+				whatsapp: "",
+			},
+		],
 	},
 	{
 		id: 14,
@@ -226,7 +511,32 @@ export const projects = [
 				state: "CE",
 			},
 		},
-		students: [],
+		students: [
+			{
+				name: "Mariana Lemos",
+				whatsapp: "",
+			},
+			{
+				name: "Ana Paula Reis",
+				whatsapp: "",
+			},
+			{
+				name: "FRANCISCO MARCELO LIMA AGUIAR JUNIOR",
+				whatsapp: "",
+			},
+			{
+				name: "Juliana Cavalcante Oliveira",
+				whatsapp: "",
+			},
+			{
+				name: "Ana Karoliny da Silva Coelho",
+				whatsapp: "",
+			},
+			{
+				name: "MARLON BASTOS PINHEIRO",
+				whatsapp: "",
+			},
+		],
 	},
 	{
 		id: 15,
@@ -243,7 +553,28 @@ export const projects = [
 				state: "CE",
 			},
 		},
-		students: [],
+		students: [
+			{
+				name: "PAULO GUILHERME NOBRE",
+				whatsapp: "",
+			},
+			{
+				name: "ALICE DOS SANTOS OLIVEIRA",
+				whatsapp: "+558597752922",
+			},
+			{
+				name: "ACELINO MARCOS DIOGENES ALVES",
+				whatsapp: "",
+			},
+			{
+				name: "Edberto Junior",
+				whatsapp: "",
+			},
+			{
+				name: "ZAFIA LUIZA SILVERIO CAMPELO DA COSTA",
+				whatsapp: "",
+			},
+		],
 	},
 	{
 		id: 16,
@@ -260,7 +591,28 @@ export const projects = [
 				state: "CE",
 			},
 		},
-		students: [],
+		students: [
+			{
+				name: "GERMANA ANDRADE SALMITO",
+				whatsapp: "+558599948919",
+			},
+			{
+				name: "MARIA LEDIO VIEIRA",
+				whatsapp: "+558599376857",
+			},
+			{
+				name: "LUDMILLA GARCIA LIMA",
+				whatsapp: "",
+			},
+			{
+				name: "ERIKA JANAINA SILVA MARQUES ARAUJO",
+				whatsapp: "+558597629513",
+			},
+			{
+				name: "NILCE GONÇALVES DIAS",
+				whatsapp: "",
+			},
+		],
 	},
 	{
 		id: 17,
@@ -322,7 +674,20 @@ export const projects = [
 				state: "CE",
 			},
 		},
-		students: [],
+		students: [
+			{
+				name: "Caio Carvalho Portela",
+				whatsapp: "+558596159985",
+			},
+			{
+				name: "Josué de Sousa Lopes",
+				whatsapp: "+558585325761",
+			},
+			{
+				name: "Levi Gleik Andrade de Sousa",
+				whatsapp: "+558591437740",
+			},
+		],
 	},
 	{
 		id: 21,

@@ -29,13 +29,12 @@ const ProjectEdit = () => {
 	const router = useRouter();
 	const { data: dataGetProject, isLoading: loadingGet } = useQuery({
 		queryFn: ({ signal }) =>
-			getData<Project & { students: Student[] }>({
+			getData<Project & { students: Student[]; osc: OSC; semester: Semester }>({
 				url: "project",
 				id: Number.parseInt(id, 10),
 				signal,
 				query:
-					"include.osc=true&&include.students=true" +
-					"&&include.semester.orderBy.name=asc",
+					"include.osc=true&&include.students=true" + "&&include.semester=true",
 			}),
 		queryKey: ["project-get-by-id", id],
 		enabled: id !== "new",
