@@ -11,11 +11,9 @@ export async function POST(request: Request) {
 				survey: {
 					connect: { id: data.surveyId },
 				},
-				osc: data.oscId
-					? {
-							connect: { id: data.oscId },
-						}
-					: undefined,
+				osc: {
+					connect: { id: data.oscId },
+				},
 				student: data.studentId
 					? {
 							connect: { id: data.studentId },
