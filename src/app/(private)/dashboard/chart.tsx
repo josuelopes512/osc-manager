@@ -137,7 +137,7 @@ const SurveyCharts = ({
 				<h2>{surveyData.question}</h2>
 				<Dropdown>
 					<DropdownTrigger className="print:hidden">
-						<Button isIconOnly variant="flat" radius="full">
+						<Button isIconOnly variant="light" radius="full">
 							<FaEllipsisVertical className="text-small" />
 						</Button>
 					</DropdownTrigger>
