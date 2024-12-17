@@ -1,21 +1,33 @@
 "use client";
 
-import { Pie, Bar } from "react-chartjs-2";
-import {
-	Chart as ChartJS,
-	ArcElement,
-	Tooltip,
-	Legend,
-	CategoryScale,
-	LinearScale,
-	BarElement,
-	type ChartOptions,
-	type ChartData,
-} from "chart.js";
 import type { SurveAnswersDashboard } from "@/app/api/survey/[id]/answers/route";
-import { Button, Tooltip as NextUITooltip } from "@nextui-org/react";
-import { FaChartBar, FaChartPie, FaChevronDown } from "react-icons/fa";
+import {
+	Button,
+	Dropdown,
+	DropdownItem,
+	DropdownMenu,
+	DropdownTrigger,
+	Tooltip as NextUITooltip,
+} from "@nextui-org/react";
+import {
+	ArcElement,
+	BarElement,
+	CategoryScale,
+	Chart as ChartJS,
+	type ChartOptions,
+	Legend,
+	LinearScale,
+	Tooltip,
+} from "chart.js";
+import { useTheme } from "next-themes";
 import { useState } from "react";
+import { Bar, Pie } from "react-chartjs-2";
+import {
+	FaChartBar,
+	FaChartPie,
+	FaEllipsisVertical,
+	FaEye,
+} from "react-icons/fa6";
 
 ChartJS.register(
 	ArcElement,
@@ -28,10 +40,16 @@ ChartJS.register(
 
 const SurveyCharts = ({
 	surveyData,
+	answers,
 }: {
 	surveyData: SurveAnswersDashboard["questions"][number];
+	answers: SurveAnswersDashboard;
 }) => {
 	const [isPie, setIsPie] = useState(surveyData.type === "MultipleChoice");
+
+	const [detailsVisible, setDetailsVisible] = useState(false);
+
+	const { theme } = useTheme();
 
 	const data = {
 		labels: surveyData.answers.labels,
@@ -68,6 +86,7 @@ const SurveyCharts = ({
 			legend: {
 				display: true,
 				position: "top",
+				labels: { color: theme === "dark" ? "#fff" : "#000" },
 			},
 			tooltip: {
 				callbacks: {
@@ -93,6 +112,9 @@ const SurveyCharts = ({
 	// Configurações para o gráfico de pizza
 	const pieOptions = {
 		plugins: {
+			legend: {
+				labels: { color: theme === "dark" ? "#fff" : "#000" },
+			},
 			tooltip: {
 				callbacks: {
 					label: (tooltipItem) => {
@@ -113,23 +135,38 @@ const SurveyCharts = ({
 		<div className="md:max-w-[450px] max-w-[330px] print:max-w-[330px] h-full bg-content2 p-4 rounded-lg mt-6">
 			<div className="flex justify-between items-center mb-2">
 				<h2>{surveyData.question}</h2>
-				<NextUITooltip
-					content={isPie ? "Grafico em colunas" : "Grafico em pizza"}
-					placement="bottom-end"
-					color="secondary"
-				>
-					<Button
-						isIconOnly
-						size="sm"
-						variant="light"
-						color="default"
-						radius="full"
-						onClick={() => setIsPie(!isPie)}
-						className="print:hidden"
+				<Dropdown>
+					<DropdownTrigger className="print:hidden">
+						<Button isIconOnly variant="flat" radius="full">
+							<FaEllipsisVertical className="text-small" />
+						</Button>
+					</DropdownTrigger>
+					<DropdownMenu
+						disallowEmptySelection
+						aria-label="Columns"
+						closeOnSelect
+						// selectionMode="single"
+						onAction={(selectedKeys) => {
+							if (selectedKeys === "chart") {
+								setIsPie((a) => !a);
+							}
+							if (selectedKeys === "details") {
+								setDetailsVisible((d) => !d);
+							}
+						}}
 					>
-						{isPie ? <FaChartBar size={20} /> : <FaChartPie size={20} />}
-					</Button>
-				</NextUITooltip>
+						<DropdownItem key="chart" className="[&>span]:flex [&>span]:gap-2">
+							{isPie ? <FaChartBar size={20} /> : <FaChartPie size={20} />}{" "}
+							Grafico em {!isPie ? "pizza" : "colunas"}
+						</DropdownItem>
+						<DropdownItem
+							key="details"
+							className="[&>span]:flex [&>span]:gap-2"
+						>
+							<FaEye size={20} /> Ver detalhes
+						</DropdownItem>
+					</DropdownMenu>
+				</Dropdown>
 			</div>
 			{isPie && (
 				<Pie
@@ -144,6 +181,35 @@ const SurveyCharts = ({
 					options={barOptions}
 					className="print:max-w-[310px] print:max-h-[310px]"
 				/>
+			)}
+			{detailsVisible && (
+				<table className="mt-4">
+					<thead>
+						<tr>
+							<th>Instituito</th>
+							<th>Resposta</th>
+						</tr>
+					</thead>
+					<tbody>
+						{answers.surveysAnswers.map((answer, index) => (
+							<tr
+								key={answer.id}
+								className={`border-t-2 border-b-2 border-neutral-300 ${
+									index === answers.surveysAnswers.length - 1 ? "" : ""
+								}`}
+							>
+								<td>{answer.osc?.name}</td>
+								<td>
+									{
+										answer.responses?.find(
+											(r) => r.question.name === surveyData.question,
+										)?.answer
+									}
+								</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
 			)}
 		</div>
 	);

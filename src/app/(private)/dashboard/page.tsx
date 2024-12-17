@@ -189,7 +189,11 @@ export default function Home() {
 						</h6>
 					</div>
 					{surveyAnswers.questions.map((question) => (
-						<SurveyCharts key={question.question} surveyData={question} />
+						<SurveyCharts
+							key={question.question}
+							surveyData={question}
+							answers={surveyAnswers}
+						/>
 					))}
 				</div>
 			)}
